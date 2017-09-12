@@ -84,27 +84,28 @@ You can use this in your terraform template with the following steps.
 
 1. Adding a module resource to your template, e.g. main.tf
 
-       module "tf-instances" {
-          source = "github.com/terraform-community-modules/terraform-alicloud-ecs-instance"
 
-          alicloud_access_key = "${var.alicloud_access_key}"
-          alicloud_secret_key = "${var.alicloud_secret_key}"
-          region = "${var.region}"
+        module "tf-instances" {
+            source = "github.com/alibaba/terraform-alicloud-ecs-instance"
 
-          vswitch_id = "${var.vswitch_id}"
-          group_ids = "${var.group_ids}"
+            alicloud_access_key = "${var.alicloud_access_key}"
+            alicloud_secret_key = "${var.alicloud_secret_key}"
+            region = "${var.region}"
 
-          disk_category = "cloud_ssd"
-          disk_name = "my_module_disk"
-          disk_size = "50"
-          number_of_disks = 2
+            vswitch_id = "${var.vswitch_id}"
+            group_ids = "${var.group_ids}"
 
-          instance_name = "my_module_instances"
-          host_name = "my_host"
-          internet_charge_type = "PayByTraffic"
-          number_of_instances = "2"
+            disk_category = "cloud_ssd"
+            disk_name = "my_module_disk"
+            disk_size = "50"
+            number_of_disks = 2
 
-          key_name = "${var.key_name}"
+            instance_name = "my_module_instances"
+            host_name = "my_host"
+            internet_charge_type = "PayByTraffic"
+            number_of_instances = "2"
+
+            key_name = "${var.key_name}"
 
         }
 
