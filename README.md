@@ -2,13 +2,15 @@ Alicloud ECS Instance Terraform Module In VPC
 terraform-alicloud-ecs-instance
 =====================================================================
 
-A terraform module to provide ECS instances in Alicloud VPC.
+A terraform module to provide ECS instances in Alicloud VPC. Its input variables contains VSwitch, Security Group, ECS Disks and ECS Instances.
 
 - It assumes you have one VPC and VSwitch and you want to put the new instances to the VPC. If not, you can launch a new one by module [terraform-alicloud-vpc](https://github.com/alibaba/terraform-alicloud-vpc)
 - It assumes you have several security groups in the VPC and you want to join the new instances into them. If not, you can launch one or more groups by module [terraform-alicloud-security-group](https://github.com/alibaba/terraform-alicloud-security-group)
 - If you have no idea some parametes, such as instance type, availability zone and image id,
   the module will provide default values according to some input parameters, such as `image_name_regex`, `cpu_core_count`, `memory_size` and so on.
 
+`Note`: If you specify the `vswitch_id`, the `availability_zone` would be ignore when launching ECS instances.
+`Note`: We have deprecated ECS instance field `io_optimized` from `terraform-provider-alicloud`. If you happened some I/O optimized issues, please download and update provider package from [terraform-provider-alicloud release](https://github.com/alibaba/terraform-provider/releases).
 
 ----------------------
 
@@ -56,3 +58,11 @@ You can use this in your terraform template with the following steps.
 Authors
 -------
 Created and maintained by He Guimin(@xiaozhu36, heguimin36@163.com)
+
+Reference
+---------
+* [Terraform-Provider-Alicloud Github](https://github.com/alibaba/terraform-provider)
+* [Terraform-Provider-Alicloud Release](https://github.com/alibaba/terraform-provider/releases)
+* [Terraform-Provider-Alicloud Latest Docs](http://47.95.33.19:4567/docs/providers/alicloud/)
+
+
