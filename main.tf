@@ -50,6 +50,8 @@ resource "alicloud_instance" "instances" {
   vswitch_id = "${var.vswitch_id}"
 
   period = "${var.period}"
+  
+  io_optimized = "none"
 
   tags {
     created_by = "${lookup(var.instance_tags, "created_by")}"
