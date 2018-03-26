@@ -39,8 +39,6 @@ resource "alicloud_instance" "instances" {
   internet_charge_type = "${var.internet_charge_type}"
   internet_max_bandwidth_out = "${var.internet_max_bandwidth_out}"
 
-  allocate_public_ip = "${var.allocate_public_ip}"
-
   instance_charge_type = "${var.instance_charge_type}"
   system_disk_category = "${var.system_category}"
   system_disk_size = "${var.system_size}"
