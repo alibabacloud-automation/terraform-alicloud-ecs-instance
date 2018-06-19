@@ -116,9 +116,9 @@ variable "password" {
   default = ""
 }
 
-variable "allocate_public_ip" {
-  description = "Default to allocate public ip for new instances."
-  default = true
+variable "private_ip" {
+  description = "Private IP address of instance"
+  default = ""
 }
 
 variable "internet_charge_type" {
