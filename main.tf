@@ -49,6 +49,8 @@ resource "alicloud_instance" "instances" {
 
   vswitch_id = "${var.vswitch_id}"
 
+  private_ip = "${var.number_of_instances < 2 ? var.private_ip : ""}"
+  
   period = "${var.period}"
 
   tags {
