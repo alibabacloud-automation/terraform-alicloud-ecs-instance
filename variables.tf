@@ -108,7 +108,7 @@ variable "password" {
   default = ""
 }
 
-variable "private_ip" {
+variable "private_ips" {
   description = "Configure Private IP address"
   type = "list"
   default = [""]
