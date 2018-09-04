@@ -45,7 +45,11 @@ resource "alicloud_instance" "instances" {
 
   vswitch_id = "${var.vswitch_id}"
 
-  private_ip = "${var.number_of_instances < 2 ? var.private_ip : ""}"
+  private_ip = "${var.number_of_instances < 2 ? var.private_ip[0] : element(var.private_ip, count.index) }"
+
+  user_data = "${var.user_data}"
+
+  key_name = "${var.key_name}"
 
   period = "${var.period}"
 

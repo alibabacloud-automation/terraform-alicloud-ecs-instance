@@ -108,6 +108,12 @@ variable "password" {
   default = ""
 }
 
+variable "private_ip" {
+  description = "Configure Private IP address"
+  type = "list"
+  default = [""]
+}
+
 variable "internet_charge_type" {
   description = "The internet charge type of instance. Choices are 'PayByTraffic' and 'PayByBandwidth'."
   default = "PayByTraffic"
@@ -140,4 +146,9 @@ variable "instance_tags" {
 variable "number_of_instances" {
   description = "The number of launching instances one time."
   default = 1
+}
+
+variable "user_data" {
+  description = "User data to pass to instance on boot"
+  default = ""
 }
