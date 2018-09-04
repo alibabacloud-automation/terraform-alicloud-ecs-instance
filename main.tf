@@ -1,7 +1,5 @@
 // Provider specific configs
 provider "alicloud" {
-  access_key = "${var.alicloud_access_key}"
-  secret_key = "${var.alicloud_secret_key}"
   region = "${var.region}"
 }
 
@@ -38,8 +36,6 @@ resource "alicloud_instance" "instances" {
 
   internet_charge_type = "${var.internet_charge_type}"
   internet_max_bandwidth_out = "${var.internet_max_bandwidth_out}"
-
-  allocate_public_ip = "${var.allocate_public_ip}"
 
   instance_charge_type = "${var.instance_charge_type}"
   system_disk_category = "${var.system_category}"
@@ -80,7 +76,7 @@ resource "alicloud_disk_attachment" "disk_attach" {
 }
 
 // Attach key pair to instances for Module
-resource "alicloud_key_pair_attchment" "default" {
+resource "alicloud_key_pair_attachment" "default" {
   count = "${var.number_of_instances > 0 && var.key_name != "" ? 1 : 0}"
 
   key_name = "${var.key_name}"

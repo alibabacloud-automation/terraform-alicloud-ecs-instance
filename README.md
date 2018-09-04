@@ -24,12 +24,11 @@ You can use this in your terraform template with the following steps.
         module "tf-instances" {
             source = "alibaba/ecs-instance/alicloud"
 
-            alicloud_access_key = "${var.alicloud_access_key}"
-            alicloud_secret_key = "${var.alicloud_secret_key}"
             region = "${var.region}"
 
-            vswitch_id = "${var.vswitch_id}"
-            group_ids = "${var.group_ids}"
+            vswitch_id = "vsw-wqrw3c423"
+            group_ids = ["sg-f2c2fwqvs"]
+            private_ip = "172.16.100.100"
 
             disk_category = "cloud_ssd"
             disk_name = "my_module_disk"
@@ -37,23 +36,18 @@ You can use this in your terraform template with the following steps.
             number_of_disks = 2
 
             instance_name = "my_module_instances"
-            host_name = "my_host"
+            host_name = "my-host"
             internet_charge_type = "PayByTraffic"
             number_of_instances = "2"
 
-            key_name = "${var.key_name}"
+            key_name = "for-ecs-instance-module"
 
         }
 
-2. Setting values for the following variables, either through terraform.tfvars or environment variables or -var arguments on the CLI
+2. Setting `access_key` and `secret_key` values through environment variables:
 
-- alicloud_access_key
-- alicloud_secret_key
-- region
-- key_name
-- vswitch_id
-- group_ids
-
+    - ALICLOUD_ACCESS_KEY
+    - ALICLOUD_SECRET_KEY
 
 Authors
 -------
