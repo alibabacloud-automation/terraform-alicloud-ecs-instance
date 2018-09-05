@@ -1,32 +1,28 @@
-# common variables
-variable "region" {
-  description = "The region to launch resources."
-  default = ""
-}
 variable "availability_zone" {
   description = "The available zone to launch ecs instance and other resources."
-  default = ""
+  default     = ""
 }
+
 variable "number_format" {
   description = "The number format used to output."
-  default = "%02d"
+  default     = "%02d"
 }
 
 # Image variables
 variable "image_name_regex" {
   description = "The ECS image's name regex used to fetch specified image."
-  default = "^ubuntu_14.*_64"
+  default     = "^ubuntu_14.*_64"
 }
 
 # Instance typs variables
 variable "cpu_core_count" {
   description = "CPU core count used to fetch instance types."
-  default = 1
+  default     = 1
 }
 
 variable "memory_size" {
   description = "Memory size used to fetch instance types."
-  default = 2
+  default     = 2
 }
 
 # VSwitch  ID
@@ -37,118 +33,124 @@ variable "vswitch_id" {
 # Security Group variables
 variable "group_ids" {
   description = "List of security group ids used to join ECS instances."
-  type = "list"
+  type        = "list"
 }
 
 # Key pair variables
 variable "key_name" {
   description = "The key pair name used to attach one or more instances."
-  default = ""
+  default     = ""
 }
 
 # Disk variables
 variable "disk_name" {
   description = "The data disk name used to mark one or more data disks."
-  default = "TF_ECS_Disk"
+  default     = "TF_ECS_Disk"
 }
 
 variable "disk_category" {
   description = "The data disk category used to launch one or more data disks."
-  default = "cloud_efficiency"
+  default     = "cloud_efficiency"
 }
 
 variable "disk_size" {
   description = "The data disk size used to launch one or more data disks."
-  default = "40"
+  default     = "40"
 }
 
 variable "disk_tags" {
   description = "Used to mark specified ecs data disks."
-  type = "map"
+  type        = "map"
+
   default = {
-    created_by = "Terraform"
+    created_by   = "Terraform"
     created_from = "module-tf-alicloud-ecs-instance"
   }
 }
 
 variable "number_of_disks" {
   description = "The number of launching disks one time."
-  default = 0
+  default     = 0
 }
 
 # Ecs instance variables
 variable "image_id" {
   description = "The image id used to launch one or more ecs instances."
-  default = ""
+  default     = ""
 }
+
 variable "instance_type" {
   description = "The instance type used to launch one or more ecs instances."
-  default = ""
+  default     = ""
 }
+
 variable "system_category" {
   description = "The system disk category used to launch one or more ecs instances."
-  default = "cloud_efficiency"
+  default     = "cloud_efficiency"
 }
+
 variable "system_size" {
   description = "The system disk size used to launch one or more ecs instances."
-  default = "40"
+  default     = "40"
 }
+
 variable "instance_name" {
   description = "The instance name used to mark one or more instances."
-  default = "TF-ECS-Instance"
+  default     = "TF-ECS-Instance"
 }
 
 variable "host_name" {
   description = "The instance host name used to configure one or more instances.."
-  default = "TF-ECS-Host-Name"
+  default     = "TF-ECS-Host-Name"
 }
 
 variable "password" {
   description = "The password of instance."
-  default = ""
+  default     = ""
 }
 
 variable "private_ips" {
   description = "Configure Private IP address"
-  type = "list"
-  default = [""]
+  type        = "list"
+  default     = [""]
 }
 
 variable "internet_charge_type" {
   description = "The internet charge type of instance. Choices are 'PayByTraffic' and 'PayByBandwidth'."
-  default = "PayByTraffic"
+  default     = "PayByTraffic"
 }
 
 variable "internet_max_bandwidth_out" {
   description = "The maximum internet out bandwidth of instance.."
-  default = 10
+  default     = 10
 }
 
 variable "instance_charge_type" {
   description = "The charge type of instance. Choices are 'PostPaid' and 'PrePaid'."
-  default = "PostPaid"
+  default     = "PostPaid"
 }
 
 variable "period" {
   description = "The period of instance when instance charge type is 'PrePaid'."
-  default = 1
+  default     = 1
 }
 
 variable "instance_tags" {
   description = "Used to mark specified ecs instance."
-  type = "map"
+  type        = "map"
+
   default = {
-    created_by = "Terraform"
+    created_by   = "Terraform"
     created_from = "module-tf-alicloud-ecs-instance"
   }
 }
 
 variable "number_of_instances" {
   description = "The number of launching instances one time."
-  default = 1
+  default     = 1
 }
 
 variable "user_data" {
   description = "User data to pass to instance on boot"
-  default = ""
+  default     = ""
 }
