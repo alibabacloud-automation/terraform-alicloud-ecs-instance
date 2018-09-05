@@ -24,8 +24,6 @@ You can use this in your terraform template with the following steps.
         module "tf-instances" {
             source = "alibaba/ecs-instance/alicloud"
 
-            region = "${var.region}"
-
             vswitch_id = "vsw-wqrw3c423"
             group_ids = ["sg-f2c2fwqvs"]
             private_ip = "172.16.100.100"
