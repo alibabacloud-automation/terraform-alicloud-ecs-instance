@@ -44,7 +44,7 @@ variable "key_name" {
 
 # Disk variables
 variable "disk_name" {
-  description = "The data disk name used to mark one or more data disks."
+  description = "Name used on all disks as prefix. Like TF_ECS_Disk-1, TF_ECS_Disk-2."
   default     = "TF_ECS_Disk"
 }
 
@@ -95,12 +95,12 @@ variable "system_size" {
 }
 
 variable "instance_name" {
-  description = "The instance name used to mark one or more instances."
+  description = "Name used on all instances as prefix. Like TF-ECS-Instance-1, TF-ECS-Instance-2."
   default     = "TF-ECS-Instance"
 }
 
 variable "host_name" {
-  description = "The instance host name used to configure one or more instances.."
+  description = "Host name used on all instances as prefix. Like TF-ECS-Host-Name-1, TF-ECS-Host-Name-2."
   default     = "TF-ECS-Host-Name"
 }
 
@@ -110,7 +110,7 @@ variable "password" {
 }
 
 variable "private_ips" {
-  description = "Configure Private IP address"
+  description = "Configure Instance private IP address"
   type        = "list"
   default     = [""]
 }
