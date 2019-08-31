@@ -48,7 +48,7 @@ resource "alicloud_instance" "instances" {
 
   period = "${var.period}"
 
-  tags {
+  tags = {
     created_by   = "${lookup(var.instance_tags, "created_by")}"
     created_from = "${lookup(var.instance_tags, "created_from")}"
   }
@@ -63,7 +63,7 @@ resource "alicloud_disk" "disks" {
   category          = "${var.disk_category}"
   size              = "${var.disk_size}"
 
-  tags {
+  tags = {
     created_by   = "${lookup(var.disk_tags, "created_by")}"
     created_from = "${lookup(var.disk_tags, "created_from")}"
   }
@@ -81,5 +81,5 @@ resource "alicloud_key_pair_attachment" "default" {
   count = "${var.number_of_instances > 0 && var.key_name != "" ? 1 : 0}"
 
   key_name     = "${var.key_name}"
-  instance_ids = ["${alicloud_instance.instances.*.id}"]
+  instance_ids = "${alicloud_instance.instances.*.id}"
 }
