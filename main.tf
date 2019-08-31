@@ -24,7 +24,7 @@ resource "alicloud_instance" "instances" {
   image_id          = "${var.image_id == "" ? data.alicloud_images.default.images.0.id : var.image_id }"
   availability_zone = "${var.vswitch_id != "" ? "" : var.availability_zone == "" ? data.alicloud_zones.default.zones.0.id : var.availability_zone}"
   instance_type     = "${var.instance_type == "" ? data.alicloud_instance_types.default.instance_types.0.id : var.instance_type}"
-  security_groups   = ["${var.group_ids}"]
+  security_groups   = "${var.group_ids}"
 
   instance_name = "${var.number_of_instances < 2 ? var.instance_name : format("%s-%s", var.instance_name, format(var.number_format, count.index+1))}"
   host_name     = "${var.number_of_instances < 2 ? var.host_name : format("%s-%s", var.host_name, format(var.number_format, count.index+1))}"
