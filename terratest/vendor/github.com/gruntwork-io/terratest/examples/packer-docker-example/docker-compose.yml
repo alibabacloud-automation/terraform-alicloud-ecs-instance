@@ -1,0 +1,20 @@
+# This file can be used with Docker and Docker Compose to run the web app in the Packer template 100% locally, without
+# having to deploy anything to AWS.
+
+version: '3'
+services:
+  web_app:
+    # The name we use for the Docker image in build.json
+    image: gruntwork/packer-docker-example
+
+    # Run the sample web app on port 8080
+    command: ["ruby", "/home/ubuntu/app.rb", "${SERVER_PORT}", "${SERVER_TEXT}"]
+
+    # Bind-mount the Ruby app so we can have "hot reload" during testing
+    volumes:
+      - ./app.rb:/home/ubuntu/app.rb
+
+    # Expose the sample app's port on the host OS
+    ports:
+      - "${SERVER_PORT}:${SERVER_PORT}"
+

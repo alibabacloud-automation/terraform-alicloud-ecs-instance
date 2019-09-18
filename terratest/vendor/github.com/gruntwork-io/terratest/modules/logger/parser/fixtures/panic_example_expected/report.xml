@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+	<testsuite tests="52" failures="4" time="0.020" name="github.com/gruntwork-io/terratest/modules/logger/parser">
+		<properties>
+			<property name="go.version" value="go1.11"></property>
+		</properties>
+		<testcase classname="parser" name="TestStackPush" time="0.000"></testcase>
+		<testcase classname="parser" name="TestStackPop" time="0.000"></testcase>
+		<testcase classname="parser" name="TestStackPopEmpty" time="0.000"></testcase>
+		<testcase classname="parser" name="TestPeek" time="0.000"></testcase>
+		<testcase classname="parser" name="TestPeekEmpty" time="0.000"></testcase>
+		<testcase classname="parser" name="TestIsEmpty" time="0.000"></testcase>
+		<testcase classname="parser" name="TestRemoveDedentedTestResultMarkers" time="0.000"></testcase>
+		<testcase classname="parser" name="TestRemoveDedentedTestResultMarkersEmpty" time="0.000"></testcase>
+		<testcase classname="parser" name="TestRemoveDedentedTestResultMarkersAll" time="0.000"></testcase>
+		<testcase classname="parser" name="TestGetIndent" time="0.000"></testcase>
+		<testcase classname="parser" name="TestGetTestNameFromResultLine" time="0.000"></testcase>
+		<testcase classname="parser" name="TestIsResultLine" time="0.000"></testcase>
+		<testcase classname="parser" name="TestGetTestNameFromStatusLine" time="0.000"></testcase>
+		<testcase classname="parser" name="TestIsStatusLine" time="0.000"></testcase>
+		<testcase classname="parser" name="TestIsSummaryLine" time="0.000"></testcase>
+		<testcase classname="parser" name="TestIsPanicLine" time="0.000">
+			<failure message="Failed" type=""></failure>
+		</testcase>
+		<testcase classname="parser" name="TestEnsureDirectoryExistsCreatesDirectory" time="0.000">
+			<failure message="Failed" type=""></failure>
+		</testcase>
+		<testcase classname="parser" name="TestEnsureDirectoryExistsHandlesExistingDirectory" time="0.000"></testcase>
+		<testcase classname="parser" name="TestGetOrCreateChannelCreatesNewChannel" time="0.000"></testcase>
+		<testcase classname="parser" name="TestGetOrCreateChannelReturnsExistingChannel" time="0.000"></testcase>
+		<testcase classname="parser" name="TestLogCollectorCreatesAndWritesToFile" time="0.000">
+			<failure message="Failed" type=""></failure>
+		</testcase>
+		<testcase classname="parser" name="TestGetOrCreateChannelSpawnsLogCollectorOnCreate" time="0.000">
+			<failure message="Failed" type=""></failure>
+		</testcase>
+		<testcase classname="parser" name="TestCloseChannelsClosesAll" time="0.000"></testcase>
+		<testcase classname="parser" name="TestIsSummaryLine/BaseCase" time="0.000"></testcase>
+		<testcase classname="parser" name="TestGetIndent/BaseCase" time="0.000"></testcase>
+		<testcase classname="parser" name="TestIsStatusLine/BaseCase" time="0.000"></testcase>
+		<testcase classname="parser" name="TestIsSummaryLine/NotSummary" time="0.000"></testcase>
+		<testcase classname="parser" name="TestIsStatusLine/Indented" time="0.000"></testcase>
+		<testcase classname="parser" name="TestGetIndent/NoIndent" time="0.000"></testcase>
+		<testcase classname="parser" name="TestIsStatusLine/SpecialChars" time="0.000"></testcase>
+		<testcase classname="parser" name="TestGetTestNameFromStatusLine/BaseCase" time="0.000"></testcase>
+		<testcase classname="parser" name="TestGetIndent/EmptyString" time="0.000"></testcase>
+		<testcase classname="parser" name="TestIsStatusLine/WhenPaused" time="0.000"></testcase>
+		<testcase classname="parser" name="TestGetTestNameFromStatusLine/Indented" time="0.000"></testcase>
+		<testcase classname="parser" name="TestIsStatusLine/WhenCont" time="0.000"></testcase>
+		<testcase classname="parser" name="TestGetIndent/Tabs" time="0.000"></testcase>
+		<testcase classname="parser" name="TestGetTestNameFromStatusLine/SpecialChars" time="0.000"></testcase>
+		<testcase classname="parser" name="TestIsResultLine/BaseCase" time="0.000"></testcase>
+		<testcase classname="parser" name="TestIsStatusLine/NonStatusLine" time="0.000"></testcase>
+		<testcase classname="parser" name="TestGetIndent/MixTabSpace" time="0.000"></testcase>
+		<testcase classname="parser" name="TestGetTestNameFromStatusLine/WhenPaused" time="0.000"></testcase>
+		<testcase classname="parser" name="TestGetTestNameFromResultLine/BaseCase" time="0.000"></testcase>
+		<testcase classname="parser" name="TestGetTestNameFromStatusLine/WhenCont" time="0.000"></testcase>
+		<testcase classname="parser" name="TestGetTestNameFromResultLine/Indented" time="0.000"></testcase>
+		<testcase classname="parser" name="TestGetTestNameFromResultLine/SpecialChars" time="0.000"></testcase>
+		<testcase classname="parser" name="TestGetTestNameFromResultLine/WhenFailed" time="0.000"></testcase>
+		<testcase classname="parser" name="TestIsResultLine/Indented" time="0.000"></testcase>
+		<testcase classname="parser" name="TestIsResultLine/SpecialChars" time="0.000"></testcase>
+		<testcase classname="parser" name="TestIsResultLine/WhenFailed" time="0.000"></testcase>
+		<testcase classname="parser" name="TestIsResultLine/NonResultLine" time="0.000"></testcase>
+		<testcase classname="parser" name="TestIsPanicLine/BaseCase" time="0.000"></testcase>
+		<testcase classname="parser" name="TestIsPanicLine/NotPanic" time="0.000"></testcase>
+	</testsuite>
+</testsuites>

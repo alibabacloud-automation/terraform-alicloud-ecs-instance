@@ -28,12 +28,14 @@ variable "memory_size" {
 # VSwitch  ID
 variable "vswitch_id" {
   description = "The vswitch id used to launch one or more instances."
+  default     = ""
 }
 
 # Security Group variables
 variable "group_ids" {
   description = "List of security group ids used to join ECS instances."
-  type        = "list"
+  type        = list(string)
+  default     = []
 }
 
 # Key pair variables
@@ -60,7 +62,7 @@ variable "disk_size" {
 
 variable "disk_tags" {
   description = "Used to mark specified ecs data disks."
-  type        = "map"
+  type        = map(string)
 
   default = {
     created_by   = "Terraform"
@@ -111,7 +113,7 @@ variable "password" {
 
 variable "private_ips" {
   description = "Configure Instance private IP address"
-  type        = "list"
+  type        = list(string)
   default     = [""]
 }
 
@@ -137,7 +139,7 @@ variable "period" {
 
 variable "instance_tags" {
   description = "Used to mark specified ecs instance."
-  type        = "map"
+  type        = map(string)
 
   default = {
     created_by   = "Terraform"
@@ -154,3 +156,4 @@ variable "user_data" {
   description = "User data to pass to instance on boot"
   default     = ""
 }
+

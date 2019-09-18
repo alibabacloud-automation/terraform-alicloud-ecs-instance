@@ -1,0 +1,53 @@
+{
+  "variables": {
+    "aws_region": "us-east-1",
+    "ami_name_base": "terratest-packer-docker-example"
+  },
+  "builders": [{
+    "name": "ubuntu-ami",
+    "ami_name": "{{user `ami_name_base`}}-{{isotime | clean_ami_name}}",
+    "ami_description": "An example of how to create a custom AMI with a simple web app on top of Ubuntu",
+    "instance_type": "t2.micro",
+    "region": "{{user `aws_region`}}",
+    "type": "amazon-ebs",
+    "source_ami_filter": {
+      "filters": {
+        "virtualization-type": "hvm",
+        "architecture": "x86_64",
+        "name": "*ubuntu-xenial-16.04-amd64-server-*",
+        "block-device-mapping.volume-type": "gp2",
+        "root-device-type": "ebs"
+      },
+      "owners": ["099720109477"],
+      "most_recent": true
+    },
+    "ssh_username": "ubuntu",
+    "encrypt_boot": false
+  },{
+    "name": "ubuntu-docker",
+    "type": "docker",
+    "image": "gruntwork/ubuntu-test:16.04",
+    "commit": true
+  }],
+  "provisioners": [{
+    "type": "shell",
+    "inline": [
+      "echo 'Sleeping for a few seconds to give Ubuntu time to boot up'",
+      "sleep 30"
+    ],
+    "only": ["ubuntu-ami"]
+  },{
+    "type": "file",
+    "source": "{{template_dir}}",
+    "destination": "/tmp/packer-docker-example"
+  },{
+    "type": "shell",
+    "inline": ["/tmp/packer-docker-example/configure-sinatra-app.sh"]
+  }],
+  "post-processors": [{
+    "type": "docker-tag",
+    "repository": "gruntwork/packer-docker-example",
+    "tag": "latest",
+    "only": ["ubuntu-docker"]
+  }]
+}
