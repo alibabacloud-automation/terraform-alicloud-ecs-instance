@@ -16,7 +16,7 @@ variable "number_format" {
 # Image variables
 variable "image_name_regex" {
   description = "The ECS image's name regex used to fetch specified image."
-  default     = "^ubuntu_14.*_64"
+  default     = "^ubuntu_18.*_64"
 }
 
 # Instance typs variables
