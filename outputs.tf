@@ -1,11 +1,11 @@
 // Output the IDs of the ECS instances created
 output "instance_ids" {
-  value = join(",", alicloud_instance.instances.*.id)
+  value = alicloud_instance.instances.*.id
 }
 
 // Output the IDs of the ECS disks created
 output "disk_ids" {
-  value = join(",", alicloud_disk.disks.*.id)
+  value = alicloud_disk.disks.*.id
 }
 
 output "instance_name" {
@@ -28,6 +28,14 @@ output "vswitch_id" {
 # Security Group outputs
 output "group_ids" {
   value = alicloud_instance.instances.0.security_groups
+}
+
+output "vpc_id" {
+  value = alicloud_security_group.default[0].vpc_id
+}
+
+output "route_table_id" {
+  value = alicloud_vpc.default[0].route_table_id
 }
 
 # Key pair outputs
