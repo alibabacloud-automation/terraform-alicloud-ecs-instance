@@ -19,41 +19,46 @@ func TestTerraformBasicExampleNew(t *testing.T) {
 		"created_by":   "Terraform123",
 		"created_from": "module-tf-alicloud-ecs-instance123",
 	}
-	diskName := uniqueName
-	diskCategory := "cloud_ssd"
-	diskSize := "20"
-	diskTags := instanceTags
-	systemCategory := "cloud_ssd"
-	systemSize := "20"
 	hostName := uniqueName
 	password := "YourPassword_123"
 	internetChargeType := "PayByBandwidth"
 	internetMaxBandwidthOut := "20"
+	associatePublicIpAddress := "true"
 	instanceChargeType := "PostPaid"
-	numberOfInstances :="1"
 	userData := ""
+	systemDiskCategory := "cloud_efficiency"
+	systemDiskSize := "40"
+	dryRun := "false"
+	spotStrategy := "NoSpot"
+	spotPriceLimit := "0"
+	deletionProtection := "false"
+	forceDelete := "false"
+	securityEnhancementStrategy := "Active"
 
 	terraformOptions := &terraform.Options{
 		// The path to where our Terraform code is located
-		TerraformDir: "../",
+		TerraformDir: "./basic/",
 
 		// Variables to pass to our Terraform code using -var options
 		Vars: map[string]interface{}{
-			"instance_name":              instanceName,
-			"instance_tags":              instanceTags,
-			"disk_name":                  diskName,
-			"disk_category":              diskCategory,
-			"disk_size":                  diskSize,
-			"disk_tags":                  diskTags,
-			"system_category":            systemCategory,
-			"system_size":                systemSize,
-			"host_name":                  hostName,
-			"password":                   password,
-			"internet_charge_type":       internetChargeType,
-			"internet_max_bandwidth_out": internetMaxBandwidthOut,
-			"instance_charge_type":       instanceChargeType,
-			"number_of_instances":        numberOfInstances,
-			"user_data":                  userData,
+			"instance_name":                 instanceName,
+			"tags":                          instanceTags,
+			"host_name":                     hostName,
+			"password":                      password,
+			"internet_charge_type":          internetChargeType,
+			"internet_max_bandwidth_out":    internetMaxBandwidthOut,
+			"associate_public_ip_address":   associatePublicIpAddress,
+			"instance_charge_type":          instanceChargeType,
+			"user_data":                     userData,
+			"system_disk_category":          systemDiskCategory,
+			"system_disk_size":              systemDiskSize,
+			"dry_run":                       dryRun,
+			"spot_strategy":                 spotStrategy,
+			"spot_price_limit":              spotPriceLimit,
+			"deletion_protection":           deletionProtection,
+			"force_delete":                  forceDelete,
+			"security_enhancement_strategy": securityEnhancementStrategy,
+
 			// We also can see how lists and maps translate between terratest and terraform.
 		},
 
@@ -68,29 +73,29 @@ func TestTerraformBasicExampleNew(t *testing.T) {
 	terraform.InitAndApply(t, terraformOptions)
 
 	// Run `terraform output` to get the values of output variables
-	actualInstanceName := terraform.Output(t, terraformOptions, "instance_name")
-	actualInstanceTags := terraform.OutputMap(t, terraformOptions, "instance_tags")
-	actualSystemCategory := terraform.Output(t, terraformOptions, "system_category")
-	actualSystemSize := terraform.Output(t, terraformOptions, "system_size")
-	actualHostName := terraform.Output(t, terraformOptions, "host_name")
-	actualPassword := terraform.Output(t, terraformOptions, "password")
-	actualInternetChargeType := terraform.Output(t, terraformOptions, "internet_charge_type")
-	actualInternetMaxBandwidthOut := terraform.Output(t, terraformOptions, "internet_max_bandwidth_out")
-	actualInstanceChargeType := terraform.Output(t, terraformOptions, "instance_charge_type")
-	actualNumberOfInstances:=terraform.Output(t, terraformOptions, "number_of_instances")
-	actualUserData := terraform.Output(t, terraformOptions, "user_data")
+	actualInstanceTags := terraform.OutputMap(t, terraformOptions, "this_instance_tags")
+	delete(actualInstanceTags, "Name")
+	actualInternetChargeType := terraform.Output(t, terraformOptions, "this_internet_charge_type")
+	actualInternetMaxBandwidthOut := terraform.Output(t, terraformOptions, "this_internet_max_bandwidth_out")
+	actualInstanceChargeType := terraform.Output(t, terraformOptions, "this_instance_charge_type")
+	actualUserData := terraform.Output(t, terraformOptions, "this_user_data")
+	actualSystemDiskCategory := terraform.Output(t, terraformOptions, "this_system_category")
+	actualSystemDiskSize := terraform.Output(t, terraformOptions, "this_system_size")
+	actualSpotStrategy := terraform.Output(t, terraformOptions, "this_spot_strategy")
+	actualSpotPriceLimit := terraform.Output(t, terraformOptions, "this_spot_price_limit")
+	actualDeletionProtection := terraform.Output(t, terraformOptions, "this_deletion_protection")
+	actualSecurityEnhancementStrategy := terraform.Output(t, terraformOptions, "this_security_enhancement_strategy")
 
 	// Verify we're getting back the outputs we expect
-	assert.Equal(t, instanceName, actualInstanceName)
 	assert.Equal(t, instanceTags, actualInstanceTags)
-	assert.Equal(t, systemCategory, actualSystemCategory)
-	assert.Equal(t, systemSize, actualSystemSize)
-	assert.Equal(t, hostName, actualHostName)
-	assert.Equal(t, password, actualPassword)
 	assert.Equal(t, internetChargeType, actualInternetChargeType)
 	assert.Equal(t, internetMaxBandwidthOut, actualInternetMaxBandwidthOut)
 	assert.Equal(t, instanceChargeType, actualInstanceChargeType)
-	assert.Equal(t, numberOfInstances, actualNumberOfInstances)
 	assert.Equal(t, userData, actualUserData)
-
+	assert.Equal(t, systemDiskCategory, actualSystemDiskCategory)
+	assert.Equal(t, systemDiskSize, actualSystemDiskSize)
+	assert.Equal(t, spotStrategy, actualSpotStrategy)
+	assert.Equal(t, spotPriceLimit, actualSpotPriceLimit)
+	assert.Equal(t, deletionProtection, actualDeletionProtection)
+	assert.Equal(t, securityEnhancementStrategy, actualSecurityEnhancementStrategy)
 }
