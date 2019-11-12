@@ -1,120 +1,72 @@
 provider "alicloud" {
-  version              = ">=1.56.0"
-  region               = var.region != "" ? var.region : null
-  configuration_source = "terraform-alicloud-modules/ecs-instance"
-}
-
-// Images data source for image_id
-data "alicloud_images" "default" {
-  most_recent = true
-  owners      = "system"
-  name_regex  = var.image_name_regex
-}
-
-// Instance_types data source for instance_type
-data "alicloud_instance_types" "default" {
-  cpu_core_count = var.cpu_core_count
-  memory_size    = var.memory_size
-}
-
-// Zones data source for availability_zone
-data "alicloud_zones" "default" {
-  available_disk_category = var.disk_category
-  available_instance_type = data.alicloud_instance_types.default.instance_types[0].id
+  version                 = ">=1.60.0"
+  profile                 = var.profile != "" ? var.profile : null
+  shared_credentials_file = var.shared_credentials_file != "" ? var.shared_credentials_file : null
+  region                  = var.region != "" ? var.region : null
+  skip_region_validation  = var.skip_region_validation
+  configuration_source    = "terraform-alicloud-modules/ecs-instance"
 }
 
 // ECS Instance Resource for Module
-resource "alicloud_instance" "instances" {
-  count = var.number_of_instances
-
-  image_id          = var.image_id == "" ? data.alicloud_images.default.images[0].id : var.image_id
-  availability_zone = var.vswitch_id != "" ? "" : var.availability_zone == "" ? data.alicloud_zones.default.zones[0].id : var.availability_zone
-  instance_type     = var.instance_type == "" ? data.alicloud_instance_types.default.instance_types[0].id : var.instance_type
-  security_groups   = length(var.group_ids) == 0 ? [alicloud_security_group.default[0].id] : var.group_ids
-
-  instance_name = var.number_of_instances < 2 ? var.instance_name : format(
-    "%s-%s",
-    var.instance_name,
-    format(var.number_format, count.index + 1),
-  )
-  host_name = var.number_of_instances < 2 ? var.host_name : format(
-    "%s-%s",
-    var.host_name,
-    format(var.number_format, count.index + 1),
-  )
-
-  internet_charge_type       = var.internet_charge_type
-  internet_max_bandwidth_out = var.internet_max_bandwidth_out
-
-  instance_charge_type = var.instance_charge_type
-  system_disk_category = var.system_category
-  system_disk_size     = var.system_size
-
-  password = var.password
-
-  vswitch_id = var.vswitch_id == "" ? alicloud_vswitch.default[0].id : var.vswitch_id
-
-  private_ip = var.number_of_instances < 2 ? var.private_ips[0] : var.private_ips[count.index]
-
-  user_data = var.user_data
-
-  key_name = var.key_name
-
-  period = var.period
-
-  tags = {
-    created_by   = var.instance_tags["created_by"]
-    created_from = var.instance_tags["created_from"]
+resource "alicloud_instance" "this" {
+  count                  = var.number_of_instances
+  image_id               = var.image_id == "" ? data.alicloud_images.this.images[0].id : var.image_id
+  availability_zone      = local.zone_id
+  instance_type          = var.instance_type == "" ? data.alicloud_instance_types.this.instance_types[0].id : var.instance_type
+  credit_specification   = var.credit_specification
+  security_groups        = local.security_group_ids
+  vswitch_id             = local.vswitch_ids[count.index]
+  instance_name          = var.number_of_instances > 1 || var.use_num_suffix ? format("%s-%d", var.instance_name, count.index + 1) : var.instance_name
+  host_name              = var.host_name
+  resource_group_id      = var.resource_group_id
+  description            = "An ECS instance came from terraform-alicloud-modules/ecs-instance"
+  internet_charge_type   = var.internet_charge_type
+  password               = var.password
+  kms_encrypted_password = var.kms_encrypted_password
+  kms_encryption_context = var.kms_encryption_context
+  system_disk_category   = var.system_disk_category
+  system_disk_size       = var.system_disk_size
+  dynamic "data_disks" {
+    for_each = var.data_disks
+    content {
+      name                 = lookup(data_disks.value, "name", null)
+      size                 = lookup(data_disks.value, "size", null)
+      category             = lookup(data_disks.value, "category", null)
+      encrypted            = lookup(data_disks.value, "encrypted", null)
+      snapshot_id          = lookup(data_disks.value, "snapshot_id", null)
+      delete_with_instance = lookup(data_disks.value, "delete_with_instance", null)
+      description          = lookup(data_disks.value, "description", null)
+    }
   }
-}
 
-// ECS Disk Resource for Module
-resource "alicloud_disk" "disks" {
-  count = var.number_of_disks
-
-  availability_zone = var.availability_zone == "" ? data.alicloud_zones.default.zones[0].id : var.availability_zone
-  name = var.number_of_disks < 2 ? var.disk_name : format(
-    "%s-%s",
-    var.disk_name,
-    format(var.number_format, count.index + 1),
+  private_ip                    = length(var.private_ips) > 0 ? var.private_ips[count.index] : var.private_ip
+  internet_max_bandwidth_in     = var.internet_max_bandwidth_in
+  internet_max_bandwidth_out    = var.associate_public_ip_address ? var.internet_max_bandwidth_out : 0
+  instance_charge_type          = var.instance_charge_type
+  period                        = lookup(local.prepaid_settings, "period", null)
+  period_unit                   = lookup(local.prepaid_settings, "period_unit", null)
+  renewal_status                = lookup(local.prepaid_settings, "renewal_status", null)
+  auto_renew_period             = lookup(local.prepaid_settings, "auto_renew_period", null)
+  include_data_disks            = lookup(local.prepaid_settings, "include_data_disks", null)
+  dry_run                       = var.dry_run
+  user_data                     = var.user_data
+  role_name                     = var.role_name
+  key_name                      = var.key_name
+  spot_strategy                 = var.spot_strategy
+  spot_price_limit              = var.spot_price_limit
+  deletion_protection           = var.deletion_protection
+  force_delete                  = var.force_delete
+  security_enhancement_strategy = var.security_enhancement_strategy
+  tags = merge(
+    {
+      "Name" = var.number_of_instances > 1 || var.use_num_suffix ? format("%s-%d", var.instance_name, count.index + 1) : var.instance_name
+    },
+    var.tags,
   )
-  category = var.disk_category
-  size     = var.disk_size
-
-  tags = {
-    created_by   = var.disk_tags["created_by"]
-    created_from = var.disk_tags["created_from"]
-  }
-}
-
-// Attach ECS disks to instances for Module
-resource "alicloud_disk_attachment" "disk_attach" {
-  count   = var.number_of_instances > 0 && var.number_of_disks > 0 ? var.number_of_disks : 0
-  disk_id = alicloud_disk.disks.*.id[count.index]
-  instance_id = alicloud_instance.instances.*.id[count.index % var.number_of_instances]
-}
-
-// Attach key pair to instances for Module
-resource "alicloud_key_pair_attachment" "default" {
-  count = var.number_of_instances > 0 && var.key_name != "" ? 1 : 0
-
-  key_name     = var.key_name
-  instance_ids = alicloud_instance.instances.*.id
-}
-
-resource "alicloud_security_group" "default" {
-  count = length(var.group_ids) > 0 ? 0 : 1
-  vpc_id = alicloud_vpc.default.*.id[count.index]
-}
-
-resource "alicloud_vpc" "default" {
-  count = length(var.group_ids) > 0 ? 0 : 1
-  cidr_block = "172.16.0.0/12"
-}
-
-resource "alicloud_vswitch" "default" {
-  count = length(var.group_ids) == 0 && var.vswitch_id == "" ? 1 : 0
-  availability_zone = var.availability_zone == "" ? data.alicloud_zones.default.zones[0].id : var.availability_zone
-  cidr_block = "172.16.0.0/24"
-  vpc_id = alicloud_vpc.default.*.id[count.index]
+  volume_tags = merge(
+    {
+      "Name" = var.number_of_instances > 1 || var.use_num_suffix ? format("%s-%d", var.instance_name, count.index + 1) : var.instance_name
+    },
+    var.volume_tags,
+  )
 }
