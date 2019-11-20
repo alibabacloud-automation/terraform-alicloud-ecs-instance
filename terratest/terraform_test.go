@@ -10,6 +10,9 @@ import (
 )
 
 // An example of how to test the simple Terraform module in examples/terraform-basic-example using Terratest.
+// Make sure you have the dep binary, https://github.com/golang/dep
+// Run 'dep ensure' before run test cases.
+
 func TestTerraformBasicExampleNew(t *testing.T) {
 	t.Parallel()
 	uniqueId := random.UniqueId()
