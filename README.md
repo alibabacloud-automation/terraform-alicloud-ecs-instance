@@ -120,6 +120,15 @@ module "ecs-instance" {
 }
 ```
 
+Examples
+-----
+1. [basic example](https://github.com/terraform-alicloud-modules/terraform-alicloud-ecs-instance/tree/master/examples/basic) shows basic ECS instance creation. 
+1. [multi-instance example](https://github.com/terraform-alicloud-modules/terraform-alicloud-ecs-instance/tree/master/examples/multi-instance) shows multi ECS instances creation.
+1. [x86-architecture examples](https://github.com/terraform-alicloud-modules/terraform-alicloud-ecs-instance/tree/master/examples/x86-architecture) shows ECS x86-architecture instances creation.
+1. [heterogeneous-computing examples](https://github.com/terraform-alicloud-modules/terraform-alicloud-ecs-instance/tree/master/examples/heterogeneous-computing) shows ECS x86-architecture instances creation.
+1. [bare-metal examples](https://github.com/terraform-alicloud-modules/terraform-alicloud-ecs-instance/tree/master/examples/bare-metal) shows ECS bare-metal instances creation.
+1. [super-computing-cluster examples](https://github.com/terraform-alicloud-modules/terraform-alicloud-ecs-instance/tree/master/examples/super-computing-cluster) shows ECS super-computing-cluster instances creation.
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |

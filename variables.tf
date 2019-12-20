@@ -71,6 +71,11 @@ variable "memory_size" {
   default     = 0
 }
 
+variable "instance_type_family" {
+  description = "Filter the results based on their family name. For example: 'ecs.n4'."
+  default     = ""
+}
+
 # Zones data source variables
 
 variable "available_disk_category" {
