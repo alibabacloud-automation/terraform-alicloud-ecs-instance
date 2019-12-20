@@ -134,101 +134,101 @@ output "number_of_instances" {
 // Deprecated outputs
 output "instance_ids" {
   description = "(Deprecated) It has been deprecated from version 0.1.0 and the field 'this_instance_id' replaces it."
-  value = alicloud_instance.this.*.id
+  value       = alicloud_instance.this.*.id
 }
 
 output "instance_name" {
   description = "(Deprecated) It has been deprecated from version 0.1.0 and the field 'this_instance_name' replaces it."
-  value = concat(alicloud_instance.this.*.instance_name)[0]
+  value       = concat(alicloud_instance.this.*.instance_name)[0]
 }
 
 output "instance_tags" {
   description = "(Deprecated) It has been deprecated from version 0.1.0 and the field 'this_instance_tags' replaces it."
-  value = alicloud_instance.this.0.tags
+  value       = alicloud_instance.this.0.tags
 }
 
 output "availability_zone" {
   description = "(Deprecated) It has been deprecated from version 0.1.0 and the field 'this_availability_zone' replaces it."
-  value = alicloud_instance.this.0.availability_zone
+  value       = alicloud_instance.this.0.availability_zone
 }
 
 # VSwitch  ID
 output "vswitch_id" {
   description = "(Deprecated) It has been deprecated from version 0.1.0 and the field 'this_vswitch_id' replaces it."
-  value = alicloud_instance.this.0.vswitch_id
+  value       = alicloud_instance.this.0.vswitch_id
 }
 
 # Security Group outputs
 output "group_ids" {
   description = "(Deprecated) It has been deprecated from version 0.1.0 and the field 'this_security_group_ids' replaces it."
-  value = alicloud_instance.this.0.security_groups
+  value       = alicloud_instance.this.0.security_groups
 }
 
 # Key pair outputs
 output "key_name" {
   description = "(Deprecated) It has been deprecated from version 0.1.0 and the field 'this_key_name' replaces it."
-  value = alicloud_instance.this.0.key_name
+  value       = alicloud_instance.this.0.key_name
 }
 
 # Ecs instance outputs
 output "image_id" {
   description = "(Deprecated) It has been deprecated from version 0.1.0 and the field 'this_image_id' replaces it."
-  value = alicloud_instance.this.0.image_id
+  value       = alicloud_instance.this.0.image_id
 }
 
 output "instance_type" {
   description = "(Deprecated) It has been deprecated from version 0.1.0 and the field 'this_instance_type' replaces it."
-  value = alicloud_instance.this.0.instance_type
+  value       = alicloud_instance.this.0.instance_type
 }
 
 output "system_category" {
   description = "(Deprecated) It has been deprecated from version 0.1.0 and the field 'this_system_disk_category' replaces it."
-  value = alicloud_instance.this.0.system_disk_category
+  value       = alicloud_instance.this.0.system_disk_category
 }
 
 output "system_size" {
   description = "(Deprecated) It has been deprecated from version 0.1.0 and the field 'this_system_disk_size' replaces it."
-  value = alicloud_instance.this.0.system_disk_size
+  value       = alicloud_instance.this.0.system_disk_size
 }
 
 output "host_name" {
   description = "(Deprecated) It has been deprecated from version 0.1.0 and the field 'this_host_name' replaces it."
-  value = alicloud_instance.this.0.host_name
+  value       = alicloud_instance.this.0.host_name
 }
 
 output "password" {
   description = "(Deprecated) It has been deprecated from version 0.1.0。 "
-  value = alicloud_instance.this.0.password
+  value       = alicloud_instance.this.0.password
 }
 
 output "private_ips" {
   description = "(Deprecated) It has been deprecated from version 0.1.0 and the field 'this_private_ip' replaces it."
-  value = alicloud_instance.this.0.private_ip
+  value       = alicloud_instance.this.0.private_ip
 }
 
 output "internet_charge_type" {
   description = "(Deprecated) It has been deprecated from version 0.1.0 and the field 'this_internet_charge_type' replaces it."
-  value = alicloud_instance.this.0.internet_charge_type
+  value       = alicloud_instance.this.0.internet_charge_type
 }
 
 output "internet_max_bandwidth_out" {
   description = "(Deprecated) It has been deprecated from version 0.1.0 and the field 'this_internet_max_bandwidth_out' replaces it."
-  value = alicloud_instance.this.0.internet_max_bandwidth_out
+  value       = alicloud_instance.this.0.internet_max_bandwidth_out
 }
 
 output "instance_charge_type" {
   description = "(Deprecated) It has been deprecated from version 0.1.0 and the field 'this_instance_charge_type' replaces it."
-  value = alicloud_instance.this.0.instance_charge_type
+  value       = alicloud_instance.this.0.instance_charge_type
 }
 
 output "period" {
   description = "(Deprecated) It has been deprecated from version 0.1.0 and the field 'this_period' replaces it."
-  value = alicloud_instance.this.0.period
+  value       = alicloud_instance.this.0.period
 }
 
 output "user_data" {
   description = "(Deprecated) It has been deprecated from version 0.1.0 and the field 'this_user_data' replaces it."
-  value = alicloud_instance.this.0.user_data
+  value       = alicloud_instance.this.0.user_data
 }
 
 

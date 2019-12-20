@@ -12,10 +12,10 @@ resource "alicloud_instance" "this" {
   count                  = var.number_of_instances
   image_id               = var.image_id == "" ? data.alicloud_images.this.images[0].id : var.image_id
   availability_zone      = local.zone_id
-  instance_type          = var.instance_type == "" ? data.alicloud_instance_types.this.instance_types[0].id : var.instance_type
+  instance_type          = var.instance_type == "" ? data.alicloud_instance_types.this.instance_types.0.id : var.instance_type
   credit_specification   = var.credit_specification
   security_groups        = local.security_group_ids
-  vswitch_id             = local.vswitch_ids[count.index]
+  vswitch_id             = length(local.vswitch_ids) > 0 ? local.vswitch_ids[count.index] : var.vswitch_id
   instance_name          = var.number_of_instances > 1 || var.use_num_suffix ? format("%s-%d", var.instance_name, count.index + 1) : var.instance_name
   host_name              = var.host_name
   resource_group_id      = var.resource_group_id
