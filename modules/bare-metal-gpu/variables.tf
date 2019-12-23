@@ -17,17 +17,27 @@ variable "skip_region_validation" {
   default     = false
 }
 
+# Images data source variables
+variable "most_recent" {
+  description = "If more than one result are returned, select the most recent one."
+  default     = true
+}
+
+variable "owners" {
+  description = "Filter results by a specific image owner. Valid items are `system`, `self`, `others`, `marketplace`."
+  default     = "system"
+}
+
+variable "image_name_regex" {
+  description = "A regex string to filter resulting images by name. "
+  default     = "^ubuntu_18.*_64"
+}
+
 # Ecs instance variables
 variable "number_of_instances" {
   description = "The number of instances to be created."
-  type = number
+  type        = number
   default     = 1
-}
-
-variable "use_num_suffix" {
-  description = "Always append numerical suffix to instance name, even if number_of_instances is 1"
-  type        = bool
-  default     = false
 }
 
 variable "image_id" {
@@ -35,14 +45,26 @@ variable "image_id" {
   default     = ""
 }
 
+variable "instance_type_family" {
+  description = "The instance type family used to retrieve bare metal CPU instance type. Valid values: [\"ecs.ebmgn6e\", \"ecs.ebmgn6v\", \"ecs.ebmgn6i\", \"ecs.sccgn6ne\", \"ecs.sccgn6\"]."
+  default     = "ecs.ebmgn6e"
+}
+
 variable "instance_type" {
   description = "The instance type used to launch one or more ecs instances."
   default     = ""
 }
 
-variable "credit_specification" {
-  description = "Performance mode of the t5 burstable instance. Valid values: 'Standard', 'Unlimited'."
-  default     = "Standard"
+variable "cpu_core_count" {
+  description = "core count used to retrieve instance types"
+  type        = number
+  default     = 0
+}
+
+variable "memory_size" {
+  description = "Memory size used to retrieve instance types."
+  type        = number
+  default     = 0
 }
 
 variable "security_group_ids" {
@@ -94,7 +116,7 @@ variable "system_disk_category" {
 
 variable "system_disk_size" {
   description = "The system disk size used to launch one or more ecs instances."
-  type = number
+  type        = number
   default     = 40
 }
 
@@ -126,15 +148,9 @@ variable "private_ips" {
   default     = []
 }
 
-variable "internet_max_bandwidth_in" {
-  description = "The maximum internet in bandwidth of instance."
-  type = number
-  default     = 200
-}
-
 variable "internet_max_bandwidth_out" {
   description = "The maximum internet out bandwidth of instance."
-  type = number
+  type        = number
   default     = 0
 }
 
@@ -151,7 +167,7 @@ variable "instance_charge_type" {
 
 variable "dry_run" {
   description = "Whether to pre-detection. When it is true, only pre-detection and not actually modify the payment type operation. Default to false."
-  type = bool
+  type        = bool
   default     = false
 }
 
@@ -170,19 +186,9 @@ variable "key_name" {
   default     = ""
 }
 
-variable "spot_strategy" {
-  description = "The spot strategy of a Pay-As-You-Go instance, and it takes effect only when parameter `instance_charge_type` is 'PostPaid'. Value range: 'NoSpot': A regular Pay-As-You-Go instance. 'SpotWithPriceLimit': A price threshold for a spot instance. 'SpotAsPriceGo': A price that is based on the highest Pay-As-You-Go instance"
-  default     = "NoSpot"
-}
-
-variable "spot_price_limit" {
-  description = "The hourly price threshold of a instance, and it takes effect only when parameter 'spot_strategy' is 'SpotWithPriceLimit'. Three decimals is allowed at most."
-  default     = 0
-}
-
 variable "deletion_protection" {
   description = "Whether enable the deletion protection or not. 'true': Enable deletion protection. 'false': Disable deletion protection."
-  type = bool
+  type        = bool
   default     = false
 }
 
@@ -211,68 +217,14 @@ variable "prepaid_settings" {
 variable "tags" {
   description = "A mapping of tags to assign to the resource."
   type        = map(string)
-  default     = {}
+  default = {
+    Created = "Terraform"
+    Source  = "terraform-alicloud-modules/terraform-alicloud-ecs-instance/modules/bare-metal-gpu"
+  }
 }
 
 variable "volume_tags" {
   description = "A mapping of tags to assign to the devices created by the instance at launch time."
   type        = map(string)
   default     = {}
-}
-
-# Depreceted parameters
-variable "group_ids" {
-  description = "(Deprecated) It has been deprecated from version 2.0.0 and use `security_group_ids` instead."
-  type        = list(string)
-  default     = []
-}
-
-variable "system_category" {
-  description = "(Deprecated) It has been deprecated from version 2.0.0 and use `system_disk_category` instead."
-  default     = "cloud_efficiency"
-}
-
-variable "system_size" {
-  description = "(Deprecated) It has been deprecated from version 2.0.0 and use `system_disk_size` replaces it."
-  type = number
-  default     = 40
-}
-
-variable "disk_name" {
-  description = "(Deprecated) It has been deprecated from version 2.0.0 and use `data_disks` 'name' instead."
-  default     = "TF_ECS_Disk"
-}
-
-variable "disk_category" {
-  description = "(Deprecated) It has been deprecated from version 2.0.0 and use `data_disks` 'category' instead."
-  default     = "cloud_efficiency"
-}
-
-variable "disk_size" {
-  description = "(Deprecated) It has been deprecated from version 2.0.0 and use `data_disks` 'size' instead."
-  type = number
-  default     = 40
-}
-
-variable "disk_tags" {
-  description = "(Deprecated) It has been deprecated from version 2.0.0 and use 'volume_tags' instead."
-  type        = map(string)
-
-  default = {
-    created_by   = "Terraform"
-    created_from = "module-tf-alicloud-ecs-instance"
-  }
-}
-variable "instance_tags" {
-  description = "(Deprecated) It has been deprecated from version 0.1.0 and the field 'tags' replaces it."
-  type        = map(string)
-  default = {
-    created_by   = "Terraform"
-    created_from = "module-tf-alicloud-ecs-instance"
-  }
-}
-variable "number_of_disks" {
-  description = "(Deprecated) It has been deprecated from version 2.0.0 and use `data_disks` instead."
-  type = number
-  default     = 0
 }
