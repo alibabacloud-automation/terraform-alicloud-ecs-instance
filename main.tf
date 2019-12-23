@@ -10,12 +10,11 @@ provider "alicloud" {
 // ECS Instance Resource for Module
 resource "alicloud_instance" "this" {
   count                  = var.number_of_instances
-  image_id               = var.image_id == "" ? data.alicloud_images.this.images[0].id : var.image_id
-  availability_zone      = local.zone_id
-  instance_type          = var.instance_type == "" ? data.alicloud_instance_types.this.instance_types.0.id : var.instance_type
+  image_id               = var.image_id
+  instance_type          = var.instance_type
   credit_specification   = var.credit_specification
-  security_groups        = local.security_group_ids
-  vswitch_id             = length(local.vswitch_ids) > 0 ? local.vswitch_ids[count.index] : var.vswitch_id
+  security_groups        = var.security_group_ids
+  vswitch_id             = length(var.vswitch_ids) > 0 ? var.vswitch_ids[count.index] : var.vswitch_id
   instance_name          = var.number_of_instances > 1 || var.use_num_suffix ? format("%s-%d", var.instance_name, count.index + 1) : var.instance_name
   host_name              = var.host_name
   resource_group_id      = var.resource_group_id
@@ -29,9 +28,9 @@ resource "alicloud_instance" "this" {
   dynamic "data_disks" {
     for_each = var.data_disks
     content {
-      name                 = lookup(data_disks.value, "name", null)
-      size                 = lookup(data_disks.value, "size", null)
-      category             = lookup(data_disks.value, "category", null)
+      name                 = lookup(data_disks.value, "name", var.disk_name)
+      size                 = lookup(data_disks.value, "size", var.disk_size)
+      category             = lookup(data_disks.value, "category", var.disk_category)
       encrypted            = lookup(data_disks.value, "encrypted", null)
       snapshot_id          = lookup(data_disks.value, "snapshot_id", null)
       delete_with_instance = lookup(data_disks.value, "delete_with_instance", null)
@@ -59,13 +58,13 @@ resource "alicloud_instance" "this" {
   security_enhancement_strategy = var.security_enhancement_strategy
   tags = merge(
     {
-      "Name" = var.number_of_instances > 1 || var.use_num_suffix ? format("%s-%d", var.instance_name, count.index + 1) : var.instance_name
+      Name = var.number_of_instances > 1 || var.use_num_suffix ? format("%s-%d", var.instance_name, count.index + 1) : var.instance_name
     },
     var.tags,
   )
   volume_tags = merge(
     {
-      "Name" = var.number_of_instances > 1 || var.use_num_suffix ? format("%s-%d", var.instance_name, count.index + 1) : var.instance_name
+      Name = var.number_of_instances > 1 || var.use_num_suffix ? format("%s-%d", var.instance_name, count.index + 1) : var.instance_name
     },
     var.volume_tags,
   )
