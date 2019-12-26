@@ -1,40 +1,59 @@
-locals {
-  // This type of instance contains the following instance type families
-  instance_type_families = ["ecs.gn6v-c8g1", "ecs.gn6v-c10g1", "ecs.gn5-c4g1", "ecs.gn5-c8g1", "ecs.gn6i-c4g1", "ecs.gn6i-c8g1", "ecs.gn6i-c16g1", "ecs.gn6i-c24g1", "ecs.gn5i-c2g1", "ecs.gn5i-c4g1", "ecs.gn5i-c8g1", "ecs.gn5i-c16g1", "ecs.gn5i-c28g1"]
+variable "region" {
+  default = "cn-hangzhou"
+}
+variable "zone_id" {
+  default = "cn-hangzhou-h"
+}
+
+provider "alicloud" {
+  region = var.region
+}
+
+#############################################################
+# Data sources to get VPC, vswitch and default security group details
+#############################################################
+
+data "alicloud_vpcs" "default" {
+  is_default = true
+}
+
+data "alicloud_security_groups" "default" {
+  name_regex = "default"
+  vpc_id     = data.alicloud_vpcs.default.ids.0
+}
+
+data "alicloud_vswitches" "default" {
+  is_default = true
+  zone_id    = var.zone_id
+}
+
+// If there is no default vswitch, create one.
+resource "alicloud_vswitch" "default" {
+  count             = length(data.alicloud_vswitches.default.ids) > 0 ? 0 : 1
+  availability_zone = var.zone_id
+  vpc_id            = data.alicloud_vpcs.default.ids.0
+  cidr_block        = cidrsubnet(data.alicloud_vpcs.default.vpcs.0.cidr_block, 4, 2)
 }
 
 
-data "alicloud_instance_types" "this" {
-  instance_type_family = local.instance_type_families[var.instance_type_families_index]
-}
+// ECS Module
+module "ecs_instance" {
+  source = "../../../modules/compute-optimized-type-with-gpu"
 
-// Security Group module for ECS Module
-module "security_group" {
-  source = "alibaba/security-group/alicloud"
-  vpc_id = module.vpc.vpc_id
-}
+  region = var.region
 
-// VPC module for ECS Module
-module "vpc" {
-  source        = "alibaba/vpc/alicloud"
-  vpc_name      = "CreateByTerraform"
-  vswitch_name  = "CreateByTerraform"
-  vpc_cidr      = "172.16.0.0/12"
-  vswitch_cidrs = ["172.16.0.0/24"]
-  availability_zones = [data.alicloud_instance_types.this.instance_types.0.availability_zones.0]
-}
+  instance_type_family = "ecs.gn6v"
+  //  Also can specify a instance type
+  //  instance_type = "ecs.gn6v-c8g1.2xlarge"
 
-module "ecs-instance" {
-  source          = "alibaba/ecs-instance/alicloud"
-  security_groups = [module.security_group.this_security_group_id]
-  vswitch_id      = module.vpc.vswitch_ids.0
-  instance_name   = "CreateByTerraform"
-  // You can specify other elements in the instance type families list for this field
-  //instance_type_family = local.instance_type_families[var.instance_type_families_index]
-  instance_type = data.alicloud_instance_types.this.instance_types.0.id
-}
+  vswitch_id = length(data.alicloud_vswitches.default.ids) > 0 ? data.alicloud_vswitches.default.ids.0 : concat(alicloud_vswitch.default.*.id, [""])[0]
 
-variable "instance_type_families_index" {
-  description = "Select the instance type family for creating instances by index"
-  default = 0
+  security_group_ids = data.alicloud_security_groups.default.ids
+
+  associate_public_ip_address = true
+
+  internet_max_bandwidth_out = 10
+
+  //  Post-paid instances are out of stock, pre-paid instances must be specified for this type of instance
+  //  instance_charge_type = "PrePaid"
 }

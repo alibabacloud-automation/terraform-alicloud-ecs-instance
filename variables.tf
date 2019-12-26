@@ -20,7 +20,7 @@ variable "skip_region_validation" {
 # Ecs instance variables
 variable "number_of_instances" {
   description = "The number of instances to be created."
-  type = number
+  type        = number
   default     = 1
 }
 
@@ -94,7 +94,7 @@ variable "system_disk_category" {
 
 variable "system_disk_size" {
   description = "The system disk size used to launch one or more ecs instances."
-  type = number
+  type        = number
   default     = 40
 }
 
@@ -128,13 +128,13 @@ variable "private_ips" {
 
 variable "internet_max_bandwidth_in" {
   description = "The maximum internet in bandwidth of instance."
-  type = number
+  type        = number
   default     = 200
 }
 
 variable "internet_max_bandwidth_out" {
   description = "The maximum internet out bandwidth of instance."
-  type = number
+  type        = number
   default     = 0
 }
 
@@ -151,7 +151,7 @@ variable "instance_charge_type" {
 
 variable "dry_run" {
   description = "Whether to pre-detection. When it is true, only pre-detection and not actually modify the payment type operation. Default to false."
-  type = bool
+  type        = bool
   default     = false
 }
 
@@ -182,7 +182,7 @@ variable "spot_price_limit" {
 
 variable "deletion_protection" {
   description = "Whether enable the deletion protection or not. 'true': Enable deletion protection. 'false': Disable deletion protection."
-  type = bool
+  type        = bool
   default     = false
 }
 
@@ -234,7 +234,7 @@ variable "system_category" {
 
 variable "system_size" {
   description = "(Deprecated) It has been deprecated from version 2.0.0 and use `system_disk_size` replaces it."
-  type = number
+  type        = number
   default     = 40
 }
 
@@ -250,7 +250,7 @@ variable "disk_category" {
 
 variable "disk_size" {
   description = "(Deprecated) It has been deprecated from version 2.0.0 and use `data_disks` 'size' instead."
-  type = number
+  type        = number
   default     = 40
 }
 
@@ -273,6 +273,6 @@ variable "instance_tags" {
 }
 variable "number_of_disks" {
   description = "(Deprecated) It has been deprecated from version 2.0.0 and use `data_disks` instead."
-  type = number
+  type        = number
   default     = 0
 }

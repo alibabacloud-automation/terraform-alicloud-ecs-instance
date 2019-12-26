@@ -12,6 +12,7 @@ locals {
 
 data "alicloud_instance_types" "this" {
   instance_type_family = var.instance_type_family != "" && contains(local.instance_type_families, var.instance_type_family) ? var.instance_type_family : "ecs.ebmc6"
+  instance_charge_type = var.instance_charge_type
   cpu_core_count       = var.cpu_core_count > 0 ? var.cpu_core_count : null
   memory_size          = var.memory_size > 0 ? var.memory_size : null
   availability_zone    = length(var.vswitch_ids) > 0 || var.vswitch_id != "" ? data.alicloud_vswitches.this.vswitches.0.zone_id : null

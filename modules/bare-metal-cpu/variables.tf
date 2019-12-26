@@ -219,7 +219,7 @@ variable "tags" {
   type        = map(string)
   default = {
     Created = "Terraform"
-    Source  = "terraform-alicloud-modules/terraform-alicloud-ecs-instance/modules/bare-metal-cpu"
+    Source  = "alibaba/ecs-instance/alicloud//modules/bare-metal-cpu"
   }
 }
 
