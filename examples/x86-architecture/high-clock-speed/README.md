@@ -1,6 +1,6 @@
 # x86-Architecture-High-Clock-Speed ECS Instance example
 
-Configuration in this directory creates set of x86-qrchitecture-high-clock-speed ECS instance resources.
+Configuration in this directory creates set of x86-architecture-high-clock-speed ECS instance resources.
 
 Data sources are used to discover existing vpc, vswitch and security groups.
 
