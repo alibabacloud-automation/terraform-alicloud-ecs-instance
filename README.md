@@ -1,8 +1,8 @@
-Alicloud ECS Instance Terraform Module In VPC
+Alicloud ECS Instance Terraform Module In VPC  
 terraform-alicloud-ecs-instance
 =====================================================================
 
-English | [简体中文](README-CN.md)
+English | [简体中文](https://github.com/terraform-alicloud-modules/terraform-alicloud-ecs-instance/blob/master/README-CN.md)
 
 Terraform module which creates ECS instance(s) on Alibaba Cloud. 
 
