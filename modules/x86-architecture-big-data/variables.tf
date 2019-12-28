@@ -73,7 +73,7 @@ variable "security_group_ids" {
   default     = []
 }
 
-variable "instance_name" {
+variable "name" {
   description = "Name used on all instances as prefix. Like TF-ECS-Instance-1, TF-ECS-Instance-2."
   default     = "TF-ECS-Instance"
 }

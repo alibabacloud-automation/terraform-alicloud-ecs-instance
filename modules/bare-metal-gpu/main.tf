@@ -51,7 +51,7 @@ module "ecs-instance" {
 
 
   // Specify instance basic attributes
-  instance_name     = "TF-bare-metal-gpu"
+  name              = "TF-bare-metal-gpu"
   use_num_suffix    = true
   tags              = var.tags
   resource_group_id = var.resource_group_id

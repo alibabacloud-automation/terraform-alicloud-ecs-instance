@@ -35,7 +35,7 @@ module "ecs-instance" {
   instance_type                 = var.instance_type
   security_groups               = length(var.security_groups) == 0 ? [alicloud_security_group.default.id] : var.security_groups
   vswitch_ids                   = length(var.vswitch_ids) == 0 ? [alicloud_vswitch.default.id] : var.vswitch_ids
-  instance_name                 = var.instance_name
+  name                          = var.name
   credit_specification          = var.credit_specification
   resource_group_id             = var.resource_group_id
   internet_charge_type          = var.internet_charge_type

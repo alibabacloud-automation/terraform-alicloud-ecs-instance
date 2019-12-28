@@ -85,7 +85,7 @@ module "ecs" {
 
   number_of_instances = 1
 
-  instance_name               = "example-normal"
+  name                        = "example-normal"
   image_id                    = data.alicloud_images.ubuntu.ids.0
   instance_type               = data.alicloud_instance_types.normal.ids.0
   vswitch_id                  = data.alicloud_vswitches.all.ids.0
@@ -120,7 +120,7 @@ module "ecs_with_ram_role" {
 
   number_of_instances = 1
 
-  instance_name               = "example-with-ram-role"
+  name                        = "example-with-ram-role"
   image_id                    = data.alicloud_images.ubuntu.ids.0
   instance_type               = data.alicloud_instance_types.normal.ids.0
   vswitch_id                  = data.alicloud_vswitches.all.ids.0
@@ -137,8 +137,8 @@ module "ecs_with_t5_unlimited" {
 
   number_of_instances = 1
 
-  instance_name = "example-with-t5-unlimited"
-  image_id      = data.alicloud_images.ubuntu.ids.0
+  name     = "example-with-t5-unlimited"
+  image_id = data.alicloud_images.ubuntu.ids.0
 
   instance_type        = data.alicloud_instance_types.t5.ids.0
   credit_specification = "Unlimited"
@@ -158,7 +158,7 @@ module "ecs_for_subscription" {
 
   number_of_instances = 1
 
-  instance_name               = "example-for-subscription"
+  name                        = "example-for-subscription"
   image_id                    = data.alicloud_images.ubuntu.ids.0
   instance_type               = data.alicloud_instance_types.normal.ids.0
   vswitch_id                  = data.alicloud_vswitches.all.ids.0
@@ -184,7 +184,7 @@ module "ecs_spot" {
 
   number_of_instances = 1
 
-  instance_name               = "example-spot-instance"
+  name                        = "example-spot-instance"
   image_id                    = data.alicloud_images.ubuntu.ids.0
   instance_type               = data.alicloud_instance_types.spot.ids.0
   vswitch_id                  = data.alicloud_vswitches.all.ids.0
@@ -203,7 +203,7 @@ module "ecs_zero" {
 
   number_of_instances = 0
 
-  instance_name               = "example-zero"
+  name                        = "example-zero"
   image_id                    = data.alicloud_images.ubuntu.ids.0
   instance_type               = data.alicloud_instance_types.normal.ids.0
   vswitch_id                  = data.alicloud_vswitches.all.ids.0

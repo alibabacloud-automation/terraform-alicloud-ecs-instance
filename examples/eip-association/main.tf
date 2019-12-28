@@ -46,7 +46,7 @@ module "ecs" {
 
   number_of_instances = var.instances_number
 
-  instance_name               = "example-with-eips"
+  name                        = "example-with-eips"
   image_id                    = data.alicloud_images.ubuntu.ids.0
   instance_type               = data.alicloud_instance_types.normal.ids.0
   vswitch_id                  = data.alicloud_vswitches.all.ids.0
