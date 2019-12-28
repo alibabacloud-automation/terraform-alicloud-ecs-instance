@@ -6,7 +6,8 @@
 
 IMPROVEMENTS:
 
-- improve readme and basic examples [GH-32](https://github.com/terraform-alicloud-modules/terraform-alicloud-ecs-instance/pull/32)
+- deprecated `instance_name` and add `name` instead [GH-34](https://github.com/terraform-alicloud-modules/terraform-alicloud-ecs-instance/pull/34)
+- improve readme and basic examples [GH-33](https://github.com/terraform-alicloud-modules/terraform-alicloud-ecs-instance/pull/33)
 - improve(ecs): updated README.md and added chinese version. [GH-32](https://github.com/terraform-alicloud-modules/terraform-alicloud-ecs-instance/pull/32)
 - improve(ecs): added submodules and examples. [GH-31](https://github.com/terraform-alicloud-modules/terraform-alicloud-ecs-instance/pull/31)
 - add modules and improve bare-metal [GH-30](https://github.com/terraform-alicloud-modules/terraform-alicloud-ecs-instance/pull/30)

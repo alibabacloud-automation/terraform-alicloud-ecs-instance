@@ -30,7 +30,7 @@ module "ecs_cluster" {
 
   number_of_instances = 5
 
-  instance_name               = "my-ecs-cluster"
+  name                        = "my-ecs-cluster"
   image_id                    = data.alicloud_images.ubuntu.ids.0
   instance_type               = "ecs.sn1ne.large"
   vswitch_id                  = "vsw-fhuqie"

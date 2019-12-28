@@ -15,7 +15,7 @@ resource "alicloud_instance" "this" {
   credit_specification   = var.credit_specification != "" ? var.credit_specification : null
   security_groups        = var.security_group_ids
   vswitch_id             = element(distinct(compact(concat([var.vswitch_id], var.vswitch_ids))), count.index, )
-  instance_name          = var.number_of_instances > 1 || var.use_num_suffix ? format("%s-%d", var.instance_name, count.index + 1) : var.instance_name
+  instance_name          = var.number_of_instances > 1 || var.use_num_suffix ? format("%s-%d", local.name, count.index + 1) : local.name
   host_name              = var.host_name
   resource_group_id      = var.resource_group_id
   description            = "An ECS instance came from terraform-alicloud-modules/ecs-instance"
@@ -58,13 +58,13 @@ resource "alicloud_instance" "this" {
   security_enhancement_strategy = var.security_enhancement_strategy
   tags = merge(
     {
-      Name = var.number_of_instances > 1 || var.use_num_suffix ? format("%s-%d", var.instance_name, count.index + 1) : var.instance_name
+      Name = var.number_of_instances > 1 || var.use_num_suffix ? format("%s-%d", local.name, count.index + 1) : local.name
     },
     var.tags,
   )
   volume_tags = merge(
     {
-      Name = var.number_of_instances > 1 || var.use_num_suffix ? format("%s-%d", var.instance_name, count.index + 1) : var.instance_name
+      Name = var.number_of_instances > 1 || var.use_num_suffix ? format("%s-%d", local.name, count.index + 1) : local.name
     },
     var.volume_tags,
   )

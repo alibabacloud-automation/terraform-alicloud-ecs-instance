@@ -51,7 +51,7 @@ module "ecs-instance" {
 
 
   // Specify instance basic attributes
-  instance_name     = "TF-x86-architecture-general-purpose"
+  name              = "TF-x86-architecture-general-purpose"
   use_num_suffix    = true
   tags              = var.tags
   resource_group_id = var.resource_group_id

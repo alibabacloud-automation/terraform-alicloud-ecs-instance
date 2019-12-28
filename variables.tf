@@ -51,9 +51,9 @@ variable "security_group_ids" {
   default     = []
 }
 
-variable "instance_name" {
-  description = "Name used on all instances as prefix. Like TF-ECS-Instance-1, TF-ECS-Instance-2."
-  default     = "TF-ECS-Instance"
+variable "name" {
+  description = "Name to be used on all resources as prefix. Default to 'TF-Module-ECS-Instance'."
+  default     = ""
 }
 
 variable "resource_group_id" {
@@ -221,6 +221,10 @@ variable "volume_tags" {
 }
 
 # Depreceted parameters
+variable "instance_name" {
+  description = "(Deprecated) It has been deprecated from version 2.0.0 and use `name` instead."
+  default     = ""
+}
 variable "group_ids" {
   description = "(Deprecated) It has been deprecated from version 2.0.0 and use `security_group_ids` instead."
   type        = list(string)
