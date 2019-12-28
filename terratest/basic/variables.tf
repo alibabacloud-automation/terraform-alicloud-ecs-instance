@@ -111,7 +111,7 @@ variable "instance_charge_type" {
   default     = "PostPaid"
 }
 
-variable "prepaid_settings" {
+variable "subscription" {
   description = "A mapping of fields for Prepaid ECS instances created. "
   type        = map(string)
   default = {

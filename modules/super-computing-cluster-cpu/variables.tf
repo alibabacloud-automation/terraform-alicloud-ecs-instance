@@ -202,7 +202,7 @@ variable "security_enhancement_strategy" {
   default     = "Active"
 }
 
-variable "prepaid_settings" {
+variable "subscription" {
   description = "A mapping of fields for Prepaid ECS instances created. "
   type        = map(string)
   default = {

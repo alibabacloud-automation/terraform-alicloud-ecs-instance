@@ -12,9 +12,9 @@ resource "alicloud_instance" "this" {
   count                  = var.number_of_instances
   image_id               = var.image_id
   instance_type          = var.instance_type
-  credit_specification   = var.credit_specification
+  credit_specification   = var.credit_specification != "" ? var.credit_specification : null
   security_groups        = var.security_group_ids
-  vswitch_id             = length(var.vswitch_ids) > 0 ? var.vswitch_ids[count.index] : var.vswitch_id
+  vswitch_id             = element(distinct(compact(concat([var.vswitch_id], var.vswitch_ids))), count.index, )
   instance_name          = var.number_of_instances > 1 || var.use_num_suffix ? format("%s-%d", var.instance_name, count.index + 1) : var.instance_name
   host_name              = var.host_name
   resource_group_id      = var.resource_group_id
@@ -42,11 +42,11 @@ resource "alicloud_instance" "this" {
   internet_max_bandwidth_in     = var.internet_max_bandwidth_in
   internet_max_bandwidth_out    = var.associate_public_ip_address ? var.internet_max_bandwidth_out : 0
   instance_charge_type          = var.instance_charge_type
-  period                        = lookup(local.prepaid_settings, "period", null)
-  period_unit                   = lookup(local.prepaid_settings, "period_unit", null)
-  renewal_status                = lookup(local.prepaid_settings, "renewal_status", null)
-  auto_renew_period             = lookup(local.prepaid_settings, "auto_renew_period", null)
-  include_data_disks            = lookup(local.prepaid_settings, "include_data_disks", null)
+  period                        = lookup(local.subscription, "period", null)
+  period_unit                   = lookup(local.subscription, "period_unit", null)
+  renewal_status                = lookup(local.subscription, "renewal_status", null)
+  auto_renew_period             = lookup(local.subscription, "auto_renew_period", null)
+  include_data_disks            = lookup(local.subscription, "include_data_disks", null)
   dry_run                       = var.dry_run
   user_data                     = var.user_data
   role_name                     = var.role_name

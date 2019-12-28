@@ -4,43 +4,57 @@ terraform-alicloud-ecs-instance
 
 English | [简体中文](README-CN.md)
 
-Terraform module which creates [ECS instances in Alicloud VPC](https://www.alibabacloud.com/help/doc-detail/25374.htm) on Alibaba Cloud. 
+Terraform module which creates ECS instance(s) on Alibaba Cloud. 
 
 These types of resources are supported:
 
-* [ECS-VPC Instance](https://www.terraform.io/docs/providers/alicloud/r/instance.html)
-
-**NOTE:** This module using AccessKey and SecretKey are from `profile` and `shared_credentials_file`.
-If you have not set them yet, please install [aliyun-cli](https://github.com/aliyun/aliyun-cli#installation) and configure it.
-**NOTE:** We have deprecated ECS instance field `io_optimized` from `terraform-provider-alicloud`. If you happened some I/O optimized issues, please download and update provider package from [terraform-provider-alicloud release](https://github.com/alibaba/terraform-provider/releases).
-
-## Features
-
-This module aims to implement **ALL** combinations of arguments supported by Alibaba Cloud and latest stable version of Terraform:
-
-// todo
+* [ECS Instance](https://www.terraform.io/docs/providers/alicloud/r/instance.html)
 
 ## Terraform versions
 
-For Terraform 0.12 use version `v2.*` of this module.
+For Terraform 0.12 use version `v2.*` and `v1.3.0` of this module.
 
-If you are using Terraform 0.11 you can use versions `v1.*`.
+If you are using Terraform 0.11 you can use versions `v1.2.*`.
 
 ## Usage
 
-There are There are several ways to create different types of instances using this module:
+```hcl
+data "alicloud_images" "ubuntu" {
+  most_recent = true
+  name_regex  = "^ubuntu_18.*_64"
+}
 
-// todo
+module "ecs_cluster" {
+  source  = "alibaba/ecs-instance/alicloud"
+  version = "~> 2.0"
 
-## Conditional creation
+  number_of_instances = 5
 
-// todo
+  instance_name               = "my-ecs-cluster"
+  image_id                    = data.alicloud_images.ubuntu.ids.0
+  instance_type               = "ecs.sn1ne.large"
+  vswitch_id                  = "vsw-fhuqie"
+  security_group_ids          = ["sg-12345678"]
+  associate_public_ip_address = true
+  internet_max_bandwidth_out  = 10
+
+  key_name = "for-ecs-cluster"
+
+  system_disk_category = "cloud_ssd"
+  system_disk_size     = 50
+
+  tags = {
+    Created      = "Terraform"
+    Environment = "dev"
+  }
+}
+```
 
 ## Examples
 
-* [Basic PostPaid ECS Instance example](https://github.com/terraform-alicloud-modules/terraform-alicloud-ecs-instance/tree/master/examples/basic/post-paid)
-* [Basic PrePaid ECS Instance example](https://github.com/terraform-alicloud-modules/terraform-alicloud-ecs-instance/tree/master/examples/basic/pre-paid)
-* [Multi ECS Instances example](https://github.com/terraform-alicloud-modules/terraform-alicloud-ecs-instance/tree/master/examples/multi-instance)
+* [Basic ECS Instance example](https://github.com/terraform-alicloud-modules/terraform-alicloud-ecs-instance/tree/master/examples/basic)
+* [ECS Instance with disk attachment example](https://github.com/terraform-alicloud-modules/terraform-alicloud-ecs-instance/tree/master/examples/disk-attachment)
+* [ECS Instance with EIP association example](https://github.com/terraform-alicloud-modules/terraform-alicloud-ecs-instance/tree/master/examples/eip-association)
 * [Bare-Metal ECS Instance example](https://github.com/terraform-alicloud-modules/terraform-alicloud-ecs-instance/tree/master/examples/bare-metal)
 * [Compute-Optimized-Type-With-Fpga ECS Instance example](https://github.com/terraform-alicloud-modules/terraform-alicloud-ecs-instance/tree/master/examples/heterogeneous-computing/compute-optimized-type-with-fpga)
 * [Compute-Optimized-Type-With-Gpu ECS Instance example](https://github.com/terraform-alicloud-modules/terraform-alicloud-ecs-instance/tree/master/examples/heterogeneous-computing/compute-optimized-type-with-gpu)
@@ -53,6 +67,12 @@ There are There are several ways to create different types of instances using th
 * [x86-Architecture-High-Clock-Speed ECS Instance example](https://github.com/terraform-alicloud-modules/terraform-alicloud-ecs-instance/tree/master/examples/x86-architecture/high-clock-speed)
 * [x86-Architecture-Local-Ssd ECS Instance example](https://github.com/terraform-alicloud-modules/terraform-alicloud-ecs-instance/tree/master/examples/x86-architecture/local-ssd)
 * [x86-Architecture-Memory-Optimized ECS Instance example](https://github.com/terraform-alicloud-modules/terraform-alicloud-ecs-instance/tree/master/examples/x86-architecture/memory-optimized)
+
+## Notes
+
+* This module using AccessKey and SecretKey are from `profile` and `shared_credentials_file`.
+If you have not set them yet, please install [aliyun-cli](https://github.com/aliyun/aliyun-cli#installation) and configure it.
+* One of `vswitch_id` or `vswitch_ids` is required. If both are provided, the value of `vswitch_id` is prepended to the value of `vswitch_ids`.
 
 Authors
 -------

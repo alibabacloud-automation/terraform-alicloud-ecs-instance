@@ -143,7 +143,7 @@ output "instance_ids" {
 
 output "instance_name" {
   description = "(Deprecated) It has been deprecated from version 0.1.0 and the field 'this_instance_name' replaces it."
-  value       = concat(alicloud_instance.this.*.instance_name)[0]
+  value       = concat(alicloud_instance.this.*.instance_name, [""])[0]
 }
 
 output "instance_tags" {
