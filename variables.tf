@@ -42,7 +42,7 @@ variable "instance_type" {
 
 variable "credit_specification" {
   description = "Performance mode of the t5 burstable instance. Valid values: 'Standard', 'Unlimited'."
-  default     = "Standard"
+  default     = ""
 }
 
 variable "security_group_ids" {
@@ -196,7 +196,7 @@ variable "security_enhancement_strategy" {
   default     = "Active"
 }
 
-variable "prepaid_settings" {
+variable "subscription" {
   description = "A mapping of fields for Prepaid ECS instances created. "
   type        = map(string)
   default = {

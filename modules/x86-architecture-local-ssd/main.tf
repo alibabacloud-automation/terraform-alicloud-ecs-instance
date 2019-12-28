@@ -62,7 +62,7 @@ module "ecs-instance" {
   internet_max_bandwidth_out  = var.internet_max_bandwidth_out
   associate_public_ip_address = var.associate_public_ip_address
   instance_charge_type        = var.instance_charge_type
-  prepaid_settings            = var.prepaid_settings
+  subscription                = var.subscription
   dry_run                     = var.dry_run
 
 
