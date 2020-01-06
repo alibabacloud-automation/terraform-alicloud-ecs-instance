@@ -25,7 +25,7 @@ data "alicloud_vswitches" "all" {
 
 data "alicloud_images" "ubuntu" {
   most_recent = true
-  name_regex  = "^ubuntu_18.*_64"
+  name_regex  = "^ubuntu_18.*64"
 }
 
 // retrieve 1c2g instance type
@@ -121,6 +121,8 @@ module "ecs_with_ram_role" {
   number_of_instances = 1
 
   name                        = "example-with-ram-role"
+  use_num_suffix              = true
+
   image_id                    = data.alicloud_images.ubuntu.ids.0
   instance_type               = data.alicloud_instance_types.normal.ids.0
   vswitch_id                  = data.alicloud_vswitches.all.ids.0
@@ -185,6 +187,8 @@ module "ecs_spot" {
   number_of_instances = 1
 
   name                        = "example-spot-instance"
+  use_num_suffix              = true
+
   image_id                    = data.alicloud_images.ubuntu.ids.0
   instance_type               = data.alicloud_instance_types.spot.ids.0
   vswitch_id                  = data.alicloud_vswitches.all.ids.0

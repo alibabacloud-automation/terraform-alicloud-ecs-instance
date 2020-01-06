@@ -1,4 +1,13 @@
-## 2.1.0 (Unreleased)
+## 2.2.0 (Unreleased)
+## 2.1.0 (January 6, 2019)
+
+IMPROVEMENTS:
+
+- compatible the deprecated parameter `group_ids` [GH-35](https://github.com/terraform-alicloud-modules/terraform-alicloud-ecs-instance/pull/35)
+- host_name supports suffix [GH-35](https://github.com/terraform-alicloud-modules/terraform-alicloud-ecs-instance/pull/35)
+- change image regex [GH-35](https://github.com/terraform-alicloud-modules/terraform-alicloud-ecs-instance/pull/35)
+
+
 ## 2.0.0 (December 28, 2019)
 
 - **Added:** `examples` [GH-24](https://github.com/terraform-alicloud-modules/terraform-alicloud-ecs-instance/pull/24)

@@ -22,7 +22,7 @@ data "alicloud_vswitches" "all" {
 
 data "alicloud_images" "ubuntu" {
   most_recent = true
-  name_regex  = "^ubuntu_18.*_64"
+  name_regex  = "^ubuntu_18.*64"
 }
 
 // retrieve 1c2g instance type

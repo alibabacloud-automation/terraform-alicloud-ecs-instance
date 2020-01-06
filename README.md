@@ -21,7 +21,7 @@ If you are using Terraform 0.11 you can use versions `v1.2.*`.
 ```hcl
 data "alicloud_images" "ubuntu" {
   most_recent = true
-  name_regex  = "^ubuntu_18.*_64"
+  name_regex  = "^ubuntu_18.*64"
 }
 
 module "ecs_cluster" {
@@ -31,6 +31,7 @@ module "ecs_cluster" {
   number_of_instances = 5
 
   name                        = "my-ecs-cluster"
+  use_num_suffix              = true
   image_id                    = data.alicloud_images.ubuntu.ids.0
   instance_type               = "ecs.sn1ne.large"
   vswitch_id                  = "vsw-fhuqie"
