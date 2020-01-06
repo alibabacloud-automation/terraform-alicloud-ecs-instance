@@ -30,7 +30,7 @@ variable "owners" {
 
 variable "image_name_regex" {
   description = "A regex string to filter resulting images by name. "
-  default     = "^ubuntu_18.*_64"
+  default     = "^ubuntu_18.*64"
 }
 
 # Ecs instance variables

@@ -13,10 +13,10 @@ resource "alicloud_instance" "this" {
   image_id               = var.image_id
   instance_type          = var.instance_type
   credit_specification   = var.credit_specification != "" ? var.credit_specification : null
-  security_groups        = var.security_group_ids
+  security_groups        = local.security_group_ids
   vswitch_id             = element(distinct(compact(concat([var.vswitch_id], var.vswitch_ids))), count.index, )
   instance_name          = var.number_of_instances > 1 || var.use_num_suffix ? format("%s-%d", local.name, count.index + 1) : local.name
-  host_name              = var.host_name
+  host_name              = var.number_of_instances > 1 ? format("%s-%d", var.host_name, count.index + 1) : local.name
   resource_group_id      = var.resource_group_id
   description            = "An ECS instance came from terraform-alicloud-modules/ecs-instance"
   internet_charge_type   = var.internet_charge_type
