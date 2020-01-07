@@ -120,8 +120,8 @@ module "ecs_with_ram_role" {
 
   number_of_instances = 1
 
-  name                        = "example-with-ram-role"
-  use_num_suffix              = true
+  name           = "example-with-ram-role"
+  use_num_suffix = true
 
   image_id                    = data.alicloud_images.ubuntu.ids.0
   instance_type               = data.alicloud_instance_types.normal.ids.0
@@ -186,8 +186,8 @@ module "ecs_spot" {
 
   number_of_instances = 1
 
-  name                        = "example-spot-instance"
-  use_num_suffix              = true
+  name           = "example-spot-instance"
+  use_num_suffix = true
 
   image_id                    = data.alicloud_images.ubuntu.ids.0
   instance_type               = data.alicloud_instance_types.spot.ids.0
