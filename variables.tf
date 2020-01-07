@@ -25,7 +25,7 @@ variable "number_of_instances" {
 }
 
 variable "use_num_suffix" {
-  description = "Always append numerical suffix to instance name, even if number_of_instances is 1"
+  description = "Always append numerical suffix(like 001, 002 and so on) to instance name and host name, even if number_of_instances is 1"
   type        = bool
   default     = false
 }
@@ -52,7 +52,7 @@ variable "security_group_ids" {
 }
 
 variable "name" {
-  description = "Name to be used on all resources as prefix. Default to 'TF-Module-ECS-Instance'."
+  description = "Name to be used on all resources as prefix. Default to 'TF-Module-ECS-Instance'. The final default name would be TF-Module-ECS-Instance001, TF-Module-ECS-Instance002 and so on."
   default     = ""
 }
 
@@ -67,7 +67,7 @@ variable "internet_charge_type" {
 }
 
 variable "host_name" {
-  description = "Host name used on all instances as prefix. Like TF-ECS-Host-Name-1, TF-ECS-Host-Name-2."
+  description = "Host name used on all instances as prefix. Like if the value is TF-ECS-Host-Name and then the final host name would be TF-ECS-Host-Name001, TF-ECS-Host-Name002 and so on."
   default     = ""
 }
 
