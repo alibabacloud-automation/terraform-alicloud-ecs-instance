@@ -3,6 +3,7 @@
 
 IMPROVEMENTS:
 
+- use_num_suffix applied to host_name [GH-37](https://github.com/terraform-alicloud-modules/terraform-alicloud-ecs-instance/pull/37)
 - change host_name and instance_name suffix using three numbers [GH-36](https://github.com/terraform-alicloud-modules/terraform-alicloud-ecs-instance/pull/36)
 
 ## 2.1.0 (January 6, 2020)
