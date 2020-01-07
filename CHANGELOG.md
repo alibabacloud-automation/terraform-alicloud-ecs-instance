@@ -1,4 +1,10 @@
 ## 2.3.0 (Unreleased)
+## 2.2.1 (January 7, 2020)
+
+BUG FIXES:
+
+- fix host_name default value when use_num_suffix is false [GH-38](https://github.com/terraform-alicloud-modules/terraform-alicloud-ecs-instance/pull/38)
+
 ## 2.2.0 (January 7, 2020)
 
 IMPROVEMENTS:
