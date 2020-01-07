@@ -1,12 +1,17 @@
-## 2.2.0 (Unreleased)
-## 2.1.0 (January 6, 2019)
+## 2.3.0 (Unreleased)
+## 2.2.0 (January 7, 2020)
+
+IMPROVEMENTS:
+
+- change host_name and instance_name suffix using three numbers [GH-36](https://github.com/terraform-alicloud-modules/terraform-alicloud-ecs-instance/pull/36)
+
+## 2.1.0 (January 6, 2020)
 
 IMPROVEMENTS:
 
 - compatible the deprecated parameter `group_ids` [GH-35](https://github.com/terraform-alicloud-modules/terraform-alicloud-ecs-instance/pull/35)
 - host_name supports suffix [GH-35](https://github.com/terraform-alicloud-modules/terraform-alicloud-ecs-instance/pull/35)
 - change image regex [GH-35](https://github.com/terraform-alicloud-modules/terraform-alicloud-ecs-instance/pull/35)
-
 
 ## 2.0.0 (December 28, 2019)
 
