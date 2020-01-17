@@ -1,4 +1,10 @@
-## 2.3.0 (Unreleased)
+## 2.4.0 (Unreleased)
+## 2.3.0 (January 17, 2020)
+
+BUG FIXES:
+
+- fix(ecs): fixed bug where host name must be set. [GH-39](https://github.com/terraform-alicloud-modules/terraform-alicloud-ecs-instance/pull/39)
+
 ## 2.2.1 (January 7, 2020)
 
 BUG FIXES:
