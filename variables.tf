@@ -35,6 +35,11 @@ variable "image_id" {
   default     = ""
 }
 
+variable "image_ids" {
+  description = "A list of ecs image IDs to launch one or more ecs instances."
+  default     = []
+}
+
 variable "instance_type" {
   description = "The instance type used to launch one or more ecs instances."
   default     = ""

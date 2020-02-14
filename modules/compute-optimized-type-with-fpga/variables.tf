@@ -45,6 +45,11 @@ variable "image_id" {
   default     = ""
 }
 
+variable "image_ids" {
+  description = "A list of ecs image IDs to launch one or more ecs instances."
+  default     = []
+}
+
 variable "instance_type_family" {
   description = "The instance type family used to retrieve bare metal CPU instance type. Valid values: [\"ecs.f1-c8f1\", \"ecs.f1-c28f1\"]"
   default     = "ecs.f1-c8f1"

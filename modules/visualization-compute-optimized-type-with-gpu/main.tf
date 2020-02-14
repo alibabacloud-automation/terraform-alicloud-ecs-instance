@@ -37,7 +37,8 @@ module "ecs-instance" {
   number_of_instances = var.number_of_instances
 
   // Specify a ecs image
-  image_id = var.image_id != "" ? var.image_id : data.alicloud_images.this.ids.0
+  image_id  = var.image_id != "" ? var.image_id : data.alicloud_images.this.ids.0
+  image_ids = var.image_ids
 
   // Specify instance type
   instance_type = var.instance_type != "" ? var.instance_type : data.alicloud_instance_types.this.ids.0
