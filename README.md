@@ -75,6 +75,12 @@ module "ecs_cluster" {
 If you have not set them yet, please install [aliyun-cli](https://github.com/aliyun/aliyun-cli#installation) and configure it.
 * One of `vswitch_id` or `vswitch_ids` is required. If both are provided, the value of `vswitch_id` is prepended to the value of `vswitch_ids`.
 
+Submit Issues
+-------------
+If you have any problems when using this module, please opening a [provider issue](https://github.com/terraform-providers/terraform-provider-alicloud/issues/new) and let us know.
+
+**Note:** There does not recommend to open an issue on this repo.
+
 Authors
 -------
 Created and maintained by He Guimin(@xiaozhu36, heguimin36@163.com)
