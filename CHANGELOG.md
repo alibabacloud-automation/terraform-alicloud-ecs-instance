@@ -1,4 +1,9 @@
 ## 2.4.0 (Unreleased)
+
+IMPROVEMENTS:
+
+- support multi images and remove provider version [GH-39](https://github.com/terraform-alicloud-modules/terraform-alicloud-ecs-instance/pull/39)
+
 ## 2.3.0 (January 17, 2020)
 
 BUG FIXES:

@@ -28,6 +28,10 @@ data "alicloud_images" "ubuntu" {
   name_regex  = "^ubuntu_18.*64"
 }
 
+data "alicloud_images" "centos" {
+  most_recent = true
+  name_regex  = "^centos_7*"
+}
 // retrieve 1c2g instance type
 data "alicloud_instance_types" "normal" {
   availability_zone = data.alicloud_vswitches.all.vswitches.0.zone_id
@@ -114,6 +118,41 @@ module "ecs" {
   }
 }
 
+module "ecs_with_multi_images" {
+  source = "../.."
+  region = var.region
+
+  number_of_instances = 3
+
+  name                        = "example-multi-image"
+  image_ids                   = [data.alicloud_images.ubuntu.ids.0, data.alicloud_images.centos.ids.0]
+  instance_type               = data.alicloud_instance_types.normal.ids.0
+  vswitch_id                  = data.alicloud_vswitches.all.ids.0
+  security_group_ids          = [module.security_group.this_security_group_id]
+  associate_public_ip_address = true
+  internet_max_bandwidth_out  = 10
+
+  user_data = local.user_data
+
+  system_disk_category = "cloud_ssd"
+  system_disk_size     = 50
+
+  data_disks = [
+    {
+      name        = "example"
+      category    = "cloud_ssd"
+      size        = "20"
+      volume_size = 5
+      encrypted   = true
+    }
+  ]
+
+  tags = {
+    Env      = "Private"
+    Location = "Secret"
+  }
+}
+
 module "ecs_with_ram_role" {
   source = "../.."
   region = var.region
@@ -125,26 +164,6 @@ module "ecs_with_ram_role" {
 
   image_id                    = data.alicloud_images.ubuntu.ids.0
   instance_type               = data.alicloud_instance_types.normal.ids.0
-  vswitch_id                  = data.alicloud_vswitches.all.ids.0
-  security_group_ids          = [module.security_group.this_security_group_id]
-  associate_public_ip_address = true
-  internet_max_bandwidth_out  = 10
-
-  role_name = alicloud_ram_role.basic.id
-}
-
-module "ecs_with_t5_unlimited" {
-  source = "../.."
-  region = var.region
-
-  number_of_instances = 1
-
-  name     = "example-with-t5-unlimited"
-  image_id = data.alicloud_images.ubuntu.ids.0
-
-  instance_type        = data.alicloud_instance_types.t5.ids.0
-  credit_specification = "Unlimited"
-
   vswitch_id                  = data.alicloud_vswitches.all.ids.0
   security_group_ids          = [module.security_group.this_security_group_id]
   associate_public_ip_address = true

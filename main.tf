@@ -1,5 +1,4 @@
 provider "alicloud" {
-  version                 = ">=1.60.0"
   profile                 = var.profile != "" ? var.profile : null
   shared_credentials_file = var.shared_credentials_file != "" ? var.shared_credentials_file : null
   region                  = var.region != "" ? var.region : null
@@ -10,7 +9,7 @@ provider "alicloud" {
 // ECS Instance Resource for Module
 resource "alicloud_instance" "this" {
   count                  = var.number_of_instances
-  image_id               = var.image_id
+  image_id               = element(distinct(compact(concat([var.image_id], var.image_ids))), count.index, )
   instance_type          = var.instance_type
   credit_specification   = var.credit_specification != "" ? var.credit_specification : null
   security_groups        = local.security_group_ids
