@@ -72,6 +72,12 @@ module "ecs_cluster" {
 * 本 Module 使用的 AccessKey 和 SecretKey 可以直接从 `profile` 和 `shared_credentials_file` 中获取。如果未设置，可通过下载安装 [aliyun-cli](https://github.com/aliyun/aliyun-cli#installation) 后进行配置.
 * 本 Module 用创建 VPC 实例，`vswitch_id` 和 `vswitch_ids` 至少要设置一个。如果两个都设置了，`vswitch_id` 将会优先于 `vswitch_ids` 被使用。
 
+提交问题
+------
+如果在使用该 Terraform Module 的过程中有任何问题，可以直接创建一个 [Provider Issue](https://github.com/terraform-providers/terraform-provider-alicloud/issues/new)，我们将根据问题描述提供解决方案。
+
+**注意:** 不建议在该 Module 仓库中直接提交 Issue。
+
 作者
 -------
 Created and maintained by He Guimin(@xiaozhu36, heguimin36@163.com)
