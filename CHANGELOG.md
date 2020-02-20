@@ -1,4 +1,5 @@
-## 2.5.0 (Unreleased)
+## 2.6.0 (Unreleased)
+## 2.5.0 (February 20, 2020)
 
 BUG FIXES:
 
