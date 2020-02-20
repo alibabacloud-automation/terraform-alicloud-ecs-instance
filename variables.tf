@@ -134,7 +134,7 @@ variable "private_ips" {
 variable "internet_max_bandwidth_in" {
   description = "The maximum internet in bandwidth of instance."
   type        = number
-  default     = 200
+  default     = null
 }
 
 variable "internet_max_bandwidth_out" {

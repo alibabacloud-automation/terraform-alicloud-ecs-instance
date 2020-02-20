@@ -1,4 +1,9 @@
 ## 2.5.0 (Unreleased)
+
+BUG FIXES:
+
+- remove internet_max_bandwidth_in default to fix diff bug [GH-43](https://github.com/terraform-alicloud-modules/terraform-alicloud-ecs-instance/pull/43)
+
 ## 2.4.0 (February 14, 2020)
 
 IMPROVEMENTS:
