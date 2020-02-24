@@ -1,4 +1,10 @@
 ## 2.6.0 (Unreleased)
+## 2.5.1 (February 24, 2020)
+
+IMPROVEMENTS:
+
+- add profile for readme and examples [GH-44](https://github.com/terraform-alicloud-modules/terraform-alicloud-vpc/pull/44)
+
 ## 2.5.0 (February 20, 2020)
 
 BUG FIXES:
