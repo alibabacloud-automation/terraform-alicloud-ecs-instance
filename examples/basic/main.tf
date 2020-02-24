@@ -1,8 +1,12 @@
+variable "profile" {
+  default = "default"
+}
 variable "region" {
   default = "cn-hangzhou"
 }
 provider "alicloud" {
-  region = var.region
+  region  = var.region
+  profile = var.profile
 }
 
 locals {
@@ -56,6 +60,7 @@ data "alicloud_instance_types" "spot" {
 // Security Group module for ECS Module
 module "security_group" {
   source  = "alibaba/security-group/alicloud"
+  profile = var.profile
   region  = var.region
   vpc_id  = data.alicloud_vpcs.default.ids.0
   version = "~> 2.0"
@@ -84,8 +89,9 @@ resource "alicloud_ram_role" "basic" {
 }
 
 module "ecs" {
-  source = "../.."
-  region = var.region
+  source  = "../.."
+  profile = var.profile
+  region  = var.region
 
   number_of_instances = 1
 
@@ -119,8 +125,9 @@ module "ecs" {
 }
 
 module "ecs_with_multi_images" {
-  source = "../.."
-  region = var.region
+  source  = "../.."
+  profile = var.profile
+  region  = var.region
 
   number_of_instances = 3
 
@@ -154,8 +161,9 @@ module "ecs_with_multi_images" {
 }
 
 module "ecs_with_ram_role" {
-  source = "../.."
-  region = var.region
+  source  = "../.."
+  profile = var.profile
+  region  = var.region
 
   number_of_instances = 1
 
@@ -174,8 +182,9 @@ module "ecs_with_ram_role" {
 
 // create subscription ecs instances and enable auto renew
 module "ecs_for_subscription" {
-  source = "../.."
-  region = var.region
+  source  = "../.."
+  profile = var.profile
+  region  = var.region
 
   number_of_instances = 1
 
@@ -200,8 +209,9 @@ module "ecs_for_subscription" {
 
 // create spot instance
 module "ecs_spot" {
-  source = "../.."
-  region = var.region
+  source  = "../.."
+  profile = var.profile
+  region  = var.region
 
   number_of_instances = 1
 
@@ -221,8 +231,9 @@ module "ecs_spot" {
 
 # This instance won't be created
 module "ecs_zero" {
-  source = "../.."
-  region = var.region
+  source  = "../.."
+  profile = var.profile
+  region  = var.region
 
   number_of_instances = 0
 

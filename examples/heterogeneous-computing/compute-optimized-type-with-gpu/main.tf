@@ -1,3 +1,6 @@
+variable "profile" {
+  default = "default"
+}
 variable "region" {
   default = "cn-hangzhou"
 }
@@ -6,7 +9,8 @@ variable "zone_id" {
 }
 
 provider "alicloud" {
-  region = var.region
+  region  = var.region
+  profile = var.profile
 }
 
 #############################################################
@@ -38,9 +42,9 @@ resource "alicloud_vswitch" "default" {
 
 // ECS Module
 module "ecs_instance" {
-  source = "../../../modules/compute-optimized-type-with-gpu"
-
-  region = var.region
+  source  = "../../../modules/compute-optimized-type-with-gpu"
+  profile = var.profile
+  region  = var.region
 
   instance_type_family = "ecs.gn6v"
   //  Also can specify a instance type

@@ -26,7 +26,9 @@ data "alicloud_images" "ubuntu" {
 
 module "ecs_cluster" {
   source  = "alibaba/ecs-instance/alicloud"
+  profile = "Your-Profile-Name"
   version = "~> 2.0"
+  region  = "cn-beijing"
 
   number_of_instances = 5
 

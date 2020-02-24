@@ -1,8 +1,12 @@
+variable "profile" {
+  default = "default"
+}
 variable "region" {
   default = "cn-hangzhou"
 }
 provider "alicloud" {
-  region = var.region
+  region  = var.region
+  profile = var.profile
 }
 
 variable "instances_number" {
@@ -35,14 +39,16 @@ data "alicloud_instance_types" "normal" {
 // Security Group module for ECS Module
 module "security_group" {
   source  = "alibaba/security-group/alicloud"
+  profile = var.profile
   region  = var.region
   vpc_id  = data.alicloud_vpcs.default.ids.0
   version = "~> 2.0"
 }
 
 module "ecs" {
-  source = "../.."
-  region = var.region
+  source  = "../.."
+  profile = var.profile
+  region  = var.region
 
   number_of_instances = var.instances_number
 
