@@ -17,7 +17,7 @@ resource "alicloud_instance" "this" {
   instance_name          = var.number_of_instances > 1 || var.use_num_suffix ? format("%s%03d", local.name, count.index + 1) : local.name
   host_name              = var.host_name == "" ? "" : var.number_of_instances > 1 || var.use_num_suffix ? format("%s%03d", var.host_name, count.index + 1) : var.host_name
   resource_group_id      = var.resource_group_id
-  description            = "An ECS instance came from terraform-alicloud-modules/ecs-instance"
+  description            = var.description
   internet_charge_type   = var.internet_charge_type
   password               = var.password
   kms_encrypted_password = var.kms_encrypted_password
