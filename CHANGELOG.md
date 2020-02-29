@@ -1,4 +1,10 @@
-## 2.6.0 (Unreleased)
+## 2.7.0 (Unreleased)
+## 2.6.0 (February 29, 2020)
+
+BUG FIXES:
+
+- fix subscription checking and add variable description [GH-45](https://github.com/terraform-alicloud-modules/terraform-alicloud-ecs-instance/pull/45)
+
 ## 2.5.1 (February 24, 2020)
 
 IMPROVEMENTS:
@@ -9,7 +15,6 @@ IMPROVEMENTS:
 
 BUG FIXES:
 
-- fix subscription checking and add variable description [GH-44](https://github.com/terraform-alicloud-modules/terraform-alicloud-ecs-instance/pull/44)
 - remove internet_max_bandwidth_in default to fix diff bug [GH-43](https://github.com/terraform-alicloud-modules/terraform-alicloud-ecs-instance/pull/43)
 
 ## 2.4.0 (February 14, 2020)
