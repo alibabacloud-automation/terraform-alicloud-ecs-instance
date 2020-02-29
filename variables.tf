@@ -61,6 +61,11 @@ variable "name" {
   default     = ""
 }
 
+variable "description" {
+  description = "Description of all instances."
+  type        = string
+  default     = "An ECS instance came from terraform-alicloud-modules/ecs-instance"
+}
 variable "resource_group_id" {
   description = "The Id of resource group which the instance belongs."
   default     = ""
