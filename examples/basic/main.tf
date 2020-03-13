@@ -245,3 +245,41 @@ module "ecs_zero" {
   associate_public_ip_address = true
   internet_max_bandwidth_out  = 10
 }
+
+// create instance with auto snapshot policy
+module "ecs-auto-snap-shot-policy" {
+  source  = "../.."
+  profile = var.profile
+  region  = var.region
+
+  number_of_instances = 1
+
+  name                        = "example-normal"
+  image_id                    = data.alicloud_images.ubuntu.ids.0
+  instance_type               = data.alicloud_instance_types.normal.ids.0
+  vswitch_id                  = data.alicloud_vswitches.all.ids.0
+  security_group_ids          = [module.security_group.this_security_group_id]
+  associate_public_ip_address = true
+  internet_max_bandwidth_out  = 10
+  //  system_disk_auto_snapshot_policy_id = "sp-bp1axyxxxxxxxxxx"
+  user_data = local.user_data
+
+  system_disk_category = "cloud_ssd"
+  system_disk_size     = 50
+
+  data_disks = [
+    {
+      name        = "example"
+      category    = "cloud_ssd"
+      size        = "20"
+      volume_size = 5
+      encrypted   = true
+      //  auto_snapshot_policy_id = "sp-bp1axyxxxxxxxxxx"
+    }
+  ]
+
+  tags = {
+    Env      = "Private"
+    Location = "Secret"
+  }
+}

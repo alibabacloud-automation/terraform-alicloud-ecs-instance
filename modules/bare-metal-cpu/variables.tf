@@ -24,7 +24,7 @@ variable "most_recent" {
 }
 
 variable "owners" {
-  description = "Filter results by a specific image owner. Valid items are `system`, `self`, `others`, `marketplace`."
+  description = "Filter results by a specific image owner. Valid items are 'system', 'self', 'others', 'marketplace'."
   default     = "system"
 }
 
@@ -104,12 +104,12 @@ variable "password" {
 }
 
 variable "kms_encrypted_password" {
-  description = "An KMS encrypts password used to an instance. It is conflicted with `password`."
+  description = "An KMS encrypts password used to an instance. It is conflicted with 'password'."
   default     = ""
 }
 
 variable "kms_encryption_context" {
-  description = "An KMS encryption context used to decrypt `kms_encrypted_password` before creating or updating an instance with `kms_encrypted_password`"
+  description = "An KMS encryption context used to decrypt 'kms_encrypted_password' before creating or updating an instance with 'kms_encrypted_password'"
   type        = map(string)
   default     = {}
 }
@@ -125,8 +125,15 @@ variable "system_disk_size" {
   default     = 40
 }
 
+variable "system_disk_auto_snapshot_policy_id" {
+  description = "The ID of the automatic snapshot policy applied to the system disk."
+  type        = string
+  default     = ""
+}
+
+
 variable "data_disks" {
-  description = "Additional data disks to attach to the scaled ECS instance"
+  description = "Additional data disks to attach to the scaled ECS instance."
   type        = list(map(string))
   default     = []
 }
@@ -182,7 +189,7 @@ variable "user_data" {
 }
 
 variable "role_name" {
-  description = "Instance RAM role name. The name is provided and maintained by RAM. You can use `alicloud_ram_role` to create a new one."
+  description = "Instance RAM role name. The name is provided and maintained by RAM. You can use 'alicloud_ram_role' to create a new one."
   default     = ""
 }
 
@@ -198,7 +205,7 @@ variable "deletion_protection" {
 }
 
 variable "force_delete" {
-  description = "If it is true, the 'PrePaid' instance will be change to 'PostPaid' and then deleted forcibly. However, because of changing instance charge type has CPU core count quota limitation, so strongly recommand that `Don't modify instance charge type frequentlly in one month`."
+  description = "If it is true, the 'PrePaid' instance will be change to 'PostPaid' and then deleted forcibly. However, because of changing instance charge type has CPU core count quota limitation, so strongly recommand that 'Don't modify instance charge type frequentlly in one month'."
   default     = false
 }
 
