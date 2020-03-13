@@ -1,4 +1,9 @@
 ## 2.7.0 (Unreleased)
+
+IMPROVEMENTS:
+
+- supported auto snapshot policy fields [GH-44](https://github.com/terraform-alicloud-modules/terraform-alicloud-ecs-instance/pull/46)
+
 ## 2.6.0 (February 29, 2020)
 
 BUG FIXES:
@@ -9,7 +14,7 @@ BUG FIXES:
 
 IMPROVEMENTS:
 
-- add profile for readme and examples [GH-44](https://github.com/terraform-alicloud-modules/terraform-alicloud-vpc/pull/44)
+- add profile for readme and examples [GH-44](https://github.com/terraform-alicloud-modules/terraform-alicloud-ecs-instance/pull/44)
 
 ## 2.5.0 (February 20, 2020)
 

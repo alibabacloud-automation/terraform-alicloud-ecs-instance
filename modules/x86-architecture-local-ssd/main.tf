@@ -68,10 +68,11 @@ module "ecs-instance" {
 
 
   // Specify instance disk setting
-  system_disk_category = var.system_disk_category
-  system_disk_size     = var.system_disk_size
-  data_disks           = var.data_disks
-  volume_tags          = var.volume_tags
+  system_disk_category                = var.system_disk_category
+  system_disk_size                    = var.system_disk_size
+  system_disk_auto_snapshot_policy_id = var.system_disk_auto_snapshot_policy_id
+  data_disks                          = var.data_disks
+  volume_tags                         = var.volume_tags
 
   // Specify instance access setting
   password               = var.password

@@ -125,8 +125,15 @@ variable "system_disk_size" {
   default     = 40
 }
 
+variable "system_disk_auto_snapshot_policy_id" {
+  description = "The ID of the automatic snapshot policy applied to the system disk."
+  type        = string
+  default     = ""
+}
+
+
 variable "data_disks" {
-  description = "Additional data disks to attach to the scaled ECS instance"
+  description = "Additional data disks to attach to the scaled ECS instance."
   type        = list(map(string))
   default     = []
 }
