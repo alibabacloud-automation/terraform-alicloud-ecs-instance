@@ -38,7 +38,7 @@ variable "image_id" {
 
 variable "image_ids" {
   description = "A list of ecs image IDs to launch one or more ecs instances."
-  type        = string
+  type        = list(string)
   default     = []
 }
 
