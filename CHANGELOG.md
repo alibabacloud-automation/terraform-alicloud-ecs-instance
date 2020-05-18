@@ -1,9 +1,15 @@
-## 2.8.0 (Unreleased)
+## 2.9.0 (Unreleased)
+## 2.8.0 (May 18, 2020)
+
+IMPROVEMENTS:
+
+- image_ids has wrong type [GH-47](https://github.com/terraform-alicloud-modules/terraform-alicloud-ecs-instance/pull/47)
+
 ## 2.7.0 (March 14, 2020)
 
 IMPROVEMENTS:
 
-- supported auto snapshot policy fields [GH-44](https://github.com/terraform-alicloud-modules/terraform-alicloud-ecs-instance/pull/46)
+- supported auto snapshot policy fields [GH-46](https://github.com/terraform-alicloud-modules/terraform-alicloud-ecs-instance/pull/46)
 
 ## 2.6.0 (February 29, 2020)
 
