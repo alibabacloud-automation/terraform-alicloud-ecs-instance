@@ -12,9 +12,10 @@ These types of resources are supported:
 
 ## Terraform versions
 
-For Terraform 0.12 use version `v2.*` and `v1.3.0` of this module.
-
-If you are using Terraform 0.11 you can use versions `v1.2.*`.
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.12.0 |
+| <a name="requirement_alicloud"></a> [alicloud](#requirement\_alicloud) | >= 1.56.0
 
 ## Usage
 
@@ -72,10 +73,67 @@ module "ecs_cluster" {
 * [x86-Architecture-Memory-Optimized ECS Instance example](https://github.com/terraform-alicloud-modules/terraform-alicloud-ecs-instance/tree/master/examples/x86-architecture/memory-optimized)
 
 ## Notes
+From the version v2.8.0, the module has removed the following `provider` setting:
 
-* This module using AccessKey and SecretKey are from `profile` and `shared_credentials_file`.
-If you have not set them yet, please install [aliyun-cli](https://github.com/aliyun/aliyun-cli#installation) and configure it.
-* One of `vswitch_id` or `vswitch_ids` is required. If both are provided, the value of `vswitch_id` is prepended to the value of `vswitch_ids`.
+```hcl
+provider "alicloud" {
+  profile                 = var.profile != "" ? var.profile : null
+  region                  = var.region != "" ? var.region : null
+  skip_region_validation  = var.skip_region_validation
+}
+```
+
+If you still want to use the `provider` setting to apply this module, you can specify a supported version, like 2.7.0:
+
+```hcl
+module "ecs-instance" {
+  source = "terraform-alicloud-modules/ecs-instance/alicloud"
+  version     = "2.7.0"
+  region      = "cn-hangzhou"
+  profile     = "Your-Profile-Name"
+
+  key_name = "for-ecs-cluster"
+  system_disk_category = "cloud_ssd"
+  system_disk_size     = 50
+}
+```
+
+If you want to upgrade the module to 2.8.0 or higher in-place, you can define a provider which same region with
+previous region:
+
+```hcl
+provider "alicloud" {
+   region  = "cn-hangzhou"
+   profile = "Your-Profile-Name"
+}
+module "ecs-instance" {
+  source = "terraform-alicloud-modules/ecs-instance/alicloud"
+  key_name = "for-ecs-cluster"
+  system_disk_category = "cloud_ssd"
+  system_disk_size     = 50
+}
+```
+or specify an alias provider with a defined region to the module using `providers`:
+
+```hcl
+provider "alicloud" {
+  region  = "cn-hangzhou"
+  profile = "Your-Profile-Name"
+  alias   = "hz"
+}
+module "ecs-instance" {
+  source  = "terraform-alicloud-modules/ecs-instance/alicloud"
+  providers = {
+    alicloud = alicloud.hz
+  }
+  key_name = "for-ecs-cluster"
+  system_disk_category = "cloud_ssd"
+  system_disk_size     = 50
+}
+```
+
+and then run `terraform init` and `terraform apply` to make the defined provider effect to the existing module state.
+More details see [How to use provider in the module](https://www.terraform.io/docs/language/modules/develop/providers.html#passing-providers-explicitly)
 
 Submit Issues
 -------------
@@ -85,7 +143,7 @@ If you have any problems when using this module, please opening a [provider issu
 
 Authors
 -------
-Created and maintained by He Guimin(@xiaozhu36, heguimin36@163.com)
+Created and maintained by Alibaba Cloud Terraform Team(terraform@alibabacloud.com)
 
 License
 ----

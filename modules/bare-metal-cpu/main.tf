@@ -1,9 +1,3 @@
-provider "alicloud" {
-  region                  = var.region
-  profile                 = var.profile
-  shared_credentials_file = var.shared_credentials_file
-  skip_region_validation  = var.skip_region_validation
-}
 locals {
   // This type of instance contains the following instance type families
   instance_type_families = ["ecs.ebmc6", "ecs.ebmg6", "ecs.ebmr6", "ecs.ebmhfc6", "ecs.ebmhfg6", "ecs.ebmhfr6", "ecs.ebmc5s", "ecs.ebmg5s", "ecs.ebmr5s", "ecs.ebmhfg5", "ecs.ebmc4", "ecs.ebmg5", "ecs.scch5", "ecs.sccg5"]

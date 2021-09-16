@@ -21,9 +21,9 @@ data "alicloud_vpcs" "default" {
   is_default = true
 }
 
-data "alicloud_security_groups" "default" {
-  name_regex = "default"
-  vpc_id     = data.alicloud_vpcs.default.ids.0
+resource "alicloud_security_group" "group" {
+  name   = "test-group"
+  vpc_id = alicloud_vpc.vpc.id
 }
 
 data "alicloud_vswitches" "default" {
@@ -31,12 +31,17 @@ data "alicloud_vswitches" "default" {
   zone_id    = var.zone_id
 }
 
+resource "alicloud_vpc" "vpc" {
+  vpc_name   = "tf_test_foo"
+  cidr_block = "172.16.0.0/12"
+}
+
 // If there is no default vswitch, create one.
 resource "alicloud_vswitch" "default" {
   count             = length(data.alicloud_vswitches.default.ids) > 0 ? 0 : 1
   availability_zone = var.zone_id
-  vpc_id            = data.alicloud_vpcs.default.ids.0
-  cidr_block        = cidrsubnet(data.alicloud_vpcs.default.vpcs.0.cidr_block, 4, 2)
+  vpc_id            = alicloud_vpc.vpc.id
+  cidr_block        = "172.16.0.0/21"
 }
 
 
@@ -52,7 +57,7 @@ module "ecs_instance" {
 
   vswitch_id = length(data.alicloud_vswitches.default.ids) > 0 ? data.alicloud_vswitches.default.ids.0 : concat(alicloud_vswitch.default.*.id, [""])[0]
 
-  security_group_ids = data.alicloud_security_groups.default.ids
+  security_group_ids = [alicloud_security_group.group.id]
 
   associate_public_ip_address = true
 

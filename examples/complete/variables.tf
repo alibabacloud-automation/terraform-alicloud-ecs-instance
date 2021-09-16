@@ -1,22 +1,3 @@
-variable "region" {
-  description = "The region used to launch this module resources."
-  default     = ""
-}
-
-variable "profile" {
-  description = "The profile name as set in the shared credentials file. If not set, it will be sourced from the ALICLOUD_PROFILE environment variable."
-  default     = ""
-}
-variable "shared_credentials_file" {
-  description = "This is the path to the shared credentials file. If this is not set and a profile is specified, $HOME/.aliyun/config.json will be used."
-  default     = ""
-}
-
-variable "skip_region_validation" {
-  description = "Skip static validation of region ID. Used by users of alternative AlibabaCloud-like APIs or users w/ access to regions that are not public (yet)."
-  default     = false
-}
-
 # Ecs instance variables
 variable "number_of_instances" {
   description = "The number of instances to be created."
@@ -28,24 +9,6 @@ variable "use_num_suffix" {
   description = "Always append numerical suffix(like 001, 002 and so on) to instance name and host name, even if number_of_instances is 1."
   type        = bool
   default     = false
-}
-
-variable "image_id" {
-  description = "The image id used to launch one or more ecs instances."
-  type        = string
-  default     = ""
-}
-
-variable "image_ids" {
-  description = "A list of ecs image IDs to launch one or more ecs instances."
-  type        = list(string)
-  default     = []
-}
-
-variable "instance_type" {
-  description = "The instance type used to launch one or more ecs instances."
-  type        = string
-  default     = ""
 }
 
 variable "credit_specification" {
@@ -63,18 +26,13 @@ variable "security_group_ids" {
 variable "name" {
   description = "Name to be used on all resources as prefix. Default to 'TF-Module-ECS-Instance'. The final default name would be TF-Module-ECS-Instance001, TF-Module-ECS-Instance002 and so on."
   type        = string
-  default     = ""
+  default     = "example-with-disks"
 }
 
 variable "description" {
   description = "Description of all instances."
   type        = string
-  default     = ""
-}
-variable "resource_group_id" {
-  description = "The Id of resource group which the instance belongs."
-  type        = string
-  default     = ""
+  default     = "An ECS instance came from terraform-alicloud-modules/ecs-instance"
 }
 
 variable "internet_charge_type" {
@@ -86,25 +44,13 @@ variable "internet_charge_type" {
 variable "host_name" {
   description = "Host name used on all instances as prefix. Like if the value is TF-ECS-Host-Name and then the final host name would be TF-ECS-Host-Name001, TF-ECS-Host-Name002 and so on."
   type        = string
-  default     = ""
+  default     = "tfEcsInstance"
 }
 
 variable "password" {
   description = "The password of instance."
   type        = string
-  default     = ""
-}
-
-variable "kms_encrypted_password" {
-  description = "An KMS encrypts password used to an instance. It is conflicted with 'password'."
-  type        = string
-  default     = ""
-}
-
-variable "kms_encryption_context" {
-  description = "An KMS encryption context used to decrypt 'kms_encrypted_password' before creating or updating an instance with 'kms_encrypted_password'."
-  type        = map(string)
-  default     = {}
+  default     = "YouPassword123456"
 }
 
 variable "system_disk_category" {
@@ -128,7 +74,14 @@ variable "system_disk_auto_snapshot_policy_id" {
 variable "data_disks" {
   description = "Additional data disks to attach to the scaled ECS instance."
   type        = list(map(string))
-  default     = []
+  default     = [{
+    name        = "disk2"
+    size        = 20
+    category    = "cloud_efficiency"
+    description = "disk2"
+    encrypted   = true
+    delete_with_instance = true
+  }]
 }
 
 variable "vswitch_id" {
@@ -149,28 +102,22 @@ variable "private_ip" {
   default     = ""
 }
 
-variable "private_ips" {
-  description = "A list to configure Instance private IP address"
-  type        = list(string)
-  default     = []
-}
-
 variable "internet_max_bandwidth_in" {
   description = "The maximum internet in bandwidth of instance."
   type        = number
-  default     = null
+  default     = 20
 }
 
 variable "internet_max_bandwidth_out" {
   description = "The maximum internet out bandwidth of instance."
   type        = number
-  default     = 0
+  default     = 10
 }
 
 variable "associate_public_ip_address" {
   description = "Whether to associate a public ip address with an instance in a VPC."
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "instance_charge_type" {
@@ -185,34 +132,10 @@ variable "dry_run" {
   default     = false
 }
 
-variable "user_data" {
-  description = "User data to pass to instance on boot."
-  type        = string
-  default     = ""
-}
-
-variable "role_name" {
-  description = "Instance RAM role name. The name is provided and maintained by RAM. You can use 'alicloud_ram_role' to create a new one."
-  type        = string
-  default     = ""
-}
-
-variable "key_name" {
-  description = "The name of SSH key pair that can login ECS instance successfully without password. If it is specified, the password would be invalid."
-  type        = string
-  default     = ""
-}
-
 variable "spot_strategy" {
   description = "The spot strategy of a Pay-As-You-Go instance, and it takes effect only when parameter 'instance_charge_type' is 'PostPaid'. Value range: 'NoSpot': A regular Pay-As-You-Go instance. 'SpotWithPriceLimit': A price threshold for a spot instance. 'SpotAsPriceGo': A price that is based on the highest Pay-As-You-Go instance."
   type        = string
   default     = "NoSpot"
-}
-
-variable "spot_price_limit" {
-  description = "The hourly price threshold of a instance, and it takes effect only when parameter 'spot_strategy' is 'SpotWithPriceLimit'. Three decimals is allowed at most."
-  type        = number
-  default     = 0
 }
 
 variable "deletion_protection" {
@@ -236,19 +159,13 @@ variable "security_enhancement_strategy" {
 variable "subscription" {
   description = "A mapping of fields for Prepaid ECS instances created. "
   type        = map(string)
-  default = {}
-}
-
-variable "tags" {
-  description = "A mapping of tags to assign to the resource."
-  type        = map(string)
-  default     = {}
-}
-
-variable "volume_tags" {
-  description = "A mapping of tags to assign to the devices created by the instance at launch time."
-  type        = map(string)
-  default     = {}
+  default = {
+    period             = 1
+    period_unit        = "Month"
+    renewal_status     = "Normal"
+    auto_renew_period  = 1
+    include_data_disks = true
+  }
 }
 
 # Depreceted parameters
@@ -275,7 +192,7 @@ variable "system_size" {
 
 variable "disk_name" {
   description = "(Deprecated) It has been deprecated from version 2.0.0 and use 'data_disks' 'name' instead."
-  default     = ""
+  default     = "TF_ECS_Disk"
 }
 
 variable "disk_category" {

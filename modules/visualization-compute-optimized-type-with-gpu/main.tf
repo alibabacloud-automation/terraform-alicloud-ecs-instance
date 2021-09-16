@@ -1,9 +1,3 @@
-provider "alicloud" {
-  region                  = var.region
-  profile                 = var.profile
-  shared_credentials_file = var.shared_credentials_file
-  skip_region_validation  = var.skip_region_validation
-}
 locals {
   // This type of instance contains the following instance type families
   instance_type_families = ["ecs.ga1", "ecs.vgn5i"]
@@ -11,7 +5,7 @@ locals {
 
 
 data "alicloud_instance_types" "this" {
-  instance_type_family = var.instance_type_family != "" && contains(local.instance_type_families, var.instance_type_family) ? var.instance_type_family : "ecs.ga1"
+  instance_type_family = var.instance_type_family != "" && contains(local.instance_type_families, var.instance_type_family) ? var.instance_type_family : "ecs.n4.large"
   instance_charge_type = var.instance_charge_type
   cpu_core_count       = var.cpu_core_count > 0 ? var.cpu_core_count : null
   memory_size          = var.memory_size > 0 ? var.memory_size : null
@@ -41,7 +35,7 @@ module "ecs-instance" {
   image_ids = var.image_ids
 
   // Specify instance type
-  instance_type = var.instance_type != "" ? var.instance_type : data.alicloud_instance_types.this.ids.0
+  instance_type = var.instance_type != "" ? var.instance_type : "ecs.n4.large"
 
   // Specify network setting
   security_group_ids = var.security_group_ids

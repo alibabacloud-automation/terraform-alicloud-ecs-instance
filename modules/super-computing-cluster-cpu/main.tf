@@ -1,9 +1,3 @@
-provider "alicloud" {
-  region                  = var.region
-  profile                 = var.profile
-  shared_credentials_file = var.shared_credentials_file
-  skip_region_validation  = var.skip_region_validation
-}
 locals {
   // This type of instance contains the following instance type families
   instance_type_families = ["ecs.scch5", "ecs.sccg5"]
@@ -41,7 +35,7 @@ module "ecs-instance" {
   image_ids = var.image_ids
 
   // Specify instance type
-  instance_type = var.instance_type != "" ? var.instance_type : data.alicloud_instance_types.this.ids.0
+  instance_type = var.instance_type != "" ? var.instance_type : "ecs.s6-c1m1.small"
 
   // Specify network setting
   security_group_ids = var.security_group_ids
