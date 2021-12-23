@@ -1,4 +1,11 @@
-## 2.8.0 (Unreleased)
+## 2.9.0 (Unreleased)
+## 2.8.0 (December 23, 2021)
+
+IMPROVEMENTS: 
+
+- Removes the provider setting and improves the Readme [GH-53](https://github.com/terraform-alicloud-modules/terraform-alicloud-ecs-instance/pull/53)
+- Modified author contact information [GH-51](https://github.com/terraform-alicloud-modules/terraform-alicloud-ecs-instance/pull/51)
+
 ## 2.7.0 (May 18, 2020)
 
 IMPROVEMENTS:
