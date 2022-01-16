@@ -1,6 +1,4 @@
 # used for testing
-*.tfvars
-
 # Compiled files
 *.tfstate
 *.tfstate.backup

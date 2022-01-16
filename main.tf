@@ -32,7 +32,6 @@ resource "alicloud_instance" "this" {
   }
 
   private_ip                    = length(var.private_ips) > 0 ? var.private_ips[count.index] : var.private_ip
-  internet_max_bandwidth_in     = var.internet_max_bandwidth_in
   internet_max_bandwidth_out    = var.associate_public_ip_address ? var.internet_max_bandwidth_out : 0
   instance_charge_type          = var.instance_charge_type
   period                        = lookup(local.subscription, "period", null)

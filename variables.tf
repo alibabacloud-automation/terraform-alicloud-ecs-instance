@@ -155,12 +155,6 @@ variable "private_ips" {
   default     = []
 }
 
-variable "internet_max_bandwidth_in" {
-  description = "The maximum internet in bandwidth of instance."
-  type        = number
-  default     = null
-}
-
 variable "internet_max_bandwidth_out" {
   description = "The maximum internet out bandwidth of instance."
   type        = number
