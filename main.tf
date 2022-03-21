@@ -1,11 +1,11 @@
-// ECS Instance Resource for Module
+# ECS Instance Resource for Module
 resource "alicloud_instance" "this" {
   count                               = var.number_of_instances
-  image_id                            = element(distinct(compact(concat([var.image_id], var.image_ids))), count.index, )
+  image_id                            = element(distinct(compact(concat([var.image_id], var.image_ids))), count.index)
   instance_type                       = var.instance_type
-  credit_specification                = var.credit_specification != "" ? var.credit_specification : null
   security_groups                     = local.security_group_ids
-  vswitch_id                          = element(distinct(compact(concat([var.vswitch_id], var.vswitch_ids))), count.index, )
+  vswitch_id                          = element(distinct(compact(concat([var.vswitch_id], var.vswitch_ids))), count.index)
+  private_ip                          = length(var.private_ips) > 0 ? var.private_ips[count.index] : var.private_ip
   instance_name                       = var.number_of_instances > 1 || var.use_num_suffix ? format("%s%03d", local.name, count.index + 1) : local.name
   host_name                           = var.host_name == "" ? "" : var.number_of_instances > 1 || var.use_num_suffix ? format("%s%03d", var.host_name, count.index + 1) : var.host_name
   resource_group_id                   = var.resource_group_id
@@ -30,9 +30,6 @@ resource "alicloud_instance" "this" {
       auto_snapshot_policy_id = lookup(data_disks.value, "auto_snapshot_policy_id", null)
     }
   }
-
-  private_ip                    = length(var.private_ips) > 0 ? var.private_ips[count.index] : var.private_ip
-  internet_max_bandwidth_in     = var.internet_max_bandwidth_in
   internet_max_bandwidth_out    = var.associate_public_ip_address ? var.internet_max_bandwidth_out : 0
   instance_charge_type          = var.instance_charge_type
   period                        = lookup(local.subscription, "period", null)
@@ -44,11 +41,12 @@ resource "alicloud_instance" "this" {
   user_data                     = var.user_data
   role_name                     = var.role_name
   key_name                      = var.key_name
-  spot_strategy                 = var.spot_strategy
-  spot_price_limit              = var.spot_price_limit
   deletion_protection           = var.deletion_protection
   force_delete                  = var.force_delete
   security_enhancement_strategy = var.security_enhancement_strategy
+  credit_specification          = var.credit_specification != "" ? var.credit_specification : null
+  spot_strategy                 = var.spot_strategy
+  spot_price_limit              = var.spot_price_limit
   tags = merge(
     {
       Name = var.number_of_instances > 1 || var.use_num_suffix ? format("%s%03d", local.name, count.index + 1) : local.name

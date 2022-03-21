@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// An example of how to test the simple Terraform module in examples/terraform-basic-example using Terratest.
+// An example of how to test the simple Terraform module in examples/complete using Terratest.
 // Make sure you have the dep binary, https://github.com/golang/dep
 // Run 'dep ensure' before run test cases.
 
