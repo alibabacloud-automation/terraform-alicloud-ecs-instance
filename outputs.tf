@@ -3,7 +3,7 @@ output "this_availability_zone" {
   value       = alicloud_instance.this.*.availability_zone
 }
 
-// Output the IDs of the ECS instances created
+# Output the IDs of the ECS instances created
 output "this_instance_id" {
   description = "The instance ids."
   value       = alicloud_instance.this.*.id
@@ -173,7 +173,7 @@ output "number_of_instances" {
   value       = length(alicloud_instance.this)
 }
 
-// Deprecated outputs
+# Deprecated outputs
 output "instance_ids" {
   description = "(Deprecated) It has been deprecated from version 0.1.0 and the field 'this_instance_id' replaces it."
   value       = alicloud_instance.this.*.id
@@ -272,5 +272,3 @@ output "user_data" {
   description = "(Deprecated) It has been deprecated from version 0.1.0 and the field 'this_user_data' replaces it."
   value       = alicloud_instance.this.*.user_data
 }
-
-

@@ -47,7 +47,6 @@ module "ecs-instance" {
   system_disk_size              = var.system_disk_size
   data_disks                    = var.data_disks
   private_ips                   = var.private_ips
-  internet_max_bandwidth_in     = var.internet_max_bandwidth_in
   internet_max_bandwidth_out    = var.internet_max_bandwidth_out
   associate_public_ip_address   = var.associate_public_ip_address
   instance_charge_type          = var.instance_charge_type

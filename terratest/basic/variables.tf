@@ -91,7 +91,7 @@ variable "private_ips" {
 }
 
 variable "internet_max_bandwidth_in" {
-  description = "The maximum internet in bandwidth of instance."
+  description = "(Deprecated from version v1.121.2) The maximum internet in bandwidth of instance."
   default     = 200
 }
 

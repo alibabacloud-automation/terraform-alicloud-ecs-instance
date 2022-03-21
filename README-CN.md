@@ -1,7 +1,6 @@
 terraform-alicloud-ecs-instance
 =====================================================================
 
-
 本 Module 用于在阿里云的 VPC 下创建一个[云服务器ECS实例（ECS Instance）](https://www.alibabacloud.com/help/zh/doc-detail/25374.htm). 
 
 本 Module 支持创建以下资源:
@@ -61,7 +60,7 @@ module "ecs_cluster" {
 * [x86计算内存型实例创建示例](https://github.com/terraform-alicloud-modules/terraform-alicloud-ecs-instance/tree/master/examples/x86-architecture/memory-optimized)
 
 ## 注意事项
-本Module从版本v2.8.0开始已经移除掉如下的 provider 的显示设置：
+本Module从版本v2.8.0开始已经移除掉如下的 provider 的显式设置：
 
 ```hcl
 provider "alicloud" {
@@ -87,7 +86,7 @@ module "ecs_cluster" {
 }
 ```
 
-如果你想对正在使用中的Module升级到 2.8.0 或者更高的版本，那么你可以在模板中显示定义一个相同Region的provider：
+如果你想对正在使用中的Module升级到 2.8.0 或者更高的版本，那么你可以在模板中显式定义一个相同Region的provider：
 ```hcl
 provider "alicloud" {
   region  = "cn-beijing"
@@ -100,7 +99,7 @@ module "ecs_cluster" {
   // ...
 }
 ```
-或者，如果你是多Region部署，你可以利用 `alias` 定义多个 provider，并在Module中显示指定这个provider：
+或者，如果你是多Region部署，你可以利用 `alias` 定义多个 provider，并在Module中显式指定这个provider：
 
 ```hcl
 provider "alicloud" {
@@ -127,7 +126,7 @@ module "ecs_cluster" {
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.12.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.13.0 |
 | <a name="requirement_alicloud"></a> [alicloud](#requirement\_alicloud) | >= 1.56.0 |
 
 提交问题
@@ -149,5 +148,3 @@ Apache 2 Licensed. See LICENSE for full details.
 * [Terraform-Provider-Alicloud Github](https://github.com/terraform-providers/terraform-provider-alicloud)
 * [Terraform-Provider-Alicloud Release](https://releases.hashicorp.com/terraform-provider-alicloud/)
 * [Terraform-Provider-Alicloud Docs](https://www.terraform.io/docs/providers/alicloud/index.html)
-
-

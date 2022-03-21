@@ -1,20 +1,31 @@
 variable "region" {
   description = "(Deprecated from version 2.8.0) The region used to launch this module resources."
+  type        = string
   default     = ""
 }
 
 variable "profile" {
   description = "(Deprecated from version 2.8.0) The profile name as set in the shared credentials file. If not set, it will be sourced from the ALICLOUD_PROFILE environment variable."
+  type        = string
   default     = ""
 }
+
 variable "shared_credentials_file" {
   description = "(Deprecated from version 2.8.0) This is the path to the shared credentials file. If this is not set and a profile is specified, $HOME/.aliyun/config.json will be used."
+  type        = string
   default     = ""
 }
 
 variable "skip_region_validation" {
   description = "(Deprecated from version 2.8.0) Skip static validation of region ID. Used by users of alternative AlibabaCloud-like APIs or users w/ access to regions that are not public (yet)."
+  type        = bool
   default     = false
+}
+
+variable "internet_max_bandwidth_in" {
+  description = "(Deprecated from version v1.121.2) The maximum internet in bandwidth of instance. The attribute is invalid and no any affect for the instance. So it has been deprecated from version v1.121.2."
+  type        = number
+  default     = 100
 }
 
 # Ecs instance variables
@@ -22,12 +33,6 @@ variable "number_of_instances" {
   description = "The number of instances to be created."
   type        = number
   default     = 1
-}
-
-variable "use_num_suffix" {
-  description = "Always append numerical suffix(like 001, 002 and so on) to instance name and host name, even if number_of_instances is 1."
-  type        = bool
-  default     = false
 }
 
 variable "image_id" {
@@ -60,8 +65,38 @@ variable "security_group_ids" {
   default     = []
 }
 
+variable "vswitch_id" {
+  description = "The virtual switch ID to launch in VPC."
+  type        = string
+  default     = ""
+}
+
+variable "vswitch_ids" {
+  description = "A list of virtual switch IDs to launch in."
+  type        = list(string)
+  default     = []
+}
+
 variable "name" {
   description = "Name to be used on all resources as prefix. Default to 'TF-Module-ECS-Instance'. The final default name would be TF-Module-ECS-Instance001, TF-Module-ECS-Instance002 and so on."
+  type        = string
+  default     = ""
+}
+
+variable "use_num_suffix" {
+  description = "Always append numerical suffix(like 001, 002 and so on) to instance name and host name, even if number_of_instances is 1."
+  type        = bool
+  default     = false
+}
+
+variable "host_name" {
+  description = "Host name used on all instances as prefix. Like if the value is TF-ECS-Host-Name and then the final host name would be TF-ECS-Host-Name001, TF-ECS-Host-Name002 and so on."
+  type        = string
+  default     = ""
+}
+
+variable "resource_group_id" {
+  description = "The Id of resource group which the instance belongs."
   type        = string
   default     = ""
 }
@@ -71,22 +106,11 @@ variable "description" {
   type        = string
   default     = "An ECS instance came from terraform-alicloud-modules/ecs-instance"
 }
-variable "resource_group_id" {
-  description = "The Id of resource group which the instance belongs."
-  type        = string
-  default     = ""
-}
 
 variable "internet_charge_type" {
   description = "The internet charge type of instance. Choices are 'PayByTraffic' and 'PayByBandwidth'."
   type        = string
   default     = "PayByTraffic"
-}
-
-variable "host_name" {
-  description = "Host name used on all instances as prefix. Like if the value is TF-ECS-Host-Name and then the final host name would be TF-ECS-Host-Name001, TF-ECS-Host-Name002 and so on."
-  type        = string
-  default     = ""
 }
 
 variable "password" {
@@ -131,18 +155,6 @@ variable "data_disks" {
   default     = []
 }
 
-variable "vswitch_id" {
-  description = "The virtual switch ID to launch in VPC."
-  type        = string
-  default     = ""
-}
-
-variable "vswitch_ids" {
-  description = "A list of virtual switch IDs to launch in."
-  type        = list(string)
-  default     = []
-}
-
 variable "private_ip" {
   description = "Configure Instance private IP address."
   type        = string
@@ -155,10 +167,10 @@ variable "private_ips" {
   default     = []
 }
 
-variable "internet_max_bandwidth_in" {
-  description = "The maximum internet in bandwidth of instance."
-  type        = number
-  default     = null
+variable "associate_public_ip_address" {
+  description = "Whether to associate a public ip address with an instance in a VPC."
+  type        = bool
+  default     = false
 }
 
 variable "internet_max_bandwidth_out" {
@@ -167,16 +179,22 @@ variable "internet_max_bandwidth_out" {
   default     = 0
 }
 
-variable "associate_public_ip_address" {
-  description = "Whether to associate a public ip address with an instance in a VPC."
-  type        = bool
-  default     = false
-}
-
 variable "instance_charge_type" {
   description = "The charge type of instance. Choices are 'PostPaid' and 'PrePaid'."
   type        = string
   default     = "PostPaid"
+}
+
+variable "subscription" {
+  description = "A mapping of fields for Prepaid ECS instances created. "
+  type        = map(string)
+  default = {
+    period             = 1
+    period_unit        = "Month"
+    renewal_status     = "Normal"
+    auto_renew_period  = 1
+    include_data_disks = true
+  }
 }
 
 variable "dry_run" {
@@ -233,18 +251,6 @@ variable "security_enhancement_strategy" {
   default     = "Active"
 }
 
-variable "subscription" {
-  description = "A mapping of fields for Prepaid ECS instances created. "
-  type        = map(string)
-  default = {
-    period             = 1
-    period_unit        = "Month"
-    renewal_status     = "Normal"
-    auto_renew_period  = 1
-    include_data_disks = true
-  }
-}
-
 variable "tags" {
   description = "A mapping of tags to assign to the resource."
   type        = map(string)
@@ -260,8 +266,10 @@ variable "volume_tags" {
 # Depreceted parameters
 variable "instance_name" {
   description = "(Deprecated) It has been deprecated from version 2.0.0 and use 'name' instead."
+  type        = string
   default     = ""
 }
+
 variable "group_ids" {
   description = "(Deprecated) It has been deprecated from version 2.0.0 and use 'security_group_ids' instead."
   type        = list(string)
@@ -270,6 +278,7 @@ variable "group_ids" {
 
 variable "system_category" {
   description = "(Deprecated) It has been deprecated from version 2.0.0 and use 'system_disk_category' instead."
+  type        = string
   default     = "cloud_efficiency"
 }
 
@@ -281,11 +290,13 @@ variable "system_size" {
 
 variable "disk_name" {
   description = "(Deprecated) It has been deprecated from version 2.0.0 and use 'data_disks' 'name' instead."
-  default     = "TF_ECS_Disk"
+  type        = string
+  default     = ""
 }
 
 variable "disk_category" {
   description = "(Deprecated) It has been deprecated from version 2.0.0 and use 'data_disks' 'category' instead."
+  type        = string
   default     = "cloud_efficiency"
 }
 
@@ -298,20 +309,15 @@ variable "disk_size" {
 variable "disk_tags" {
   description = "(Deprecated) It has been deprecated from version 2.0.0 and use 'volume_tags' instead."
   type        = map(string)
-
-  default = {
-    created_by   = "Terraform"
-    created_from = "module-tf-alicloud-ecs-instance."
-  }
+  default     = {}
 }
+
 variable "instance_tags" {
   description = "(Deprecated) It has been deprecated from version 0.1.0 and the field 'tags' replaces it."
   type        = map(string)
-  default = {
-    created_by   = "Terraform"
-    created_from = "module-tf-alicloud-ecs-instance"
-  }
+  default     = {}
 }
+
 variable "number_of_disks" {
   description = "(Deprecated) It has been deprecated from version 2.0.0 and use 'data_disks' instead."
   type        = number
