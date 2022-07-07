@@ -47,6 +47,8 @@ resource "alicloud_instance" "this" {
   credit_specification          = var.credit_specification != "" ? var.credit_specification : null
   spot_strategy                 = var.spot_strategy
   spot_price_limit              = var.spot_price_limit
+  operator_type                 = var.operator_type
+  status                        = var.status
   tags = merge(
     {
       Name = var.number_of_instances > 1 || var.use_num_suffix ? format("%s%03d", local.name, count.index + 1) : local.name

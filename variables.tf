@@ -323,3 +323,15 @@ variable "number_of_disks" {
   type        = number
   default     = 0
 }
+
+variable "operator_type" {
+  description = "The operation type. It is valid when `instance_charge_type` is `PrePaid`. Default value: upgrade. Valid values: `upgrade`, `downgrade`. NOTE: When the new instance type specified by the instance_type parameter has lower specifications than the current instance type, you must set `operator_type` to `downgrade`."
+  type        = string
+  default     = "upgrade"
+}
+
+variable "status" {
+  description = "The instance status. Valid values: `Running`, `Stopped`. You can control the instance start and stop through this parameter. Default to Running."
+  type        = string
+  default     = "Running"
+}
