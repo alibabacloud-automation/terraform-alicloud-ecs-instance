@@ -1,0 +1,37 @@
+name: E2E Test Check
+on:
+  pull_request:
+    branches:
+      - master
+      - main
+    types: [ 'opened', 'synchronize' ]
+    paths:
+      - '.github/**'
+      - '.github/workflows/**'
+      - '**/*.tf'
+
+jobs:
+  e2e-check:
+    # if: github.event.review.state == 'approved' || github.event.review.body == 'approved'
+    runs-on: ubuntu-latest
+    name: 'e2e check'
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: set id
+        id: set-job-id
+        uses: ayachensiyuan/get-action-job-id@v1.6
+        env: 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          job-name: 'e2e check'   
+      - name: Get pull request info
+        run: |
+          echo "repo name is" ${{github.event.pull_request.head.repo.full_name}}
+          echo "branch is" ${{github.event.pull_request.head.ref}}
+          echo "The current job id is ${{ steps.set-job-id.outputs.jobId }}"
+      - name: e2e test
+        run: |
+          objectPath="github-action/${{github.repository}}/e2e/Action-${{github.run_number}}-${{github.run_id}}-${{ steps.set-job-id.outputs.jobId }}"
+          go run scripts/curl_fc_trigger.go ${{github.event.pull_request.head.ref}} ${{github.event.pull_request.head.repo.full_name}} ${objectPath}
+          go run scripts/e2e_check.go ${objectPath}

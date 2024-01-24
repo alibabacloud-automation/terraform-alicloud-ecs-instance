@@ -1,0 +1,47 @@
+name: Weekly E2E Test Check
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * 0'
+
+jobs:
+  weekly-e2e-check:
+    if: github.repository_owner == 'alibabacloud-automation'
+    name: 'weekly e2e check'
+    runs-on: ubuntu-latest
+    permissions: write-all
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: set id
+        id: set-job-id
+        uses: ayachensiyuan/get-action-job-id@v1.6
+        env: 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          job-name: 'weekly e2e check'   
+      - name: Get job id
+        run: |
+          echo "The current job id is ${{ steps.set-job-id.outputs.jobId }}"
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
+      - name: weekly e2e test
+        run: |
+          objectPath="github-action/${{github.repository}}/weekly-e2e/Action-${{github.run_number}}-${{github.run_id}}-${{ steps.set-job-id.outputs.jobId }}"
+          echo "default branch: ${{ steps.extract_branch.outputs.branch }}"
+          go run scripts/curl_fc_trigger.go ${{ steps.extract_branch.outputs.branch }} ${{github.repository}} ${objectPath}
+          go run scripts/e2e_check.go ${objectPath}
+      # - name: update test record
+      #   run: |
+      #     git add TestRecord.md
+      #     cd .git
+      #     sudo chmod -R a+rwX .
+      #     sudo find . -type d -exec chmod g+s '{}' +
+      # - name: Commit & Push changes
+      #   uses: actions-js/push@master
+      #   with:
+      #     github_token: ${{ secrets.GITHUB_TOKEN }}
+      #     message: 'Update TestRecord'
+      #     branch: main
