@@ -13,15 +13,22 @@ variable "instances_number" {
   default = 1
 }
 
-##################################################################
-# Data sources to get VPC, subnet, security group and AMI details
-##################################################################
-data "alicloud_vpcs" "default" {
-  is_default = true
+#############################################################
+# create VPC, vswitch and security group
+#############################################################
+data "alicloud_zones" "default" {
+  available_resource_creation = "VSwitch"
 }
 
-data "alicloud_vswitches" "all" {
-  vpc_id = data.alicloud_vpcs.default.ids.0
+resource "alicloud_vpc" "default" {
+  vpc_name   = "tf_module"
+  cidr_block = "172.16.0.0/12"
+}
+
+resource "alicloud_vswitch" "default" {
+  vpc_id     = alicloud_vpc.default.id
+  cidr_block = "172.16.0.0/21"
+  zone_id    = data.alicloud_zones.default.zones[0].id
 }
 
 data "alicloud_images" "ubuntu" {
@@ -31,7 +38,7 @@ data "alicloud_images" "ubuntu" {
 
 // retrieve 1c2g instance type
 data "alicloud_instance_types" "normal" {
-  availability_zone = data.alicloud_vswitches.all.vswitches.0.zone_id
+  availability_zone = alicloud_vswitch.default.zone_id
   cpu_core_count    = 1
   memory_size       = 2
 }
@@ -41,7 +48,7 @@ module "security_group" {
   source  = "alibaba/security-group/alicloud"
   profile = var.profile
   region  = var.region
-  vpc_id  = data.alicloud_vpcs.default.ids.0
+  vpc_id  = alicloud_vpc.default.id
   version = "~> 2.0"
 }
 
@@ -55,7 +62,7 @@ module "ecs" {
   name                        = "example-with-disks"
   image_id                    = data.alicloud_images.ubuntu.ids.0
   instance_type               = data.alicloud_instance_types.normal.ids.0
-  vswitch_id                  = data.alicloud_vswitches.all.ids.0
+  vswitch_id                  = alicloud_vswitch.default.id
   security_group_ids          = [module.security_group.this_security_group_id]
   associate_public_ip_address = true
   internet_max_bandwidth_out  = 10
@@ -71,6 +78,6 @@ resource "alicloud_disk_attachment" "this_ecs" {
 resource "alicloud_disk" "this" {
   count = var.instances_number
 
-  availability_zone = module.ecs.this_availability_zone[count.index]
-  size              = 20
+  zone_id = module.ecs.this_availability_zone[count.index]
+  size    = 20
 }

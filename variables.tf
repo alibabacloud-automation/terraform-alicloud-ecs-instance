@@ -143,6 +143,48 @@ variable "system_disk_size" {
   default     = 40
 }
 
+variable "system_disk_name" {
+  description = "The name of the system disk. The name must be 2 to 128 characters in length and can contain letters, digits, periods (.), colons (:), underscores (_), and hyphens (-). It must start with a letter and cannot start with http:// or https://."
+  type        = string
+  default     = ""
+}
+
+variable "system_disk_description" {
+  description = "The description of the system disk. The description must be 2 to 256 characters in length and cannot start with http:// or https://."
+  type        = string
+  default     = ""
+}
+
+variable "system_disk_performance_level" {
+  description = "The performance level of the ESSD used as the system disk, Valid values: `PL0`, `PL1`, `PL2`, `PL3`, Default to `PL1`."
+  type        = string
+  default     = ""
+}
+
+variable "system_disk_storage_cluster_id" {
+  description = "The ID of the dedicated block storage cluster. If you want to use disks in a dedicated block storage cluster as system disks when you create instances, you must specify this parameter."
+  type        = string
+  default     = ""
+}
+
+variable "system_disk_encrypted" {
+  description = "Specifies whether to encrypt the system disk. Valid values: `true`,`false`. Default value: `false`."
+  type        = bool
+  default     = false
+}
+
+variable "system_disk_kms_key_id" {
+  description = "The ID of the Key Management Service (KMS) key to be used for the system disk."
+  type        = string
+  default     = ""
+}
+
+variable "system_disk_encrypt_algorithm" {
+  description = "The algorithm to be used to encrypt the system disk. Valid values are `aes-256`, `sm4-128`. Default value is `aes-256`."
+  type        = string
+  default     = ""
+}
+
 variable "system_disk_auto_snapshot_policy_id" {
   description = "The ID of the automatic snapshot policy applied to the system disk."
   type        = string
@@ -186,7 +228,7 @@ variable "instance_charge_type" {
 }
 
 variable "subscription" {
-  description = "A mapping of fields for Prepaid ECS instances created. "
+  description = "A mapping of fields for Prepaid ECS instances created. The attributes supported are `period`, `period_unit`, `renewal_status`, `auto_renew_period`, `include_data_disks`. The attribute `period` is valid and required when `instance_charge_type` is `PrePaid`."
   type        = map(string)
   default = {
     period             = 1
@@ -334,4 +376,124 @@ variable "status" {
   description = "The instance status. Valid values: `Running`, `Stopped`. You can control the instance start and stop through this parameter. Default to Running."
   type        = string
   default     = "Running"
+}
+
+variable "hpc_cluster_id" {
+  description = "The ID of the Elastic High Performance Computing (E-HPC) cluster to which to assign the instance."
+  type        = string
+  default     = null
+}
+
+variable "network_interface_ids" {
+  description = "The list of network interfaces created with instances. When creating multiple ecs instances, leave the corresponding parameter set to \"\" for instances that do not need ENI."
+  type        = list(string)
+  default     = []
+}
+
+variable "auto_release_time" {
+  description = "The automatic release time of the `PostPaid` instance. "
+  type        = string
+  default     = null
+}
+
+variable "secondary_private_ips" {
+  description = "A list of Secondary private IP addresses which is selected from within the CIDR block of the VSwitch. This parameter is conflict with 'secondary_private_ip_address_count'. "
+  type        = list(string)
+  default     = null
+}
+
+variable "secondary_private_ip_address_count" {
+  description = "The number of private IP addresses to be automatically assigned from within the CIDR block of the vswitch. This parameter is conflict with 'secondary_private_ips'."
+  type        = number
+  default     = null
+}
+
+variable "deployment_set_id" {
+  description = "The ID of the deployment set to which to deploy the instance."
+  type        = string
+  default     = null
+}
+
+variable "stopped_mode" {
+  description = "The stop mode of the pay-as-you-go instance. Valid values: `StopCharging`,`KeepCharging`, `Not-applicable`."
+  type        = string
+  default     = null
+}
+
+variable "maintenance_time" {
+  description = "The time of maintenance."
+  type        = list(map(string))
+  default     = []
+}
+
+variable "maintenance_action" {
+  description = "The maintenance action. Valid values: `Stop`, `AutoRecover` and `AutoRedeploy`."
+  type        = string
+  default     = null
+}
+
+variable "maintenance_notify" {
+  description = "Specifies whether to send an event notification before instance shutdown. Valid values: `true`, `false`. Default value: `false`."
+  type        = bool
+  default     = null
+}
+
+variable "spot_duration" {
+  description = "The retention time of the preemptive instance in hours. Valid values: `0`, `1`, `2`, `3`, `4`, `5`, `6`. Retention duration 2~6 is under invitation test, please submit a work order if you need to open. If the value is `0`, the mode is no protection period. Default value is `1`."
+  type        = number
+  default     = null
+}
+
+variable "http_tokens" {
+  description = "Specifies whether to forcefully use the security-enhanced mode (IMDSv2) to access instance metadata. Default value: optional."
+  type        = string
+  default     = null
+}
+
+variable "http_endpoint" {
+  description = "Specifies whether to enable the access channel for instance metadata. Valid values: `enabled`, `disabled`. Default value: `enabled`."
+  type        = string
+  default     = null
+}
+
+variable "http_put_response_hop_limit" {
+  description = "The HTTP PUT response hop limit for accessing instance metadata. Valid values: 1 to 64. Default value: 1."
+  type        = number
+  default     = null
+}
+
+variable "ipv6_address_count" {
+  description = "The number of IPv6 addresses to randomly generate for the primary ENI. Valid values: 1 to 10. This parameter is conflict with 'ipv6_addresses'."
+  type        = number
+  default     = null
+}
+
+variable "ipv6_addresses" {
+  description = "A list of IPv6 address to be assigned to the primary ENI. Support up to 10. This parameter is conflict with 'ipv6_address_count'."
+  type        = list(string)
+  default     = null
+}
+
+variable "dedicated_host_id" {
+  description = "The ID of the dedicated host on which to create the instance. If you set the DedicatedHostId parameter, the `spot_strategy` and `spot_price_limit` parameters cannot be set. This is because preemptible instances cannot be created on dedicated hosts."
+  type        = string
+  default     = null
+}
+
+variable "launch_template_name" {
+  description = "The name of the launch template."
+  type        = string
+  default     = null
+}
+
+variable "launch_template_id" {
+  description = "The ID of the launch template."
+  type        = string
+  default     = null
+}
+
+variable "launch_template_version" {
+  description = "The version of the launch template."
+  type        = string
+  default     = null
 }

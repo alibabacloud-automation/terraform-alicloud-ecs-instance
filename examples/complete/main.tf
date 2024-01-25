@@ -32,12 +32,17 @@ resource "alicloud_ecs_disk_attachment" "default" {
   instance_id = module.ecs_instance.this_instance_id[0]
 }
 
+resource "random_integer" "default" {
+  min = 10000
+  max = 99999
+}
+
 resource "alicloud_ecs_key_pair" "default" {
-  key_pair_name = "key_pair_name_2022"
+  key_pair_name = "key_pair_name_${random_integer.default.result}"
 }
 
 resource "alicloud_ram_role" "default" {
-  name     = "tf-ram-name-2022"
+  name     = "tf-ram-name-${random_integer.default.result}"
   document = var.document
 }
 
