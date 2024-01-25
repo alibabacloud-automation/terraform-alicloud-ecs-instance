@@ -6,7 +6,7 @@ provider "alicloud" {
 }
 locals {
   // This type of instance contains the following instance type families
-  instance_type_families = ["ecs.ga1", "ecs.vgn5i"]
+  instance_type_families = ["ecs.vgn7i-vws", "ecs.vgn6i"]
 }
 
 

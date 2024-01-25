@@ -122,7 +122,7 @@ variable "user_data" {
 variable "deletion_protection" {
   description = "Whether enable the deletion protection or not. 'true': Enable deletion protection. 'false': Disable deletion protection."
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "force_delete" {
