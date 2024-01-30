@@ -2,7 +2,7 @@ name: Weekly E2E Test Check
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 0 * * 2'
+    - cron: '0 0 * * 0'
 
 jobs:
   weekly-e2e-check:
