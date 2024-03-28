@@ -240,3 +240,9 @@ variable "volume_tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "hpc_cluster_id" {
+  description = "The ID of the Elastic High Performance Computing (E-HPC) cluster to which to assign the instance."
+  type        = string
+  default     = null
+}

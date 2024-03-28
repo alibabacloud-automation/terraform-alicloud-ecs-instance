@@ -6,12 +6,12 @@ provider "alicloud" {
 }
 locals {
   // This type of instance contains the following instance type families
-  instance_type_families = ["ecs.scch5", "ecs.sccg5"]
+  instance_type_families = ["ecs.scch5", "ecs.scch5s", "ecs.sccg5"]
 }
 
 
 data "alicloud_instance_types" "this" {
-  instance_type_family = var.instance_type_family != "" && contains(local.instance_type_families, var.instance_type_family) ? var.instance_type_family : "ecs.scch5"
+  instance_type_family = var.instance_type_family != "" && contains(local.instance_type_families, var.instance_type_family) ? var.instance_type_family : "ecs.scch5s"
   instance_charge_type = var.instance_charge_type
   cpu_core_count       = var.cpu_core_count > 0 ? var.cpu_core_count : null
   memory_size          = var.memory_size > 0 ? var.memory_size : null
@@ -91,4 +91,6 @@ module "ecs-instance" {
   // Set the useless parameters
   credit_specification = null
   spot_strategy        = "NoSpot"
+
+  hpc_cluster_id = var.hpc_cluster_id
 }
