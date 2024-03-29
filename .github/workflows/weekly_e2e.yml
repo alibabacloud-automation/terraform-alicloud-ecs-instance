@@ -33,15 +33,29 @@ jobs:
           echo "default branch: ${{ steps.extract_branch.outputs.branch }}"
           go run scripts/curl_fc_trigger.go ${{ steps.extract_branch.outputs.branch }} ${{github.repository}} ${objectPath}
           go run scripts/e2e_check.go ${objectPath}
-      # - name: update test record
-      #   run: |
-      #     git add TestRecord.md
-      #     cd .git
-      #     sudo chmod -R a+rwX .
-      #     sudo find . -type d -exec chmod g+s '{}' +
-      # - name: Commit & Push changes
-      #   uses: actions-js/push@master
-      #   with:
-      #     github_token: ${{ secrets.GITHUB_TOKEN }}
-      #     message: 'Update TestRecord'
-      #     branch: main
+      - name: whether to upload test record
+        id: whether-to-upload-test-record
+        run: |
+          REPO_NAME=$(echo $GITHUB_REPOSITORY | cut -d'/' -f2)
+          modules=$(curl -sL "https://terraform-fc-test-for-example-module.oss-ap-southeast-1.aliyuncs.com/testRecordReleased.json")
+          if echo "$modules" | jq --arg key "$REPO_NAME" -re 'has($key)' | grep -q true; then
+              echo "The key exists at the JSON object."
+              echo "::set-output name=output_value::1"
+          else
+              echo "The key does not exist at the JSON object."
+              echo "::set-output name=output_value::0"
+          fi
+      - name: update test record
+        if: steps.whether-to-upload-test-record.outputs.output_value == 1
+        run: |
+          git add TestRecord.md
+          cd .git
+          sudo chmod -R a+rwX .
+          sudo find . -type d -exec chmod g+s '{}' +
+      - name: Commit & Push changes
+        if: steps.whether-to-upload-test-record.outputs.output_value == 1
+        uses: actions-js/push@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          message: 'Update TestRecord'
+          branch: ${{ steps.extract_branch.outputs.branch }}
