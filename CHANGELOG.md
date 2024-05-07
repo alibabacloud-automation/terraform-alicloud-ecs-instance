@@ -1,4 +1,23 @@
-## 2.9.0 (Unreleased)
+## 2.12.0 (unreleased)
+## 2.11.0 (May 7, 2024)
+
+IMPROVEMENTS: 
+
+- resource/alicloud_instance: add hpc_cluster_id; improve examples [GH-58](https://github.com/alibabacloud-automation/terraform-alicloud-ecs-instance/pull/58)
+
+## 2.10.0 (July 7, 2022)
+
+IMPROVEMENTS: 
+
+- Add support for new parameter `operator_type` and `status`. [GH-57](https://github.com/terraform-alicloud-modules/terraform-alicloud-ecs-instance/pull/57)
+
+## 2.9.0 (May 12, 2022)
+
+IMPROVEMENTS: 
+
+- Improves the module examples/complete [GH-55](https://github.com/alibabacloud-automation/terraform-alicloud-ecs-instance/pull/55)
+
+
 ## 2.8.0 (December 23, 2021)
 
 IMPROVEMENTS: 
