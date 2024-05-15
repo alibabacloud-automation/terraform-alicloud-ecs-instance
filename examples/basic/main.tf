@@ -40,8 +40,9 @@ data "alicloud_images" "ubuntu" {
 }
 
 data "alicloud_images" "centos" {
-  most_recent = true
-  name_regex  = "^centos_7*"
+  most_recent   = true
+  name_regex    = "^centos_7*"
+  instance_type = data.alicloud_instance_types.normal.ids.0
 }
 // retrieve 1c2g instance type
 data "alicloud_instance_types" "normal" {
@@ -313,7 +314,7 @@ module "ecs_with_multi_eni" {
   number_of_instances = 4
 
   name                        = "example-multi-eni"
-  image_ids                   = [data.alicloud_images.ubuntu.ids.0, data.alicloud_images.centos.ids.0]
+  image_id                    = data.alicloud_images.ubuntu.ids.0
   instance_type               = data.alicloud_instance_types.normal.ids.0
   vswitch_id                  = alicloud_vswitch.default.id
   security_group_ids          = [module.security_group.this_security_group_id]
@@ -385,5 +386,5 @@ module "ecs_with_ipv6_address" {
   security_group_ids   = [alicloud_security_group.ipv6.id]
   system_disk_category = "cloud_efficiency"
 
-  ipv6_addresses     = [cidrhost(alicloud_vswitch.ipv6.ipv6_cidr_block, 64)]
+  ipv6_addresses = [cidrhost(alicloud_vswitch.ipv6.ipv6_cidr_block, 64)]
 }
