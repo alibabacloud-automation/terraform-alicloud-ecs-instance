@@ -5,7 +5,7 @@ variable "region" {
   default = "cn-hangzhou"
 }
 variable "zone_id" {
-  default = "cn-hangzhou-h"
+  default = "cn-hangzhou-i"
 }
 
 provider "alicloud" {
