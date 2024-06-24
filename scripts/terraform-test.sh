@@ -1,15 +1,18 @@
 #!/usr/bin/env sh
 
-terraformVersionFile="tfversion.md"
-echo "" > $terraformVersionFile
 version=""
 updateFolder="examples/complete"
 tfvars="tfvars/01-update.tfvars"
-
 f=${1}
 success=true
 # echo $f
 exitCode=0
+terraformVersionFile="tfversion.md"
+
+if [ $# -ge 2 ]; then
+  echo "" > $terraformVersionFile
+fi
+
 echo ""
 echo "====> Terraform testing in" $f
 # init
@@ -105,7 +108,9 @@ if [[ $exitCode -ne 1 ]]; then
   rm -rf $f/.terraform.lock.hcl
 fi
 
-echo -e "### Versions\n" >> $terraformVersionFile 
-echo -e "${version}" >> $terraformVersionFile 
+if [ $# -ge 2 ]; then
+  echo -e "### Versions\n" >> $terraformVersionFile 
+  echo -e "${version}" >> $terraformVersionFile 
+fi
 
 exit $exitCode
