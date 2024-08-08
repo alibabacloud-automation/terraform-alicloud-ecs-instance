@@ -83,6 +83,18 @@ variable "system_disk_size" {
   default     = 40
 }
 
+variable "system_disk_name" {
+  description = "The name of the system disk. The name must be 2 to 128 characters in length and can contain letters, digits, periods (.), colons (:), underscores (_), and hyphens (-). It must start with a letter and cannot start with http:// or https://."
+  type        = string
+  default     = "tf-testacc-system-disk-name"
+}
+
+variable "system_disk_description" {
+  description = "The description of the system disk. The description must be 2 to 256 characters in length and cannot start with http:// or https://."
+  type        = string
+  default     = "tf-testacc-system-disk-description"
+}
+
 variable "internet_max_bandwidth_out" {
   description = "The maximum internet out bandwidth of instance."
   type        = number

@@ -43,7 +43,7 @@ module "ecs_instance" {
   //  Also can specify a instance type
   //  instance_type = "ecs.r6.large"
 
- vswitch_id = alicloud_vswitch.default.id
+  vswitch_id = alicloud_vswitch.default.id
 
   security_group_ids = [alicloud_security_group.default.id]
 

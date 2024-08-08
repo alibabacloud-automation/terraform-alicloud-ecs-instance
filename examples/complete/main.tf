@@ -10,7 +10,8 @@ data "alicloud_images" "default" {
 }
 
 data "alicloud_instance_types" "default" {
-  availability_zone = data.alicloud_zones.default.zones.0.id
+  availability_zone    = data.alicloud_zones.default.zones.0.id
+  system_disk_category = "cloud_essd"
 }
 
 data "alicloud_ecs_auto_snapshot_policies" "default" {
@@ -107,8 +108,11 @@ module "example" {
   password                            = var.password
   kms_encrypted_password              = var.kms_encrypted_password
   kms_encryption_context              = alicloud_kms_ciphertext.kms.encryption_context
-  system_disk_category                = "cloud_efficiency"
+  system_disk_category                = "cloud_essd"
   system_disk_size                    = var.system_disk_size
+  system_disk_name                    = var.system_disk_name
+  system_disk_description             = var.system_disk_description
+  system_disk_performance_level       = "PL0"
   system_disk_auto_snapshot_policy_id = data.alicloud_ecs_auto_snapshot_policies.default.policies.0.id
   data_disks = [
     {

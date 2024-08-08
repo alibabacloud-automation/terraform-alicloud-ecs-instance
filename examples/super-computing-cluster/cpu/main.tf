@@ -34,8 +34,8 @@ resource "alicloud_security_group" "default" {
 }
 
 resource "alicloud_ecs_hpc_cluster" "default" {
-  name          = "tf_module"
-  description   = "For Terraform Test"
+  name        = "tf_module"
+  description = "For Terraform Test"
 }
 
 // ECS Module

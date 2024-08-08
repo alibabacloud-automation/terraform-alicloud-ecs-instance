@@ -2,10 +2,10 @@ variable "profile" {
   default = "default"
 }
 variable "region" {
-  default = "cn-beijing"
+  default = "cn-hangzhou"
 }
 variable "zone_id" {
-  default = "cn-beijing-h"
+  default = "cn-hangzhou-i"
 }
 
 provider "alicloud" {
