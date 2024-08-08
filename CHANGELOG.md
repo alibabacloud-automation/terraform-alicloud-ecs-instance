@@ -1,4 +1,9 @@
-## 2.12.0 (unreleased)
+## 2.13.0 (unreleased)
+## 2.12.0 (August 8, 2024)
+
+- Module/alicloud_instance: supported the system_disk_name, system_disk_description, system_disk_performance_level attribute [GH-62](https://github.com/alibabacloud-automation/terraform-alicloud-ecs-instance/pull/62)
+
+
 ## 2.11.0 (May 7, 2024)
 
 IMPROVEMENTS: 
