@@ -20,15 +20,17 @@ document = <<EOF
 	  EOF
 
 # Ecs instance variables
-private_ip                 = "172.16.0.12"
-private_ips                = ["172.16.0.12"]
-name                       = "update-tf-testacc-name"
-host_name                  = "update-tf-testacc-host-name"
-description                = "update-tf-testacc-description"
-internet_charge_type       = "PayByBandwidth"
+private_ip  = "172.16.0.12"
+private_ips = ["172.16.0.12"]
+name        = "update-tf-testacc-name"
+host_name   = "update-tf-testacc-host-name"
+description = "update-tf-testacc-description"
+#internet_charge_type       = "PayByBandwidth"
 password                   = "YourPassword123!update"
 kms_encrypted_password     = "YourPassword123!update"
-# system_disk_size           = 50
+system_disk_size           = 50
+system_disk_name           = "update-tf-testacc-system-disk-name"
+system_disk_description    = "update-tf-testacc-system-disk-description"
 internet_max_bandwidth_out = 20
 subscription = {
   period             = 1

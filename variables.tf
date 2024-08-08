@@ -152,13 +152,13 @@ variable "system_disk_name" {
 variable "system_disk_description" {
   description = "The description of the system disk. The description must be 2 to 256 characters in length and cannot start with http:// or https://."
   type        = string
-  default     = ""
+  default     = "An ECS instance System Disk came from terraform-alicloud-modules/ecs-instance"
 }
 
 variable "system_disk_performance_level" {
   description = "The performance level of the ESSD used as the system disk, Valid values: `PL0`, `PL1`, `PL2`, `PL3`, Default to `PL1`."
   type        = string
-  default     = ""
+  default     = "PL1"
 }
 
 variable "system_disk_storage_cluster_id" {
