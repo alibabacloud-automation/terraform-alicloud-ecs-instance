@@ -42,14 +42,9 @@ jobs:
             unzip terraform_1.6.0_linux_amd64.zip -d /usr/local/bin/
           fi
           exp="examples"
-          submod="modules"
           output_file="combined_output.txt"
-          echo "./" > "$output_file"
           if [[ -d "$exp" ]]; then
               find $exp -type d -print -mindepth 1 -maxdepth 1 >> $output_file
-          fi
-          if [[ -d "$submod" ]]; then
-              find $submod -type d -print -mindepth 1 -maxdepth 1 >> $output_file
           fi
 
           exitCode=0
