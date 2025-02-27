@@ -1,16 +1,6 @@
-variable "profile" {
-  default = "default"
-}
-variable "region" {
-  default = "cn-hangzhou"
-}
-variable "zone_id" {
-  default = "cn-hangzhou-h"
-}
 
 provider "alicloud" {
-  region  = var.region
-  profile = var.profile
+  region = var.region
 }
 
 #############################################################
@@ -29,19 +19,17 @@ resource "alicloud_vswitch" "default" {
 }
 
 resource "alicloud_security_group" "default" {
-  name   = "default"
-  vpc_id = alicloud_vpc.default.id
+  security_group_name = "default"
+  vpc_id              = alicloud_vpc.default.id
 }
 
-// ECS Module
+# ECS Module
 module "bare_metal_cpu_ecs_instance" {
-  source  = "../../modules/bare-metal-cpu"
-  profile = var.profile
-  region  = var.region
+  source = "../../modules/bare-metal-cpu"
 
-  instance_type_family = "ecs.ebmhfg6"
-  //  Also can specify a instance type
-  //  instance_type = "ecs.ebmhfg5.2xlarge"
+  instance_type_family = "ecs.ebmc6"
+  #  Also can specify a instance type
+  #  instance_type = "ecs.ebmhfg5.2xlarge"
 
   vswitch_id = alicloud_vswitch.default.id
 
@@ -51,6 +39,6 @@ module "bare_metal_cpu_ecs_instance" {
 
   internet_max_bandwidth_out = 10
 
-  //  Post-paid instances are out of stock, pre-paid instances must be specified for this type of instance
-  //  instance_charge_type = "PrePaid"
+  #  Post-paid instances are out of stock, pre-paid instances must be specified for this type of instance
+  #  instance_charge_type = "PrePaid"
 }

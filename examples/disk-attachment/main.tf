@@ -1,17 +1,7 @@
-variable "profile" {
-  default = "default"
-}
-variable "region" {
-  default = "cn-hangzhou"
-}
 provider "alicloud" {
-  region  = var.region
-  profile = var.profile
+  region = var.region
 }
 
-variable "instances_number" {
-  default = 1
-}
 
 #############################################################
 # create VPC, vswitch and security group
@@ -36,32 +26,29 @@ data "alicloud_images" "ubuntu" {
   name_regex  = "^ubuntu_18.*64"
 }
 
-// retrieve 1c2g instance type
+# retrieve 1c2g instance type
 data "alicloud_instance_types" "normal" {
   availability_zone = alicloud_vswitch.default.zone_id
   cpu_core_count    = 1
   memory_size       = 2
 }
 
-// Security Group module for ECS Module
+# Security Group module for ECS Module
 module "security_group" {
-  source  = "alibaba/security-group/alicloud"
-  profile = var.profile
-  region  = var.region
+  source = "alibaba/security-group/alicloud"
+
   vpc_id  = alicloud_vpc.default.id
   version = "~> 2.0"
 }
 
 module "ecs" {
-  source  = "../.."
-  profile = var.profile
-  region  = var.region
+  source = "../.."
 
   number_of_instances = 1
 
   name                        = "example-with-disks"
-  image_id                    = data.alicloud_images.ubuntu.ids.0
-  instance_type               = data.alicloud_instance_types.normal.ids.0
+  image_id                    = data.alicloud_images.ubuntu.ids[0]
+  instance_type               = data.alicloud_instance_types.normal.ids[0]
   vswitch_id                  = alicloud_vswitch.default.id
   security_group_ids          = [module.security_group.this_security_group_id]
   associate_public_ip_address = true

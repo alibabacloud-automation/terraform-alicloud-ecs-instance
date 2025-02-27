@@ -1,39 +1,23 @@
-variable "region" {
-  description = "The region used to launch this module resources."
-  default     = ""
-}
-
-variable "profile" {
-  description = "The profile name as set in the shared credentials file. If not set, it will be sourced from the ALICLOUD_PROFILE environment variable."
-  default     = ""
-}
-variable "shared_credentials_file" {
-  description = "This is the path to the shared credentials file. If this is not set and a profile is specified, $HOME/.aliyun/config.json will be used."
-  default     = ""
-}
-
-variable "skip_region_validation" {
-  description = "Skip static validation of region ID. Used by users of alternative AlibabaCloud-like APIs or users w/ access to regions that are not public (yet)."
-  default     = false
-}
-
 # Images data source variables
 variable "most_recent" {
   description = "If more than one result are returned, select the most recent one."
+  type        = bool
   default     = true
 }
 
 variable "owners" {
   description = "Filter results by a specific image owner. Valid items are 'system', 'self', 'others', 'marketplace'."
+  type        = string
   default     = "system"
 }
 
 variable "image_name_regex" {
-  description = "A regex string to filter resulting images by name. "
+  description = "A regex string to filter resulting images by name."
+  type        = string
   default     = "^ubuntu_18.*64"
 }
 
-# Ecs instance variables
+# ECS instance variables
 variable "number_of_instances" {
   description = "The number of instances to be created."
   type        = number
@@ -42,21 +26,25 @@ variable "number_of_instances" {
 
 variable "image_id" {
   description = "The image id used to launch one or more ecs instances."
+  type        = string
   default     = ""
 }
 
 variable "image_ids" {
   description = "A list of ecs image IDs to launch one or more ecs instances."
+  type        = list(string)
   default     = []
 }
 
 variable "instance_type_family" {
   description = "The instance type family used to retrieve bare metal CPU instance type. Valid values: [\"ecs.c6\", \"ecs.c5\", \"ecs.ic5\"]"
+  type        = string
   default     = "ecs.c6"
 }
 
 variable "instance_type" {
   description = "The instance type used to launch one or more ecs instances."
+  type        = string
   default     = ""
 }
 
@@ -78,33 +66,27 @@ variable "security_group_ids" {
   default     = []
 }
 
-variable "name" {
-  description = "Name used on all instances as prefix. Like TF-ECS-Instance-1, TF-ECS-Instance-2."
-  default     = "TF-ECS-Instance"
-}
-
 variable "resource_group_id" {
   description = "The Id of resource group which the instance belongs."
+  type        = string
   default     = ""
 }
 
 variable "internet_charge_type" {
   description = "The internet charge type of instance. Choices are 'PayByTraffic' and 'PayByBandwidth'."
+  type        = string
   default     = "PayByTraffic"
-}
-
-variable "host_name" {
-  description = "Host name used on all instances as prefix. Like TF-ECS-Host-Name-1, TF-ECS-Host-Name-2."
-  default     = ""
 }
 
 variable "password" {
   description = "The password of instance."
+  type        = string
   default     = ""
 }
 
 variable "kms_encrypted_password" {
   description = "An KMS encrypts password used to an instance. It is conflicted with 'password'."
+  type        = string
   default     = ""
 }
 
@@ -116,6 +98,7 @@ variable "kms_encryption_context" {
 
 variable "system_disk_category" {
   description = "The system disk category used to launch one or more ecs instances."
+  type        = string
   default     = "cloud_efficiency"
 }
 
@@ -139,6 +122,7 @@ variable "data_disks" {
 
 variable "vswitch_id" {
   description = "The virtual switch ID to launch in VPC."
+  type        = string
   default     = ""
 }
 
@@ -150,6 +134,7 @@ variable "vswitch_ids" {
 
 variable "private_ip" {
   description = "Configure Instance private IP address"
+  type        = string
   default     = ""
 }
 
@@ -173,6 +158,7 @@ variable "associate_public_ip_address" {
 
 variable "instance_charge_type" {
   description = "The charge type of instance. Choices are 'PostPaid' and 'PrePaid'."
+  type        = string
   default     = "PostPaid"
 }
 
@@ -184,16 +170,19 @@ variable "dry_run" {
 
 variable "user_data" {
   description = "User data to pass to instance on boot"
+  type        = string
   default     = ""
 }
 
 variable "role_name" {
   description = "Instance RAM role name. The name is provided and maintained by RAM. You can use 'alicloud_ram_role' to create a new one."
+  type        = string
   default     = ""
 }
 
 variable "key_name" {
   description = "The name of SSH key pair that can login ECS instance successfully without password. If it is specified, the password would be invalid."
+  type        = string
   default     = ""
 }
 
@@ -205,11 +194,13 @@ variable "deletion_protection" {
 
 variable "force_delete" {
   description = "If it is true, the 'PrePaid' instance will be change to 'PostPaid' and then deleted forcibly. However, because of changing instance charge type has CPU core count quota limitation, so strongly recommand that 'Don't modify instance charge type frequentlly in one month'."
+  type        = bool
   default     = false
 }
 
 variable "security_enhancement_strategy" {
   description = "The security enhancement strategy."
+  type        = string
   default     = "Active"
 }
 
@@ -242,10 +233,12 @@ variable "volume_tags" {
 
 variable "spot_strategy" {
   description = "The spot strategy of a Pay-As-You-Go instance, and it takes effect only when parameter 'instance_charge_type' is 'PostPaid'. Value range: 'NoSpot': A regular Pay-As-You-Go instance. 'SpotWithPriceLimit': A price threshold for a spot instance. 'SpotAsPriceGo': A price that is based on the highest Pay-As-You-Go instance"
+  type        = string
   default     = "NoSpot"
 }
 
 variable "spot_price_limit" {
   description = "The hourly price threshold of a instance, and it takes effect only when parameter 'spot_strategy' is 'SpotWithPriceLimit'. Three decimals is allowed at most."
+  type        = number
   default     = 0
 }

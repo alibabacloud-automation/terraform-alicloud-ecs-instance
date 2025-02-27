@@ -1,16 +1,5 @@
-variable "profile" {
-  default = "default"
-}
-variable "region" {
-  default = "cn-hangzhou"
-}
-variable "zone_id" {
-  default = "cn-hangzhou-h"
-}
-
 provider "alicloud" {
-  region  = var.region
-  profile = var.profile
+  region = var.region
 }
 
 #############################################################
@@ -29,19 +18,17 @@ resource "alicloud_vswitch" "default" {
 }
 
 resource "alicloud_security_group" "default" {
-  name   = "default"
-  vpc_id = alicloud_vpc.default.id
+  security_group_name = "default"
+  vpc_id              = alicloud_vpc.default.id
 }
 
-// ECS Module
+# ECS Module
 module "ecs_instance" {
-  source  = "../../../modules/x86-architecture-entry-level"
-  profile = var.profile
-  region  = var.region
+  source = "../../../modules/x86-architecture-entry-level"
 
   instance_type_family = "ecs.t6"
-  //  Also can specify a instance type
-  //  instance_type = "ecs.t6-c4m1.large"
+  #  Also can specify a instance type
+  #  instance_type = "ecs.t6-c4m1.large"
 
   vswitch_id = alicloud_vswitch.default.id
 
