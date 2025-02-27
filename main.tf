@@ -20,6 +20,10 @@ resource "alicloud_instance" "this" {
   system_disk_description             = var.system_disk_description
   system_disk_performance_level       = var.system_disk_performance_level
   system_disk_auto_snapshot_policy_id = var.system_disk_auto_snapshot_policy_id
+  system_disk_encrypted               = var.system_disk_encrypted
+  system_disk_kms_key_id              = var.system_disk_kms_key_id
+  system_disk_encrypt_algorithm       = var.system_disk_encrypt_algorithm
+  system_disk_storage_cluster_id      = var.system_disk_storage_cluster_id
   dynamic "data_disks" {
     for_each = var.data_disks
     content {

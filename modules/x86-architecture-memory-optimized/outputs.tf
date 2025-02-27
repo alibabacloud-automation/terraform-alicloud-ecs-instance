@@ -1,4 +1,4 @@
-// Output the IDs of the ECS instances created
+# Output the IDs of the ECS instances created
 output "this_instance_id" {
   description = "The instance ids."
   value       = module.ecs-instance.this_instance_id

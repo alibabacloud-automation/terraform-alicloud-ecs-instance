@@ -1,16 +1,5 @@
-variable "profile" {
-  default = "default"
-}
-variable "region" {
-  default = "cn-hangzhou"
-}
-variable "zone_id" {
-  default = "cn-hangzhou-h"
-}
-
 provider "alicloud" {
-  region  = var.region
-  profile = var.profile
+  region = var.region
 }
 
 #############################################################
@@ -29,8 +18,8 @@ resource "alicloud_vswitch" "default" {
 }
 
 resource "alicloud_security_group" "default" {
-  name   = "default"
-  vpc_id = alicloud_vpc.default.id
+  security_group_name = "default"
+  vpc_id              = alicloud_vpc.default.id
 }
 
 resource "alicloud_ecs_hpc_cluster" "default" {
@@ -38,14 +27,12 @@ resource "alicloud_ecs_hpc_cluster" "default" {
   description = "For Terraform Test"
 }
 
-// ECS Module
+# ECS Module
 module "ecs_instance" {
-  source  = "../../../modules/super-computing-cluster-cpu"
-  profile = var.profile
-  region  = var.region
+  source = "../../../modules/super-computing-cluster-cpu"
 
   instance_type_family = "ecs.scch5s"
-  //  Also can specify a instance type
+  #  Also can specify a instance type
   # instance_type = "ecs.scch5s.16xlarge"
 
   image_name_regex = "^centos_7_05_64*"
@@ -60,6 +47,6 @@ module "ecs_instance" {
 
   hpc_cluster_id = alicloud_ecs_hpc_cluster.default.id
 
-  //  Post-paid instances are out of stock, pre-paid instances must be specified for this type of instance
-  //  instance_charge_type = "PrePaid"
+  #  Post-paid instances are out of stock, pre-paid instances must be specified for this type of instance
+  #  instance_charge_type = "PrePaid"
 }

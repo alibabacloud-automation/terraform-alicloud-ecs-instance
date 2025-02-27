@@ -1,12 +1,5 @@
-variable "profile" {
-  default = "default"
-}
-variable "region" {
-  default = "cn-hangzhou"
-}
 provider "alicloud" {
-  region  = var.region
-  profile = var.profile
+  region = var.region
 }
 
 locals {
@@ -42,9 +35,9 @@ data "alicloud_images" "ubuntu" {
 data "alicloud_images" "centos" {
   most_recent   = true
   name_regex    = "^centos_7*"
-  instance_type = data.alicloud_instance_types.normal.ids.0
+  instance_type = data.alicloud_instance_types.normal.ids[0]
 }
-// retrieve 1c2g instance type
+# retrieve 1c2g instance type
 data "alicloud_instance_types" "normal" {
   availability_zone    = alicloud_vswitch.default.zone_id
   instance_type_family = "ecs.n1"
@@ -60,30 +53,22 @@ data "alicloud_instance_types" "prepaid" {
   memory_size          = 2
 }
 
-// retrieve 1c2g instance type for Burstable instance
-data "alicloud_instance_types" "t5" {
-  availability_zone    = alicloud_vswitch.default.zone_id
-  instance_type_family = "ecs.t5"
-  cpu_core_count       = 1
-  memory_size          = 2
-}
-// retrieve 2c4g instance type for spot instance
+# retrieve 2c4g instance type for spot instance
 data "alicloud_instance_types" "spot" {
   availability_zone = alicloud_vswitch.default.zone_id
   spot_strategy     = "SpotWithPriceLimit"
   cpu_core_count    = 2
   memory_size       = 4
 }
-// Security Group module for ECS Module
+# Security Group module for ECS Module
 module "security_group" {
-  source  = "alibaba/security-group/alicloud"
-  profile = var.profile
-  region  = var.region
+  source = "alibaba/security-group/alicloud"
+
   vpc_id  = alicloud_vpc.default.id
   version = "~> 2.0"
 }
 
-// Create a role name
+# Create a role name
 resource "alicloud_ram_role" "basic" {
   name     = "example-with-role-name"
   document = <<EOF
@@ -106,15 +91,13 @@ resource "alicloud_ram_role" "basic" {
 }
 
 module "ecs" {
-  source  = "../.."
-  profile = var.profile
-  region  = var.region
+  source = "../.."
 
   number_of_instances = 1
 
   name                        = "example-normal"
-  image_id                    = data.alicloud_images.ubuntu.ids.0
-  instance_type               = data.alicloud_instance_types.normal.ids.0
+  image_id                    = data.alicloud_images.ubuntu.ids[0]
+  instance_type               = data.alicloud_instance_types.normal.ids[0]
   vswitch_id                  = alicloud_vswitch.default.id
   security_group_ids          = [module.security_group.this_security_group_id]
   associate_public_ip_address = true
@@ -142,15 +125,14 @@ module "ecs" {
 }
 
 module "ecs_with_multi_images" {
-  source  = "../.."
-  profile = var.profile
-  region  = var.region
+  source = "../.."
+
 
   number_of_instances = 3
 
   name                        = "example-multi-image"
-  image_ids                   = [data.alicloud_images.ubuntu.ids.0, data.alicloud_images.centos.ids.0]
-  instance_type               = data.alicloud_instance_types.normal.ids.0
+  image_ids                   = [data.alicloud_images.ubuntu.ids[0], data.alicloud_images.centos.ids[0]]
+  instance_type               = data.alicloud_instance_types.normal.ids[0]
   vswitch_id                  = alicloud_vswitch.default.id
   security_group_ids          = [module.security_group.this_security_group_id]
   associate_public_ip_address = true
@@ -178,17 +160,16 @@ module "ecs_with_multi_images" {
 }
 
 module "ecs_with_ram_role" {
-  source  = "../.."
-  profile = var.profile
-  region  = var.region
+  source = "../.."
+
 
   number_of_instances = 1
 
   name           = "example-with-ram-role"
   use_num_suffix = true
 
-  image_id                    = data.alicloud_images.ubuntu.ids.0
-  instance_type               = data.alicloud_instance_types.normal.ids.0
+  image_id                    = data.alicloud_images.ubuntu.ids[0]
+  instance_type               = data.alicloud_instance_types.normal.ids[0]
   vswitch_id                  = alicloud_vswitch.default.id
   security_group_ids          = [module.security_group.this_security_group_id]
   associate_public_ip_address = true
@@ -197,17 +178,16 @@ module "ecs_with_ram_role" {
   role_name = alicloud_ram_role.basic.id
 }
 
-// create subscription ecs instances and enable auto renew
+# create subscription ecs instances and enable auto renew
 module "ecs_for_subscription" {
-  source  = "../.."
-  profile = var.profile
-  region  = var.region
+  source = "../.."
+
 
   number_of_instances = 1
 
   name                        = "example-for-subscription"
-  image_id                    = data.alicloud_images.ubuntu.ids.0
-  instance_type               = data.alicloud_instance_types.prepaid.ids.0
+  image_id                    = data.alicloud_images.ubuntu.ids[0]
+  instance_type               = data.alicloud_instance_types.prepaid.ids[0]
   vswitch_id                  = alicloud_vswitch.default.id
   security_group_ids          = [module.security_group.this_security_group_id]
   associate_public_ip_address = true
@@ -223,19 +203,18 @@ module "ecs_for_subscription" {
   force_delete = true
 }
 
-// create spot instance
+# create spot instance
 module "ecs_spot" {
-  source  = "../.."
-  profile = var.profile
-  region  = var.region
+  source = "../.."
+
 
   number_of_instances = 1
 
   name           = "example-spot-instance"
   use_num_suffix = true
 
-  image_id                    = data.alicloud_images.ubuntu.ids.0
-  instance_type               = data.alicloud_instance_types.spot.ids.0
+  image_id                    = data.alicloud_images.ubuntu.ids[0]
+  instance_type               = data.alicloud_instance_types.spot.ids[0]
   vswitch_id                  = alicloud_vswitch.default.id
   security_group_ids          = [module.security_group.this_security_group_id]
   associate_public_ip_address = true
@@ -247,37 +226,35 @@ module "ecs_spot" {
 
 # This instance won't be created
 module "ecs_zero" {
-  source  = "../.."
-  profile = var.profile
-  region  = var.region
+  source = "../.."
+
 
   number_of_instances = 0
 
   name                        = "example-zero"
-  image_id                    = data.alicloud_images.ubuntu.ids.0
-  instance_type               = data.alicloud_instance_types.normal.ids.0
+  image_id                    = data.alicloud_images.ubuntu.ids[0]
+  instance_type               = data.alicloud_instance_types.normal.ids[0]
   vswitch_id                  = alicloud_vswitch.default.id
   security_group_ids          = [module.security_group.this_security_group_id]
   associate_public_ip_address = true
   internet_max_bandwidth_out  = 10
 }
 
-// create instance with auto snapshot policy
+# create instance with auto snapshot policy
 module "ecs-auto-snap-shot-policy" {
-  source  = "../.."
-  profile = var.profile
-  region  = var.region
+  source = "../.."
+
 
   number_of_instances = 1
 
   name                        = "example-normal"
-  image_id                    = data.alicloud_images.ubuntu.ids.0
-  instance_type               = data.alicloud_instance_types.normal.ids.0
+  image_id                    = data.alicloud_images.ubuntu.ids[0]
+  instance_type               = data.alicloud_instance_types.normal.ids[0]
   vswitch_id                  = alicloud_vswitch.default.id
   security_group_ids          = [module.security_group.this_security_group_id]
   associate_public_ip_address = true
   internet_max_bandwidth_out  = 10
-  //  system_disk_auto_snapshot_policy_id = "sp-bp1axyxxxxxxxxxx"
+  #  system_disk_auto_snapshot_policy_id = "sp-bp1axyxxxxxxxxxx"
   user_data = local.user_data
 
   system_disk_category = "cloud_ssd"
@@ -290,7 +267,7 @@ module "ecs-auto-snap-shot-policy" {
       size        = "20"
       volume_size = 5
       encrypted   = true
-      //  auto_snapshot_policy_id = "sp-bp1axyxxxxxxxxxx"
+      #  auto_snapshot_policy_id = "sp-bp1axyxxxxxxxxxx"
     }
   ]
 
@@ -307,21 +284,20 @@ resource "alicloud_ecs_network_interface" "default" {
 }
 
 module "ecs_with_multi_eni" {
-  source  = "../.."
-  profile = var.profile
-  region  = var.region
+  source = "../.."
+
 
   number_of_instances = 4
 
   name                        = "example-multi-eni"
-  image_id                    = data.alicloud_images.ubuntu.ids.0
-  instance_type               = data.alicloud_instance_types.normal.ids.0
+  image_id                    = data.alicloud_images.ubuntu.ids[0]
+  instance_type               = data.alicloud_instance_types.normal.ids[0]
   vswitch_id                  = alicloud_vswitch.default.id
   security_group_ids          = [module.security_group.this_security_group_id]
   associate_public_ip_address = true
   internet_max_bandwidth_out  = 10
 
-  network_interface_ids = [alicloud_ecs_network_interface.default.0.id, "", alicloud_ecs_network_interface.default.1.id]
+  network_interface_ids = [alicloud_ecs_network_interface.default[0].id, "", alicloud_ecs_network_interface.default[1].id]
 
   user_data = local.user_data
 
@@ -372,16 +348,15 @@ resource "alicloud_security_group" "ipv6" {
 }
 
 module "ecs_with_ipv6_address" {
-  source  = "../.."
-  profile = var.profile
+  source = "../.."
 
   number_of_instances = 1
 
   name           = "example-with-ipv6-address"
   use_num_suffix = true
 
-  image_id             = data.alicloud_images.ubuntu.ids.0
-  instance_type        = data.alicloud_instance_types.ipv6.ids.0
+  image_id             = data.alicloud_images.ubuntu.ids[0]
+  instance_type        = data.alicloud_instance_types.ipv6.ids[0]
   vswitch_id           = alicloud_vswitch.ipv6.id
   security_group_ids   = [alicloud_security_group.ipv6.id]
   system_disk_category = "cloud_efficiency"

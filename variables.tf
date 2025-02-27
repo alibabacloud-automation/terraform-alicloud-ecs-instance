@@ -1,32 +1,3 @@
-variable "region" {
-  description = "(Deprecated from version 2.8.0) The region used to launch this module resources."
-  type        = string
-  default     = ""
-}
-
-variable "profile" {
-  description = "(Deprecated from version 2.8.0) The profile name as set in the shared credentials file. If not set, it will be sourced from the ALICLOUD_PROFILE environment variable."
-  type        = string
-  default     = ""
-}
-
-variable "shared_credentials_file" {
-  description = "(Deprecated from version 2.8.0) This is the path to the shared credentials file. If this is not set and a profile is specified, $HOME/.aliyun/config.json will be used."
-  type        = string
-  default     = ""
-}
-
-variable "skip_region_validation" {
-  description = "(Deprecated from version 2.8.0) Skip static validation of region ID. Used by users of alternative AlibabaCloud-like APIs or users w/ access to regions that are not public (yet)."
-  type        = bool
-  default     = false
-}
-
-variable "internet_max_bandwidth_in" {
-  description = "(Deprecated from version v1.121.2) The maximum internet in bandwidth of instance. The attribute is invalid and no any affect for the instance. So it has been deprecated from version v1.121.2."
-  type        = number
-  default     = 100
-}
 
 # Ecs instance variables
 variable "number_of_instances" {
@@ -164,7 +135,7 @@ variable "system_disk_performance_level" {
 variable "system_disk_storage_cluster_id" {
   description = "The ID of the dedicated block storage cluster. If you want to use disks in a dedicated block storage cluster as system disks when you create instances, you must specify this parameter."
   type        = string
-  default     = ""
+  default     = null
 }
 
 variable "system_disk_encrypted" {
@@ -176,13 +147,13 @@ variable "system_disk_encrypted" {
 variable "system_disk_kms_key_id" {
   description = "The ID of the Key Management Service (KMS) key to be used for the system disk."
   type        = string
-  default     = ""
+  default     = null
 }
 
 variable "system_disk_encrypt_algorithm" {
   description = "The algorithm to be used to encrypt the system disk. Valid values are `aes-256`, `sm4-128`. Default value is `aes-256`."
   type        = string
-  default     = ""
+  default     = null
 }
 
 variable "system_disk_auto_snapshot_policy_id" {
@@ -318,18 +289,6 @@ variable "group_ids" {
   default     = []
 }
 
-variable "system_category" {
-  description = "(Deprecated) It has been deprecated from version 2.0.0 and use 'system_disk_category' instead."
-  type        = string
-  default     = "cloud_efficiency"
-}
-
-variable "system_size" {
-  description = "(Deprecated) It has been deprecated from version 2.0.0 and use 'system_disk_size' replaces it."
-  type        = number
-  default     = 40
-}
-
 variable "disk_name" {
   description = "(Deprecated) It has been deprecated from version 2.0.0 and use 'data_disks' 'name' instead."
   type        = string
@@ -346,24 +305,6 @@ variable "disk_size" {
   description = "(Deprecated) It has been deprecated from version 2.0.0 and use 'data_disks' 'size' instead."
   type        = number
   default     = 40
-}
-
-variable "disk_tags" {
-  description = "(Deprecated) It has been deprecated from version 2.0.0 and use 'volume_tags' instead."
-  type        = map(string)
-  default     = {}
-}
-
-variable "instance_tags" {
-  description = "(Deprecated) It has been deprecated from version 0.1.0 and the field 'tags' replaces it."
-  type        = map(string)
-  default     = {}
-}
-
-variable "number_of_disks" {
-  description = "(Deprecated) It has been deprecated from version 2.0.0 and use 'data_disks' instead."
-  type        = number
-  default     = 0
 }
 
 variable "operator_type" {

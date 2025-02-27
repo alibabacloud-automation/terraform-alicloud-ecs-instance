@@ -1,16 +1,5 @@
-variable "profile" {
-  default = "default"
-}
-variable "region" {
-  default = "cn-heyuan"
-}
-variable "zone_id" {
-  default = "cn-heyuan-b"
-}
-
 provider "alicloud" {
-  region  = var.region
-  profile = var.profile
+  region = var.region
 }
 
 #############################################################
@@ -29,20 +18,18 @@ resource "alicloud_vswitch" "default" {
 }
 
 resource "alicloud_security_group" "default" {
-  name   = "default"
-  vpc_id = alicloud_vpc.default.id
+  security_group_name = "default"
+  vpc_id              = alicloud_vpc.default.id
 }
 
 
-// ECS Module
+# ECS Module
 module "ecs_instance" {
-  source  = "../../../modules/visualization-compute-optimized-type-with-gpu"
-  profile = var.profile
-  region  = var.region
+  source = "../../../modules/visualization-compute-optimized-type-with-gpu"
 
   instance_type_family = "ecs.vgn7i-vws"
-  //  Also can specify a instance type
-  //  instance_type = "ecs.vgn7i-vws-m24.7xlarge"
+  #  Also can specify a instance type
+  #  instance_type = "ecs.vgn7i-vws-m24.7xlarge"
 
   system_disk_category = "cloud_essd"
 

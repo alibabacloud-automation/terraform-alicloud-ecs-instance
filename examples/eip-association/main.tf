@@ -1,17 +1,7 @@
-variable "profile" {
-  default = "default"
-}
-variable "region" {
-  default = "cn-hangzhou"
-}
 provider "alicloud" {
-  region  = var.region
-  profile = var.profile
+  region = var.region
 }
 
-variable "instances_number" {
-  default = 2
-}
 
 ##################################################################
 # Data sources to get VPC, subnet, security group and AMI details
@@ -21,7 +11,7 @@ data "alicloud_vpcs" "default" {
 }
 
 data "alicloud_vswitches" "all" {
-  vpc_id = data.alicloud_vpcs.default.ids.0
+  vpc_id = data.alicloud_vpcs.default.ids[0]
 }
 
 data "alicloud_images" "ubuntu" {
@@ -29,33 +19,31 @@ data "alicloud_images" "ubuntu" {
   name_regex  = "^ubuntu_18.*64"
 }
 
-// retrieve 1c2g instance type
+# retrieve 1c2g instance type
 data "alicloud_instance_types" "normal" {
-  availability_zone = data.alicloud_vswitches.all.vswitches.0.zone_id
+  availability_zone = data.alicloud_vswitches.all.vswitches[0].zone_id
   cpu_core_count    = 1
   memory_size       = 2
 }
 
-// Security Group module for ECS Module
+# Security Group module for ECS Module
 module "security_group" {
-  source  = "alibaba/security-group/alicloud"
-  profile = var.profile
+  source = "alibaba/security-group/alicloud"
+
   region  = var.region
-  vpc_id  = data.alicloud_vpcs.default.ids.0
+  vpc_id  = data.alicloud_vpcs.default.ids[0]
   version = "~> 2.0"
 }
 
 module "ecs" {
-  source  = "../.."
-  profile = var.profile
-  region  = var.region
+  source = "../.."
 
   number_of_instances = var.instances_number
 
   name                        = "example-with-eips"
-  image_id                    = data.alicloud_images.ubuntu.ids.0
-  instance_type               = data.alicloud_instance_types.normal.ids.0
-  vswitch_id                  = data.alicloud_vswitches.all.ids.0
+  image_id                    = data.alicloud_images.ubuntu.ids[0]
+  instance_type               = data.alicloud_instance_types.normal.ids[0]
+  vswitch_id                  = data.alicloud_vswitches.all.ids[0]
   security_group_ids          = [module.security_group.this_security_group_id]
   associate_public_ip_address = false
 }

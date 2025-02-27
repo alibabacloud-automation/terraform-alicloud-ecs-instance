@@ -10,7 +10,7 @@ data "alicloud_images" "default" {
 }
 
 data "alicloud_instance_types" "default" {
-  availability_zone    = data.alicloud_zones.default.zones.0.id
+  availability_zone    = data.alicloud_zones.default.zones[0].id
   system_disk_category = "cloud_essd"
 }
 
@@ -18,7 +18,7 @@ data "alicloud_ecs_auto_snapshot_policies" "default" {
 }
 
 resource "alicloud_ecs_disk" "default" {
-  zone_id = data.alicloud_zones.default.zones.0.id
+  zone_id = data.alicloud_zones.default.zones[0].id
   size    = var.system_disk_size
 }
 
@@ -62,16 +62,18 @@ resource "alicloud_kms_ciphertext" "kms" {
 }
 
 module "security_group" {
-  source = "alibaba/security-group/alicloud"
-  vpc_id = module.vpc.this_vpc_id
+  source  = "alibaba/security-group/alicloud"
+  version = "~> 2.0"
+  vpc_id  = module.vpc.this_vpc_id
 }
 
 module "vpc" {
   source             = "alibaba/vpc/alicloud"
+  version            = "~>1.11.0"
   create             = true
   vpc_cidr           = "172.16.0.0/12"
   vswitch_cidrs      = ["172.16.0.0/21"]
-  availability_zones = [data.alicloud_zones.default.zones.0.id]
+  availability_zones = [data.alicloud_zones.default.zones[0].id]
 }
 
 module "ecs_instance" {
@@ -79,8 +81,8 @@ module "ecs_instance" {
 
   number_of_instances = 1
 
-  instance_type      = data.alicloud_instance_types.default.instance_types.0.id
-  image_id           = data.alicloud_images.default.images.0.id
+  instance_type      = data.alicloud_instance_types.default.instance_types[0].id
+  image_id           = data.alicloud_images.default.images[0].id
   vswitch_ids        = [module.vpc.this_vswitch_ids[0]]
   security_group_ids = [module.security_group.this_security_group_id]
   description        = var.description
@@ -91,9 +93,9 @@ module "example" {
 
   number_of_instances = 1
 
-  image_id                            = data.alicloud_images.default.images.0.id
+  image_id                            = data.alicloud_images.default.images[0].id
   image_ids                           = data.alicloud_images.default.ids
-  instance_type                       = data.alicloud_instance_types.default.instance_types.0.id
+  instance_type                       = data.alicloud_instance_types.default.instance_types[0].id
   security_group_ids                  = [module.security_group.this_security_group_id]
   vswitch_id                          = module.vpc.this_vswitch_ids[0]
   vswitch_ids                         = module.vpc.this_vswitch_ids
@@ -102,7 +104,7 @@ module "example" {
   name                                = var.name
   use_num_suffix                      = true
   host_name                           = var.host_name
-  resource_group_id                   = data.alicloud_resource_manager_resource_groups.default.groups.0.id
+  resource_group_id                   = data.alicloud_resource_manager_resource_groups.default.groups[0].id
   description                         = var.description
   internet_charge_type                = var.internet_charge_type
   password                            = var.password
@@ -113,7 +115,7 @@ module "example" {
   system_disk_name                    = var.system_disk_name
   system_disk_description             = var.system_disk_description
   system_disk_performance_level       = "PL0"
-  system_disk_auto_snapshot_policy_id = data.alicloud_ecs_auto_snapshot_policies.default.policies.0.id
+  system_disk_auto_snapshot_policy_id = data.alicloud_ecs_auto_snapshot_policies.default.policies[0].id
   data_disks = [
     {
       name                    = "data_disks_name"
@@ -123,7 +125,7 @@ module "example" {
       snapshot_id             = alicloud_ecs_snapshot.default.id
       delete_with_instance    = true
       description             = "tf-description"
-      auto_snapshot_policy_id = data.alicloud_ecs_auto_snapshot_policies.default.policies.0.id
+      auto_snapshot_policy_id = data.alicloud_ecs_auto_snapshot_policies.default.policies[0].id
     }
   ]
   associate_public_ip_address   = true
