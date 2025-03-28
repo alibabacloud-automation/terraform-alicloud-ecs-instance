@@ -40,10 +40,10 @@ jobs:
           modules=$(curl -sL "https://terraform-fc-test-for-example-module.oss-ap-southeast-1.aliyuncs.com/testRecordReleased.json")
           if echo "$modules" | jq --arg key "$REPO_NAME" -re 'has($key)' | grep -q true; then
               echo "The key exists at the JSON object."
-              echo "::set-output name=output_value::1"
+              echo "::set-output name=output_value::0"
           else
               echo "The key does not exist at the JSON object."
-              echo "::set-output name=output_value::0"
+              echo "::set-output name=output_value::1"
           fi
       - name: update test record
         if: steps.whether-to-upload-test-record.outputs.output_value == 1
