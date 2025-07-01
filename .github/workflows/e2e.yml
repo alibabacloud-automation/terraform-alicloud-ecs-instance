@@ -5,42 +5,46 @@ on:
       - master
       - main
     types: [ 'opened', 'synchronize' ]
-    paths:
-      - '.github/**'
-      - '.github/workflows/**'
-      - '**/*.tf'
 
 jobs:
-  terraform-fmt:
+  commitlint:
     runs-on: ubuntu-latest
     steps:
-      - name: checkout
-        uses: actions/checkout@v3
-      - name: fmt-check
-        run: |
-          if [ ! -f /usr/local/bin/terraform ]; then
-            wget -q https://releases.hashicorp.com/terraform/1.6.0/terraform_1.6.0_linux_amd64.zip
-            unzip terraform_1.6.0_linux_amd64.zip -d /usr/local/bin/
-          fi
-          error=false
-          echo "===> Terraform fmt -diff checking"
-          terraform fmt -diff -recursive -check
-          if [[ $? -ne 0 ]]; then
-            echo -e "\033[31m[ERROR]\033[0m: Some codes has not been formatted, and please running terraform fmt --recursive command before pushing."
-            exit 1
-          fi
+      - uses: ahmadnassri/action-commit-lint@v2
+
+  changes-files:
+    runs-on: ubuntu-latest
+    outputs:
+      changed_files_list: ${{ steps.changed-files.outputs.all_changed_files }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v34
+        with:
+          separator: ","
+
+  terraform-fmt:
+    runs-on: ubuntu-latest
+    needs: changes-files
+    if: contains(needs.changes-files.outputs.changed_files_list, '.tf')
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+      - name: Terraform fmt
+        id: fmt
+        run: terraform fmt -check -recursive
 
   terraform-validate:
     runs-on: ubuntu-latest
+    needs: changes-files
+    if: contains(needs.changes-files.outputs.changed_files_list, '.tf')
     steps:
       - name: checkout
         uses: actions/checkout@v3
+      - uses: hashicorp/setup-terraform@v3
       - name: validate-check
         run: |
-          if [ ! -f /usr/local/bin/terraform ]; then
-            wget -q https://releases.hashicorp.com/terraform/1.6.0/terraform_1.6.0_linux_amd64.zip
-            unzip terraform_1.6.0_linux_amd64.zip -d /usr/local/bin/
-          fi
           exp="examples"
           output_file="combined_output.txt"
           if [[ -d "$exp" ]]; then
@@ -63,6 +67,8 @@ jobs:
   
   tflint:
     runs-on: ubuntu-latest
+    needs: changes-files
+    if: contains(needs.changes-files.outputs.changed_files_list, '.tf')
     steps:
       - name: checkout
         uses: actions/checkout@v3
@@ -105,7 +111,6 @@ jobs:
           fi
           
   e2e-check:
-    # if: github.event.review.state == 'approved' || github.event.review.body == 'approved'
     needs: [terraform-fmt, terraform-validate, tflint]
     runs-on: ubuntu-latest
     name: 'e2e check'
