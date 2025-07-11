@@ -111,7 +111,7 @@ jobs:
           fi
           
   e2e-check:
-    needs: [terraform-fmt, terraform-validate, tflint]
+    needs: [commitlint, terraform-fmt, terraform-validate, tflint]
     runs-on: ubuntu-latest
     name: 'e2e check'
     steps:
