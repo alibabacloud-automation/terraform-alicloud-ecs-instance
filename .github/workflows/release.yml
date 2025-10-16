@@ -16,6 +16,7 @@ jobs:
           fetch-depth: 0
 
       - name: Release
+        id: semantic
         uses: cycjimmy/semantic-release-action@v4
         with:
           semantic_version: 23.0.2
@@ -25,3 +26,11 @@ jobs:
             conventional-changelog-conventionalcommits@7.0.2
         env:
           GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_TOKEN }}
+
+      - name: Trigger Metadata Upload
+        if: steps.semantic.outputs.new_release_published == 'true'
+        run: |
+          url="${{ secrets.FC_UPLOAD_META_ENDPOINT }}/?from=git&syncModuleMeta=true&moduleName=${{ github.event.repository.name }}&moduleVersion=${{ steps.semantic.outputs.new_release_version }}"
+          echo "Uploading metadata to $url"
+          curl -H "X-Fc-Invocation-Type:Async" \
+             -s "$url"
