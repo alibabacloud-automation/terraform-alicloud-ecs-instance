@@ -1,3 +1,5 @@
+## [2.12.1](https://github.com/alibabacloud-automation/terraform-alicloud-ecs-instance/compare/v2.12.0...v2.12.1) (2025-11-27)
+
 ## 2.13.0 (unreleased)
 ## 2.12.0 (August 8, 2024)
 
