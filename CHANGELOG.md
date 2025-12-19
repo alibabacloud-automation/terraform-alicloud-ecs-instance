@@ -1,3 +1,14 @@
+## [3.0.0](https://github.com/alibabacloud-automation/terraform-alicloud-ecs-instance/compare/v2.12.1...v3.0.0) (2025-12-19)
+
+
+### ⚠ BREAKING CHANGES
+
+* release the uncompatible new version
+
+### Features
+
+* release the uncompatible new version ([4f82c23](https://github.com/alibabacloud-automation/terraform-alicloud-ecs-instance/commit/4f82c23eecde3ab9896527ff37b18fb854fed960))
+
 ## [2.12.1](https://github.com/alibabacloud-automation/terraform-alicloud-ecs-instance/compare/v2.12.0...v2.12.1) (2025-11-27)
 
 This version has some uncompatible changes. Please use it carefully.
