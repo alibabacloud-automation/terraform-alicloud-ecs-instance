@@ -65,7 +65,7 @@ module "security_group" {
   source = "alibaba/security-group/alicloud"
 
   vpc_id  = alicloud_vpc.default.id
-  version = "~> 2.0"
+  version = "3.0.0"
 }
 
 # Create a role name

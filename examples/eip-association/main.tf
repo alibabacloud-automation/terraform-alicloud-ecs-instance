@@ -32,7 +32,7 @@ module "security_group" {
 
   region  = var.region
   vpc_id  = data.alicloud_vpcs.default.ids[0]
-  version = "~> 2.0"
+  version = "3.0.0"
 }
 
 module "ecs" {
