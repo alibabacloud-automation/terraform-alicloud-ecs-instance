@@ -31,9 +31,9 @@ resource "alicloud_ecs_hpc_cluster" "default" {
 module "ecs_instance" {
   source = "../../../modules/super-computing-cluster-cpu"
 
-  instance_type_family = "ecs.scch5s"
+  instance_type_family = "ecs.scch5"
   #  Also can specify a instance type
-  # instance_type = "ecs.scch5s.16xlarge"
+  # instance_type = "ecs.scch5.16xlarge"
 
   image_name_regex = "^centos_7_05_64*"
 
