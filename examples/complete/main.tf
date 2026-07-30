@@ -11,6 +11,7 @@ data "alicloud_images" "default" {
 
 data "alicloud_instance_types" "default" {
   availability_zone    = data.alicloud_zones.default.zones[0].id
+  instance_type_family = "ecs.g6"
   system_disk_category = "cloud_essd"
 }
 
