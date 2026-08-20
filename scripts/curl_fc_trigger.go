@@ -1,21 +1,16 @@
 package main
 
 import (
-	"crypto/rand"
-	"encoding/json"
-	"fmt"
-	"io"
 	"log"
-	"math/big"
 	"net/http"
 	"os"
 	"strings"
 )
 
-var urlPrefix = "https://terraform-fc-test-for-example-module.oss-ap-southeast-1.aliyuncs.com"
+var fcTriggerURL = "https://module-ci-terrafoodule-ci-uyjvvfbaqr.ap-southeast-1.fcapp.run"
 
 func main() {
-	if len(os.Args)!=4{
+	if len(os.Args) != 4 {
 		log.Println("[ERROR] invalid args")
 		return
 	}
@@ -23,30 +18,11 @@ func main() {
 	repoName := strings.TrimSpace(os.Args[2])
 	ossObjectPath := strings.TrimSpace(os.Args[3])
 
-	// get trigger url
-	fcTriggerUrl := urlPrefix + "/fcUrls.json"
-	response, err := http.Get(fcTriggerUrl)
-	if err != nil {
-		log.Println("[ERROR] get fc trigger url failed")
-	}
-	defer response.Body.Close()
-
-	content, _ := io.ReadAll(response.Body)
-	var data interface{}
-	json.Unmarshal(content, &data)
-	triggerMap := data.(map[string]interface{})
-
-	n, _ := rand.Int(rand.Reader, big.NewInt(100))
-	index := int(n.Int64()) % len(triggerMap)
-	triggerUrl := triggerMap[fmt.Sprintf("%d", index)]
-	fmt.Println(triggerUrl)
-
-	// curl
 	client := &http.Client{}
-	req, err := http.NewRequest("GET", triggerUrl.(string),
-		nil)
+	req, err := http.NewRequest("GET", fcTriggerURL, nil)
 	if err != nil {
-		panic(err)
+		log.Printf("[ERROR] create FC trigger request failed: %s", err)
+		return
 	}
 	req.Header.Add("X-Fc-Invocation-Type", "Async")
 

@@ -12,24 +12,14 @@ jobs:
     permissions: write-all
     steps:
       - name: checkout
-        uses: actions/checkout@v3
-      - name: set id
-        id: set-job-id
-        uses: ayachensiyuan/get-action-job-id@v1.6
-        env: 
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          job-name: 'weekly e2e check'   
-      - name: Get job id
-        run: |
-          echo "The current job id is ${{ steps.set-job-id.outputs.jobId }}"
+        uses: actions/checkout@v4
       - name: Extract branch name
         shell: bash
-        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        run: echo "branch=${GITHUB_REF#refs/heads/}" >> "$GITHUB_OUTPUT"
         id: extract_branch
       - name: weekly e2e test
         run: |
-          objectPath="github-action/${{github.repository}}/weekly-e2e/Action-${{github.run_number}}-${{github.run_id}}-${{ steps.set-job-id.outputs.jobId }}"
+          objectPath="github-action/${{github.repository}}/weekly-e2e/Action-${{github.run_number}}-${{github.run_id}}-${{github.run_attempt}}"
           echo "default branch: ${{ steps.extract_branch.outputs.branch }}"
           go run scripts/curl_fc_trigger.go ${{ steps.extract_branch.outputs.branch }} ${{github.repository}} ${objectPath}
           go run scripts/e2e_check.go ${objectPath}
@@ -40,10 +30,10 @@ jobs:
           modules=$(curl -sL "https://terraform-fc-test-for-example-module.oss-ap-southeast-1.aliyuncs.com/testRecordReleased.json")
           if echo "$modules" | jq --arg key "$REPO_NAME" -re 'has($key)' | grep -q true; then
               echo "The key exists at the JSON object."
-              echo "::set-output name=output_value::0"
+              echo "output_value=0" >> "$GITHUB_OUTPUT"
           else
               echo "The key does not exist at the JSON object."
-              echo "::set-output name=output_value::1"
+              echo "output_value=1" >> "$GITHUB_OUTPUT"
           fi
       - name: update test record
         if: steps.whether-to-upload-test-record.outputs.output_value == 1

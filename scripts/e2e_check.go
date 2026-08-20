@@ -6,11 +6,16 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"regexp"
 	"strings"
 	"time"
 )
 
 var urlPrefix = "https://terraform-fc-test-for-example-module.oss-ap-southeast-1.aliyuncs.com"
+
+const maxTestRecords = 10
+
+var testRecordHeader = regexp.MustCompile(`(?m)^## `)
 
 func main() {
 	ossObjectPath := strings.TrimSpace(os.Args[1])
@@ -90,31 +95,27 @@ func updateTestRecord(ossObjectPath string) {
 	if response.StatusCode != 200 || len(data) == 0 {
 		return
 	}
-	currentTestRecord := string(data) + "\n"
-
 	testRecordFileName := "TestRecord.md"
-	var testRecordFile *os.File
 	oldTestRecord := ""
-	if _, err := os.Stat(testRecordFileName); os.IsNotExist(err) {
-		testRecordFile, err = os.Create(testRecordFileName)
-		if err != nil {
-			log.Println("[ERROR] failed to create test record file")
-		}
-	} else {
-		data, err := os.ReadFile(testRecordFileName)
-		if err != nil {
-			log.Println("[ERROR] failed to read test record file")
-			return
-		}
-		oldTestRecord = string(data)
-
-		testRecordFile, err = os.OpenFile(testRecordFileName, os.O_TRUNC|os.O_RDWR, 0666)
-		if err != nil {
-			log.Println("[ERROR] failed to open test record file")
-		}
+	oldTestRecordData, err := os.ReadFile(testRecordFileName)
+	if err != nil && !os.IsNotExist(err) {
+		log.Println("[ERROR] failed to read test record file")
+		return
 	}
-	defer testRecordFile.Close()
+	oldTestRecord = string(oldTestRecordData)
 
-	currentTestRecord += oldTestRecord
-	testRecordFile.WriteString(currentTestRecord)
+	content := keepLatestTestRecords(string(data), oldTestRecord)
+	if err := os.WriteFile(testRecordFileName, []byte(content), 0666); err != nil {
+		log.Println("[ERROR] failed to write test record file")
+	}
+}
+
+func keepLatestTestRecords(currentTestRecord, oldTestRecord string) string {
+	content := strings.TrimSpace(currentTestRecord + "\n" + oldTestRecord)
+	headers := testRecordHeader.FindAllStringIndex(content, -1)
+	if len(headers) <= maxTestRecords {
+		return content + "\n"
+	}
+
+	return strings.TrimSpace(content[:headers[maxTestRecords][0]]) + "\n"
 }
