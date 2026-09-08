@@ -68,9 +68,14 @@ module "security_group" {
   version = "3.0.0"
 }
 
+resource "random_integer" "default" {
+  min = 10000
+  max = 99999
+}
+
 # Create a role name
 resource "alicloud_ram_role" "basic" {
-  name     = "example-with-role-name"
+  name     = "example-with-role-name-${random_integer.default.result}"
   document = <<EOF
     {
       "Statement": [
