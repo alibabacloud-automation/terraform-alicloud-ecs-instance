@@ -30,7 +30,6 @@ data "alicloud_instance_types" "normal" {
 module "security_group" {
   source = "alibaba/security-group/alicloud"
 
-  region  = var.region
   vpc_id  = data.alicloud_vpcs.default.ids[0]
   version = "3.0.0"
 }
