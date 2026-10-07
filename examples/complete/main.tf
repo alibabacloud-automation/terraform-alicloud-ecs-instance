@@ -1,3 +1,7 @@
+provider "alicloud" {
+  region = "cn-zhangjiakou"
+}
+
 data "alicloud_zones" "default" {
 }
 
@@ -43,8 +47,8 @@ resource "alicloud_ecs_key_pair" "default" {
 }
 
 resource "alicloud_ram_role" "default" {
-  name     = "tf-ram-name-${random_integer.default.result}"
-  document = var.document
+  role_name                   = "tf-ram-name-${random_integer.default.result}"
+  assume_role_policy_document = var.document
 }
 
 resource "alicloud_kms_key" "kms" {
