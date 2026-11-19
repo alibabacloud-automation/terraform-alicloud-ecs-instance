@@ -9,9 +9,8 @@ data "alicloud_images" "default" {
   owners     = "system"
 }
 
-data "alicloud_instance_types" "default" {
-  availability_zone    = data.alicloud_zones.default.zones[0].id
-  system_disk_category = "cloud_essd"
+locals {
+  instance_type = "ecs.g6.large"
 }
 
 data "alicloud_ecs_auto_snapshot_policies" "default" {
@@ -81,7 +80,7 @@ module "ecs_instance" {
 
   number_of_instances = 1
 
-  instance_type      = data.alicloud_instance_types.default.instance_types[0].id
+  instance_type      = local.instance_type
   image_id           = data.alicloud_images.default.images[0].id
   vswitch_ids        = [module.vpc.this_vswitch_ids[0]]
   security_group_ids = [module.security_group.this_security_group_id]
@@ -95,7 +94,7 @@ module "example" {
 
   image_id                            = data.alicloud_images.default.images[0].id
   image_ids                           = data.alicloud_images.default.ids
-  instance_type                       = data.alicloud_instance_types.default.instance_types[0].id
+  instance_type                       = local.instance_type
   security_group_ids                  = [module.security_group.this_security_group_id]
   vswitch_id                          = module.vpc.this_vswitch_ids[0]
   vswitch_ids                         = module.vpc.this_vswitch_ids

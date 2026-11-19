@@ -28,8 +28,9 @@ module "bare_metal_cpu_ecs_instance" {
   source = "../../modules/bare-metal-cpu"
 
   instance_type_family = "ecs.ebmc6"
-  #  Also can specify a instance type
-  #  instance_type = "ecs.ebmhfg5.2xlarge"
+  # Bare-metal post-paid capacity is not available in this test zone.
+  instance_type        = "ecs.ebmhfg5.2xlarge"
+  instance_charge_type = "PrePaid"
 
   vswitch_id = alicloud_vswitch.default.id
 
@@ -39,6 +40,4 @@ module "bare_metal_cpu_ecs_instance" {
 
   internet_max_bandwidth_out = 10
 
-  #  Post-paid instances are out of stock, pre-paid instances must be specified for this type of instance
-  #  instance_charge_type = "PrePaid"
 }
